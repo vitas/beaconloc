@@ -1,0 +1,117 @@
+<resources>
+    <string name="app_name">Beacon Locator</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_action_delete">Delete</string>
+    <string name="dialog_action_cancel">Cancel</string>
+    <string name="dialog_action_exit">Exit</string>
+    <string name="dialog_error_title">Error</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_vibrate">Vibrate</string>
+
+    <!-- titles activities-->
+    <string name="title_activity_main_navigation">Beacon Locator</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- settings menu actions -->
+    <string name="action_settings">Settings</string>
+    <string name="action_view_on_github">GitHub</string>
+
+    <!-- left drawer menu actions -->
+
+    <string name="title_action_group_beacon_manage">Beacons</string>
+    <string name="action_scan_around">Scan</string>
+    <string name="action_scan_managed">Radar</string>
+
+    <string name="dialog_error_functionality_limited">Functionality limited</string>
+    <string name="error_message_location_access_not_granted">\"Since location access has not been granted, this app will not be able to discover beacons when in the background.</string>
+    <string name="dialog_error_need_location_access">This app needs location access</string>
+    <string name="error_message_location_access_need_tobe_granted">Please grant location access so this app can detect beacons in the background.</string>
+    <string name="dialog_error_ble_not_enabled">Bluetooth not enabled</string>
+    <string name="error_message_please_enable_bluetooth">Please enable bluetooth in settings and restart this application.</string>
+    <string name="dialog_error_ble_not_supported">Bluetooth LE not available</string>
+    <string name="error_message_bluetooth_le_not_supported">Sorry, this device does not support Bluetooth LE.</string>
+
+    <!-- detected beacon properties -->
+    <string name="mv_text_rssi">RSSI</string>
+    <string name="mv_text_rssi_unit">dBm</string>
+    <string name="mv_text_txpower">TX</string>
+    <string name="mv_text_distance_unit">m</string>
+    <string name="mv_text_uuid">UUID</string>
+    <string name="mv_text_major">Major</string>
+    <string name="mv_text_minor">Minor</string>
+    <string name="mv_text_distance">Distance</string>
+    <string name="mv_text_vendor">Vendor</string>
+    <string name="mv_text_name">Bluetooth Name</string>
+    <string name="mv_text_url">URL</string>
+    <string name="mv_text_instance">Instance</string>
+    <string name="mv_text_namespace">Namespace</string>
+
+    <string name="proximity_immediate">Immediate</string>
+    <string name="proximity_near">Near</string>
+    <string name="proximity_far">Far</string>
+
+    <string name="scanning">Scanning...</string>
+    <string name="scanner_found_beacons_size">%1$d found</string>
+
+    <string name="text_empty_list">No Data</string>
+    <string name="text_scan_not_found">No beacon found in your neighborhood</string>
+    <string name="text_please_start_scan">Press scan button for detecting beacons</string>
+    <string name="nav_drawer_open">open drawer</string>
+    <string name="nav_drawer_close">close drawer</string>
+
+</resources>

@@ -1,0 +1,12 @@
+<scale xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="500"
+    android:fillAfter="true"
+    android:fromXScale="0.0"
+    android:fromYScale="0.0"
+    android:interpolator="@android:anim/bounce_interpolator"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:shareInterpolator="true"
+    android:startOffset="200"
+    android:toXScale="1.0"
+    android:toYScale="1.0"></scale>
