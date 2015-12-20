@@ -16,32 +16,33 @@
  *
  */
 
-package com.samebits.beacon.locator.injection.component;
+package com.samebits.beacon.locator.injection.module;
 
+import android.content.Context;
 
-import android.app.Application;
-
-import com.samebits.beacon.locator.db.DataManager;
-import com.samebits.beacon.locator.injection.module.ApplicationModule;
-
-import org.altbeacon.beacon.BeaconManager;
+import com.samebits.beacon.locator.db.DbStoreService;
+import com.samebits.beacon.locator.db.StoreService;
+import com.samebits.beacon.locator.injection.UserScope;
 
 import javax.inject.Singleton;
 
-import dagger.Component;
-
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * Created by vitas on 18/10/15.
+ * Created by vitas on 20/12/15.
  */
-@Singleton
-@Component(modules = ApplicationModule.class)
-public interface ApplicationComponent {
+@Module
+public class DataModule {
+    private Context mContext;
 
-    Application application();
+    public DataModule(Context context) {
+        mContext = context;
+    }
 
-    DataManager dataManager();
-
-    BeaconManager beaconManager();
-
+    @Provides
+    @UserScope
+    StoreService provideStoreService() {
+        return new DbStoreService(mContext);
+    }
 }

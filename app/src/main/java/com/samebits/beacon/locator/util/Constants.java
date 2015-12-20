@@ -30,6 +30,7 @@ public final class Constants {
     public static final int SORT_UUID_MAJOR_MINOR = 2;
     public static final String TAG_FRAGMENT_SCAN_LIST = "SCAN_LIST";
     public static final String TAG_FRAGMENT_SCAN_RADAR = "SCAN_RADAR";
+    public static final String TAG_FRAGMENT_BEACON_DETAIL = "BEACON_DETAIL";
 
     public static final int LIVE_BEACON_MODE = 0;
     public static final int TRACKED_BEACON_MODE = 1;

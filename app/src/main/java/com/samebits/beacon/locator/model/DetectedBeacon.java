@@ -118,6 +118,18 @@ public class DetectedBeacon extends Beacon {
         return getId1().toString() + ":" + getId2().toString() + ":" + getId3().toString() + "::" + getBluetoothAddress();
     }
 
+    public String getUUID() {
+        return getId1().toString();
+    }
+
+    public String getMinor() {
+        return getId3().toString();
+    }
+
+    public String getMajor() {
+        return getId2().toString();
+    }
+
     public String getEddystoneURL() {
         return UrlBeaconUrlCompressor.uncompress(getId1().toByteArray());
     }

@@ -21,6 +21,8 @@ package com.samebits.beacon.locator.injection.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.samebits.beacon.locator.db.DataManager;
+
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 
@@ -50,6 +52,10 @@ public class ApplicationModule {
     public Context provideApplicationContext() {
         return this.application;
     }
+
+    @Provides
+    @Singleton
+    DataManager provideDataManager() {  return new DataManager(this.application); }
 
     @Provides
     @Singleton

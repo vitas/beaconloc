@@ -16,32 +16,17 @@
  *
  */
 
-package com.samebits.beacon.locator.injection.component;
+package com.samebits.beacon.locator.injection;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import android.app.Application;
-
-import com.samebits.beacon.locator.db.DataManager;
-import com.samebits.beacon.locator.injection.module.ApplicationModule;
-
-import org.altbeacon.beacon.BeaconManager;
-
-import javax.inject.Singleton;
-
-import dagger.Component;
-
+import javax.inject.Scope;
 
 /**
- * Created by vitas on 18/10/15.
+ * Created by vitas on 20/12/15.
  */
-@Singleton
-@Component(modules = ApplicationModule.class)
-public interface ApplicationComponent {
-
-    Application application();
-
-    DataManager dataManager();
-
-    BeaconManager beaconManager();
-
+@Scope
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UserScope {
 }

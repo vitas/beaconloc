@@ -16,32 +16,16 @@
  *
  */
 
-package com.samebits.beacon.locator.injection.component;
+package com.samebits.beacon.locator.db;
 
-
-import android.app.Application;
-
-import com.samebits.beacon.locator.db.DataManager;
-import com.samebits.beacon.locator.injection.module.ApplicationModule;
-
-import org.altbeacon.beacon.BeaconManager;
-
-import javax.inject.Singleton;
-
-import dagger.Component;
-
+import com.samebits.beacon.locator.model.DetectedBeacon;
 
 /**
- * Created by vitas on 18/10/15.
+ * Created by vitas on 20/12/15.
  */
-@Singleton
-@Component(modules = ApplicationModule.class)
-public interface ApplicationComponent {
+public interface StoreService {
 
-    Application application();
+    boolean saveBeacon(final DetectedBeacon beacon);
 
-    DataManager dataManager();
-
-    BeaconManager beaconManager();
-
+    DetectedBeacon loadBeacon(String id);
 }

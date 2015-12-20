@@ -18,30 +18,17 @@
 
 package com.samebits.beacon.locator.injection.component;
 
-
-import android.app.Application;
-
 import com.samebits.beacon.locator.db.DataManager;
-import com.samebits.beacon.locator.injection.module.ApplicationModule;
+import com.samebits.beacon.locator.injection.UserScope;
+import com.samebits.beacon.locator.injection.module.DataModule;
 
-import org.altbeacon.beacon.BeaconManager;
-
-import javax.inject.Singleton;
 
 import dagger.Component;
 
+@UserScope
+@Component(dependencies = ApplicationComponent.class, modules = { DataModule.class })
+public interface DataComponent {
 
-/**
- * Created by vitas on 18/10/15.
- */
-@Singleton
-@Component(modules = ApplicationModule.class)
-public interface ApplicationComponent {
-
-    Application application();
-
-    DataManager dataManager();
-
-    BeaconManager beaconManager();
+    void inject(DataManager dataManager);
 
 }

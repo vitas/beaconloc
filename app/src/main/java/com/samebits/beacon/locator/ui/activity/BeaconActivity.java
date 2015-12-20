@@ -23,12 +23,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.ui.fragment.DetailFragment;
+import com.samebits.beacon.locator.ui.fragment.DetectedBeaconsFragment;
 import com.samebits.beacon.locator.util.Constants;
 
 import butterknife.Bind;
@@ -75,6 +78,7 @@ public class BeaconActivity extends BaseActivity {
         if (intent.getExtras() != null) {
             mMode = intent.getIntExtra("MODE", Constants.LIVE_BEACON_MODE );
             mBeacon = intent.getExtras().getParcelable("BEACON");
+            addDetailBeaconFragment(mBeacon);
         }
     }
 
@@ -86,6 +90,18 @@ public class BeaconActivity extends BaseActivity {
                 break;
         }
 
+    }
+
+    private void addDetailBeaconFragment(DetectedBeacon beacon) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager != null) {
+            if (checkFragmentInstance(R.id.content_frame, DetailFragment.class) == null) {
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.content_frame, DetailFragment.newInstance(beacon), Constants.TAG_FRAGMENT_BEACON_DETAIL)
+                        .commit();
+            }
+        }
     }
 
 }
