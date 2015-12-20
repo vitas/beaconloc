@@ -1,16 +1,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".com.samebits.android.beaconMetadata.inventory.view.activity.MainNavigationActivity">
+    tools:context="com.samebits.beacon.locator.ui.activity.MainNavigationActivity">
+
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings_black_24dp"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/action_view_on_github"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         android:title="@string/action_view_on_github"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_donate"
+        android:orderInCategory="102"
+        android:title="@string/action_donate"
+        app:showAsAction="never" />
+
 </menu>

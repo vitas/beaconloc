@@ -19,6 +19,7 @@
 package com.samebits.beacon.locator.viewModel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
@@ -26,7 +27,9 @@ import android.view.View;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.ui.activity.BeaconActivity;
 import com.samebits.beacon.locator.util.BeaconUtil;
+import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 19/10/15.
@@ -158,7 +161,10 @@ public class DetectedBeaconViewModel extends BaseObservable {
         };
     }
 
-    //TODO
     private void launchBeaconDetailsActivity() {
+        Intent intent = BeaconActivity.getStartIntent(context);
+        intent.putExtra("BEACON", managedBeacon);
+        intent.putExtra("MODE", Constants.LIVE_BEACON_MODE);
+        context.startActivity(intent);
     }
 }

@@ -54,7 +54,7 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBeaconManager = BeaconLocatorApp.from(getActivity()).getComponent().beaconManager();
-        mRegion = new Region(PreferencesUtil.getProjectName(getActivity()), null, null, null);
+        mRegion = new Region(PreferencesUtil.getDefaultRegionName(getActivity()), null, null, null);
         mBeaconManager.bind(this);
         mBeaconManager.setRangeNotifier(this);
     }

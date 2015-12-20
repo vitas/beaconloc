@@ -117,7 +117,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
     }
 
     private void setupTimer() {
-        mTimer = new CountDownTimer(SCAN_TIMEOUT, 2000) {
+        mTimer = new CountDownTimer(SCAN_TIMEOUT, PreferencesUtil.getManualScanTimeout(getActivity())) {
             public void onFinish() {
                 stopScanTimeout();
             }

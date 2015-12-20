@@ -34,6 +34,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -104,14 +105,7 @@ public class MainNavigationActivity extends BaseActivity
             launchScanBeaconView();
         }
 
-        setSupportActionBar(toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar,
-                R.string.nav_drawer_open,
-                R.string.nav_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        setupToolbar();
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -121,7 +115,23 @@ public class MainNavigationActivity extends BaseActivity
         verifyBluetooth();
     }
 
-    @Override
+    private void setupToolbar() {
+
+        setSupportActionBar(toolbar);
+
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar,
+                R.string.nav_drawer_open,
+                R.string.nav_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+    }
+
+        @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {

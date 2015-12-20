@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notifications_action"
+        android:title="@string/pref_title_use_notifications" />
+
+    <RingtonePreference
+        android:defaultValue="content://settings/system/notification_sound"
+        android:dependency="notifications_action"
+        android:key="notifications_action_ringtone"
+        android:ringtoneType="notification"
+        android:title="@string/pref_title_ringtone" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notifications_action"
+        android:key="notifications_action_vibrate"
+        android:title="@string/pref_title_vibrate" />
+
+</PreferenceScreen>

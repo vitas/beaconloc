@@ -20,6 +20,7 @@ package com.samebits.beacon.locator.ui.activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -56,13 +57,26 @@ public class BaseActivity extends AppCompatActivity {
                 launchSettingsActivity();
                 return true;
             case R.id.action_view_on_github:
-                //TODO: Add github link
+                launchGitHubPage();
+                return true;
+            case R.id.action_donate:
+                launchDonatePage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void launchGitHubPage() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://github.com/vitas/beaconloc"));
+        startActivity(browserIntent);
+    }
+
+    private void launchDonatePage() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/SameBits"));
+        startActivity(browserIntent);
+    }
 
     protected void launchSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);

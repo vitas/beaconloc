@@ -32,7 +32,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -40,7 +39,6 @@ import android.widget.TextView;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.util.AngleLowpassFilter;
-import com.samebits.beacon.locator.util.Constants;
 
 import org.altbeacon.beacon.Beacon;
 
@@ -56,16 +54,7 @@ public class RadarScanView extends View implements SensorEventListener {
     private static String mEnglishDisplayFormat = "%.0fft";
     private static float METER_PER_FEET = 0.3048f;
     private static float FEET_PER_METER = 3.28084f;
-    //FIXME
-    android.os.Handler mHandler = new android.os.Handler();
-    private int fps = 20;
-    Runnable mTick = new Runnable() {
-        @Override
-        public void run() {
-            //invalidate();
-            mHandler.postDelayed(this, 1000 / fps);
-        }
-    };
+
     private float mDistanceRatio = 1.0f;
     private float[] mLastAccelerometer = new float[3];
     private float[] mLastMagnetometer = new float[3];

@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/title_action_group_beacon_manage">
-        <menu>
-            <item
-                android:id="@+id/nav_scan_around"
-                android:icon="@drawable/ic_cast_black_24dp"
-                android:title="@string/action_scan_around" />
-            <item
-                android:id="@+id/nav_scan_radar"
-                android:icon="@drawable/ic_radar_black_24dp"
-                android:title="@string/action_scan_managed" />
-        </menu>
-    </item>
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_scan_around"
+            android:icon="@drawable/ic_cast_black_24dp"
+            android:title="@string/action_scan_around" />
+        <item
+            android:id="@+id/nav_scan_radar"
+            android:icon="@drawable/ic_radar_black_24dp"
+            android:title="@string/action_scan_managed" />
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"

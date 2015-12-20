@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel;
 
 import org.altbeacon.beacon.Beacon;
@@ -126,7 +127,7 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
             }
 
             private int compare(Map.Entry<String, DetectedBeacon> obj1, Map.Entry<String, DetectedBeacon> obj2) {
-                if (sortMode == 2) {
+                if (sortMode == Constants.SORT_UUID_MAJOR_MINOR) {
                     int i = obj1.getValue().getId1().toString().compareTo(obj2.getValue().getId1().toString());
                     if (i != 0) {
                         return i;
@@ -145,13 +146,13 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
                 if (d1 == d2) {
                     return 0;
                 }
-                if (sortMode == 0) {
+                if (sortMode == Constants.SORT_DISTANCE_NEAREST_FIRST) {
                     if (d1 < d2) {
                         return -1;
                     }
                     return 1;
                 }
-                if (sortMode == 1) {
+                if (sortMode == Constants.SORT_DISTANCE_FAR_FIRST) {
                     if (d1 < d2) {
                         return 1;
                     }

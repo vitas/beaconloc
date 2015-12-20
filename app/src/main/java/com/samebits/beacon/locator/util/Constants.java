@@ -25,12 +25,15 @@ public final class Constants {
 
     public static final String TAG = "BeaconLocator";
     public static final String DEFAULT_PROJECT_NAME = "default";
-    public static final String FILE_STORAGE_DIRECTORY = "BeaconLocatorStore";
     public static final int SORT_DISTANCE_FAR_FIRST = 1;
     public static final int SORT_DISTANCE_NEAREST_FIRST = 0;
     public static final int SORT_UUID_MAJOR_MINOR = 2;
     public static final String TAG_FRAGMENT_SCAN_LIST = "SCAN_LIST";
     public static final String TAG_FRAGMENT_SCAN_RADAR = "SCAN_RADAR";
+
+    public static final int LIVE_BEACON_MODE = 0;
+    public static final int TRACKED_BEACON_MODE = 1;
+
 
     private Constants() {
     }

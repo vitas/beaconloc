@@ -1,0 +1,39 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="30000"
+        android:entries="@array/pref_manual_scan_timeout_titles"
+        android:entryValues="@array/pref_manual_scan_timeout_values"
+        android:key="scan_manual_timeout_list"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_manual_scan_timeout" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="scan_background_switch"
+        android:summary="@string/pref_description_background_scan"
+        android:title="@string/pref_title_background_scan" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_region_name"
+        android:inputType="textCapWords"
+        android:key="scan_default_region_text"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_region_name" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/pref_scan_sorting_titles"
+        android:entryValues="@array/pref_scan_sorting_values"
+        android:key="scan_sorting_order_list"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_scan_sorting" />
+
+
+</PreferenceScreen>
+

@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.samebits.beacon.locator.ui.activity.MainNavigationActivity"
-    tools:showIn="@layout/app_bar_main_navigation">
+    tools:context="com.samebits.beacon.locator.ui.activity.BeaconActivity"
+    tools:showIn="@layout/activity_beacon">
 
 </RelativeLayout>
