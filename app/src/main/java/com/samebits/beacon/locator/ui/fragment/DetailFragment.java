@@ -18,7 +18,6 @@
 
 package com.samebits.beacon.locator.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -30,10 +29,10 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.db.DataManager;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -47,7 +46,7 @@ public class DetailFragment extends Fragment {
 
     public static DetailFragment newInstance(DetectedBeacon beacon) {
         DetailFragment detailFragment = new DetailFragment();
-        if( beacon != null) {
+        if (beacon != null) {
             Bundle args = new Bundle();
             args.putParcelable("BEACON", beacon);
             detailFragment.setArguments(args);
@@ -88,10 +87,23 @@ public class DetailFragment extends Fragment {
             //mMode = bundle.getInt("MODE", Constants.LIVE_BEACON_MODE );
             mBeacon = bundle.getParcelable("BEACON");
             if (mBeacon != null) {
-                if (mDataManager.storeBeacon(mBeacon)) {
-                    Log.d(Constants.TAG, String.format("Beacon %s is stored in db", mBeacon.getUUID()));
+                TrackedBeacon trackedBeacon = new TrackedBeacon(mBeacon);
+                if (mDataManager.storeBeacon(trackedBeacon)) {
+                    Log.d(Constants.TAG, String.format("Beacon %s is stored in db", mBeacon.getId()));
                 }
             }
         }
+
+        //FIXME remove it after completed
+        List<TrackedBeacon> l = mDataManager.getAllBeacons();
+        if (l.size() > 0) {
+            Log.d(Constants.TAG, "found first beacons: " + l.get(0).getId());
+        }
+        TrackedBeacon trackedBeacon = mDataManager.getBeacon(mBeacon.getId());
+        if(trackedBeacon!= null) {
+            Log.d(Constants.TAG, String.format("Beacon %s is loaded from db", trackedBeacon.getId()));
+
+        }
+
     }
 }

@@ -76,6 +76,8 @@ public class ApplicationModule {
         manager.setForegroundBetweenScanPeriod(0L);      // default is 0L
         manager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
+        //manager.updateScanPeriods();
+
         //manager.setDebug(true);
         return manager;
     }

@@ -22,17 +22,38 @@ package com.samebits.beacon.locator.model;
  * Created by vitas on 20/12/15.
  */
 public class TrackedBeacon {
-    private String uuid;
-    private String major;
-    private String minor;
-    private double txPower;
+    private String id;
+    private String uuid = "";
     private long lastSeenTime;
+    private String major = "";
+    private String minor = "";
+    private double txPower;
     private double rssi;
     private String distance;
     private String bleName;
     private String bleAddress;
     private int type;
     private String url;
+    private boolean tracked;
+
+    public TrackedBeacon(DetectedBeacon detectedBeacon) {
+        setId(detectedBeacon.getId());
+        setLastSeenTime(detectedBeacon.getTimeLastSeen());
+        setBleName(detectedBeacon.getBluetoothName());
+        setBleAddress(detectedBeacon.getBluetoothAddress());
+        setUuid(detectedBeacon.getUUID());
+        setRssi(detectedBeacon.getRssi());
+        setTxPower(detectedBeacon.getTxPower());
+        setType(detectedBeacon.getBeaconTypeCode());
+        setUrl(detectedBeacon.getEddystoneURL());
+        setDistance(detectedBeacon.getRoundedDistanceString());
+        setMajor(detectedBeacon.getMajor());
+        setMinor(detectedBeacon.getMinor());
+    }
+
+    public TrackedBeacon() {
+
+    }
 
     public String getUuid() {
         return uuid;
@@ -120,5 +141,21 @@ public class TrackedBeacon {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isTracked() {
+        return tracked;
+    }
+
+    public void setTracked(boolean tracked) {
+        this.tracked = tracked;
     }
 }

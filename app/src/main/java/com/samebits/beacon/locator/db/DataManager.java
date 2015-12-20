@@ -54,12 +54,12 @@ public class DataManager {
                 .inject(this);
     }
 
-    public boolean storeBeacon(DetectedBeacon beacon) {
+    public boolean storeBeacon(TrackedBeacon beacon) {
         return mStoreService.createBeacon(beacon);
     }
 
-    public TrackedBeacon getBeacon(String uuid) {
-        return mStoreService.getBeacon(uuid);
+    public TrackedBeacon getBeacon(String id) {
+        return mStoreService.getBeacon(id);
     }
 
 

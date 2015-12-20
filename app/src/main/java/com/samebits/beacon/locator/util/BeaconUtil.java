@@ -20,13 +20,15 @@ package com.samebits.beacon.locator.util;
 
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 
 /**
  * Created by vitas on 09/12/2015.
  */
 public final class BeaconUtil {
 
-    public static int getProximity(double paramDouble) {
+    public static int getProximityResourceId(double paramDouble) {
         if (paramDouble <= 0.5D) {
             return R.string.proximity_immediate;
         }
@@ -34,6 +36,18 @@ public final class BeaconUtil {
             return R.string.proximity_near;
         }
         return R.string.proximity_far;
+    }
+
+    public static boolean equalBeacons(DetectedBeacon detectedBeacon, TrackedBeacon trackedBeacon) {
+
+        if (detectedBeacon != null && trackedBeacon!= null) {
+            if (detectedBeacon.getUUID().equals(trackedBeacon.getUuid()) &&
+                    trackedBeacon.getMajor().equals(detectedBeacon.getMajor()) &&
+                    trackedBeacon.getMinor().equals(detectedBeacon.getMinor())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
