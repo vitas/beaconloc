@@ -19,13 +19,19 @@
 package com.samebits.beacon.locator.db;
 
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
+
+import java.util.List;
 
 /**
  * Created by vitas on 20/12/15.
  */
 public interface StoreService {
 
-    boolean saveBeacon(final DetectedBeacon beacon);
+    boolean createBeacon(final DetectedBeacon beacon);
+    boolean updateBeacon(final DetectedBeacon beacon);
+    boolean deleteBeacon(final String id);
+    TrackedBeacon getBeacon(String id);
+    List<TrackedBeacon> getBeacons();
 
-    DetectedBeacon loadBeacon(String id);
 }

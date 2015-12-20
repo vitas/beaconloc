@@ -21,11 +21,16 @@ package com.samebits.beacon.locator.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by vitas on 20/12/15.
@@ -53,19 +58,25 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
             + " TEXT NOT NULL"
             + SEPARATOR
             + ScanColumns.COLUMN_NAME_DISTANCE
-            + " INTEGER"
+            + " TEXT"
             + SEPARATOR
             + ScanColumns.COLUMN_NAME_RSSI
+            + " REAL"
+            + SEPARATOR
+            + ScanColumns.COLUMN_NAME_TXPOWER
+            + " REAL"
+            + SEPARATOR
+            + ScanColumns.COLUMN_NAME_TYPE
             + " INTEGER"
+            + SEPARATOR
+            + ScanColumns.COLUMN_NAME_URL
+            + " TEXT"
             + SEPARATOR
             + ScanColumns.COLUMN_NAME_MAJOR
             + " TEXT"
             + SEPARATOR
             + ScanColumns.COLUMN_NAME_MINOR
             + " TEXT"
-            + SEPARATOR
-            + ScanColumns.COLUMN_NAME_TXPOWER
-            + " INTEGER"
             + SEPARATOR
             + " PRIMARY KEY ("
             + ScanColumns.COLUMN_NAME_LAST_SEEN_TIME + SEPARATOR
@@ -74,16 +85,13 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     private static final String SQL_DELETE_DATA = "DROP TABLE IF EXISTS "
             + ScanColumns.TABLE_NAME;
 
-    private static SQLiteDatabase db;
-
     public DbStoreService(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = this.getWritableDatabase();
     }
 
 
     public SQLiteDatabase getDb() {
-        return db;
+        return getWritableDatabase();
     }
 
     public void onCreate(SQLiteDatabase db) {
@@ -91,7 +99,9 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(SQL_DELETE_DATA);
 
+        onCreate(db);
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion,
@@ -99,40 +109,133 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
-    public boolean saveBeacon(DetectedBeacon beacon) {
+    public boolean createBeacon(DetectedBeacon beacon) {
         ContentValues values = new ContentValues();
 
         values.put(ScanColumns.COLUMN_NAME_LAST_SEEN_TIME,  beacon.getTimeLastSeen());
         values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_NAME,  beacon.getBluetoothName());
         values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_ADDRESS,  beacon.getBluetoothAddress());
-        values.put(ScanColumns.COLUMN_NAME_RSSI,  beacon.getRssi());
-        values.put(ScanColumns.COLUMN_NAME_DISTANCE,  beacon.getDistance());
-        values.put(ScanColumns.COLUMN_NAME_TXPOWER,  beacon.getTxPower());
         values.put(ScanColumns.COLUMN_NAME_UUID,  beacon.getUUID());
+        values.put(ScanColumns.COLUMN_NAME_RSSI, beacon.getRssi());
+        values.put(ScanColumns.COLUMN_NAME_TXPOWER,  beacon.getTxPower());
+        values.put(ScanColumns.COLUMN_NAME_TYPE,  beacon.getBeaconTypeCode());
+        values.put(ScanColumns.COLUMN_NAME_URL,  beacon.getEddystoneURL());
+        values.put(ScanColumns.COLUMN_NAME_DISTANCE,  beacon.getRoundedDistanceString());
         values.put(ScanColumns.COLUMN_NAME_MAJOR,  beacon.getMajor());
-        values.put(ScanColumns.COLUMN_NAME_MINOR,  beacon.getMinor());
+        values.put(ScanColumns.COLUMN_NAME_MINOR, beacon.getMinor());
 
-        return (getDb().insert(ScanColumns.TABLE_NAME, null, values) == -1)?false:true;
+        SQLiteDatabase db = getDb();
+
+        long res = db.insert(ScanColumns.TABLE_NAME, null, values);
+        db.close();
+        return (res == -1)?false:true;
 
     }
 
-    //TODO
     @Override
-    public DetectedBeacon loadBeacon(String id) {
-        return null;
+    public boolean updateBeacon(DetectedBeacon beacon) {
+        deleteBeacon(beacon.getUUID());
+        return createBeacon(beacon);
+    }
+
+    @Override
+    public TrackedBeacon getBeacon(String id) {
+        TrackedBeacon beacon = new TrackedBeacon();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(ScanColumns.TABLE_NAME,
+                new String[]{
+                        ScanColumns.COLUMN_NAME_LAST_SEEN_TIME,
+                        ScanColumns.COLUMN_NAME_BLUETOOTH_NAME,
+                        ScanColumns.COLUMN_NAME_BLUETOOTH_ADDRESS,
+                        ScanColumns.COLUMN_NAME_UUID,
+                        ScanColumns.COLUMN_NAME_DISTANCE,
+                        ScanColumns.COLUMN_NAME_RSSI,
+                        ScanColumns.COLUMN_NAME_TXPOWER,
+                        ScanColumns.COLUMN_NAME_TYPE,
+                        ScanColumns.COLUMN_NAME_URL,
+                        ScanColumns.COLUMN_NAME_MAJOR,
+                        ScanColumns.COLUMN_NAME_MINOR
+
+                },
+                ScanColumns.COLUMN_NAME_UUID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
+
+
+        if (cursor != null) {
+            if(cursor.moveToFirst()) {
+
+                beacon.setLastSeenTime(Long.parseLong(cursor.getString(0)));
+                beacon.setBleName(cursor.getString(1));
+                beacon.setBleAddress(cursor.getString(2));
+                beacon.setUuid(cursor.getString(3));
+                beacon.setRssi(Double.parseDouble(cursor.getString(4)));
+                beacon.setTxPower(Double.parseDouble(cursor.getString(5)));
+                beacon.setType(Integer.parseInt(cursor.getString(6)));
+                beacon.setUrl(cursor.getString(7));
+                beacon.setDistance(cursor.getString(8));
+                beacon.setMajor(cursor.getString(9));
+                beacon.setMinor(cursor.getString(10));
+
+                cursor.close();
+            }
+        }
+        db.close();
+        return beacon;
+    }
+
+    @Override
+    public List<TrackedBeacon> getBeacons() {
+        List<TrackedBeacon> beacons = new ArrayList<>();
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ScanColumns.TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                TrackedBeacon beacon = new TrackedBeacon();
+
+                beacon.setLastSeenTime(Long.parseLong(cursor.getString(0)));
+                beacon.setBleName(cursor.getString(1));
+                beacon.setBleAddress(cursor.getString(2));
+                beacon.setUuid(cursor.getString(3));
+                beacon.setRssi(Double.parseDouble(cursor.getString(4)));
+                beacon.setTxPower(Double.parseDouble(cursor.getString(5)));
+                beacon.setType(Integer.parseInt(cursor.getString(6)));
+                beacon.setUrl(cursor.getString(7));
+                beacon.setDistance(cursor.getString(8));
+                beacon.setMajor(cursor.getString(9));
+                beacon.setMinor(cursor.getString(10));
+
+                beacons.add(beacon);
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return beacons;
+    }
+
+    @Override
+    public boolean deleteBeacon(String id) {
+        SQLiteDatabase db = getDb();
+        int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_NAME_UUID + "=?", new String[]{String.valueOf(id)});
+        db.close();
+        return (numDeleted==0)?false:true;
     }
 
     protected static abstract class ScanColumns implements BaseColumns {
-        public static final String TABLE_NAME = "DetectedBeacon";
+        public static final String TABLE_NAME = "TrackedBeacon";
         public static final String COLUMN_NAME_BLUETOOTH_NAME = "bl_name";
         public static final String COLUMN_NAME_BLUETOOTH_ADDRESS = "bl_address";
         public static final String COLUMN_NAME_LAST_SEEN_TIME = "last_seen_time";
+        public static final String COLUMN_NAME_UUID = "uuid";
         public static final String COLUMN_NAME_RSSI = "rssi";
+        public static final String COLUMN_NAME_TXPOWER = "tx";
+        public static final String COLUMN_NAME_TYPE = "type";
+        public static final String COLUMN_NAME_URL = "url";
         public static final String COLUMN_NAME_DISTANCE = "distance";
         public static final String COLUMN_NAME_MAJOR = "major";
         public static final String COLUMN_NAME_MINOR = "minor";
-        public static final String COLUMN_NAME_TXPOWER = "tx";
-        public static final String COLUMN_NAME_UUID = "uuid";
     }
 
 }
