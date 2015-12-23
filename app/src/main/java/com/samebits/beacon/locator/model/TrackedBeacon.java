@@ -48,7 +48,7 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
     private double distance;
     private String bleName;
     private String bleAddress;
-    private int type;
+    private int type =-1;
     private String urlEddystone;
     private boolean tracked;
 
@@ -60,7 +60,7 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
         setUUID(detectedBeacon.getUUID());
         setRssi(detectedBeacon.getRssi());
         setTxPower(detectedBeacon.getTxPower());
-        setType(detectedBeacon.getBeaconTypeCode());
+        setType(detectedBeacon.getBeaconType().ordinal());
         setUrl(detectedBeacon.getEddystoneURL());
         setDistance(detectedBeacon.getDistance());
         setMajor(detectedBeacon.getMajor());

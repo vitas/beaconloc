@@ -48,6 +48,7 @@ import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.ui.fragment.DetectedBeaconsFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanRadarFragment;
+import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.DialogBuilder;
 
@@ -131,7 +132,7 @@ public class MainNavigationActivity extends BaseActivity
 
     }
 
-        @Override
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -245,6 +246,9 @@ public class MainNavigationActivity extends BaseActivity
             case R.id.nav_settings:
                 launchSettingsActivity();
                 break;
+            case R.id.nav_tracked_list:
+                launchTrackedListView();
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -276,6 +280,17 @@ public class MainNavigationActivity extends BaseActivity
         }
     }
 
+    private void addTrackedListFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager != null) {
+            if (checkFragmentInstance(R.id.content_frame, TrackedBeaconsFragment.class) == null) {
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.content_frame, TrackedBeaconsFragment.newInstance(), Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST)
+                        .commit();
+            }
+        }
+    }
 
     public void hideFab() {
         fab.setVisibility(View.GONE);
@@ -330,6 +345,10 @@ public class MainNavigationActivity extends BaseActivity
 
     private void launchRadarScanView() {
         addRadarScanFragment();
+    }
+
+    private void launchTrackedListView() {
+        addTrackedListFragment();
     }
 
 

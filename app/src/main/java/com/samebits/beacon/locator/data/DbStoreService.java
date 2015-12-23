@@ -26,6 +26,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
-    public boolean createBeacon(TrackedBeacon beacon) {
+    public boolean createBeacon(IManagedBeacon beacon) {
         ContentValues values = new ContentValues();
 
         values.put(ScanColumns.COLUMN_NAME_ID,  beacon.getId());
@@ -140,13 +141,13 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
-    public boolean updateBeacon(TrackedBeacon beacon) {
+    public boolean updateBeacon(IManagedBeacon beacon) {
         deleteBeacon(beacon.getId());
         return createBeacon(beacon);
     }
 
     @Override
-    public TrackedBeacon getBeacon(String id) {
+    public IManagedBeacon getBeacon(String id) {
         TrackedBeacon beacon = new TrackedBeacon();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(ScanColumns.TABLE_NAME,
@@ -193,8 +194,8 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
-    public List<TrackedBeacon> getBeacons() {
-        List<TrackedBeacon> beacons = new ArrayList<>();
+    public List<IManagedBeacon> getBeacons() {
+        List<IManagedBeacon> beacons = new ArrayList<>();
 
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + ScanColumns.TABLE_NAME, null);

@@ -8,6 +8,19 @@
     <string name="dialog_action_exit">Exit</string>
     <string name="dialog_error_title">Error</string>
 
+    <string name="dialog_error_functionality_limited">Functionality limited</string>
+    <string name="error_message_location_access_not_granted">\"Since location access has not been granted, this app will not be able to discover beacons when in the background.</string>
+    <string name="dialog_error_need_location_access">This app needs location access</string>
+    <string name="error_message_location_access_need_tobe_granted">Please grant location access so this app can detect beacons in the background.</string>
+    <string name="dialog_error_ble_not_enabled">Bluetooth not enabled</string>
+    <string name="error_message_please_enable_bluetooth">Please enable bluetooth in settings and restart this application.</string>
+    <string name="dialog_error_ble_not_supported">Bluetooth LE not available</string>
+    <string name="error_message_bluetooth_le_not_supported">Sorry, this device does not support Bluetooth LE.</string>
+
+    <string name="proximity_immediate">Immediate</string>
+    <string name="proximity_near">Near</string>
+    <string name="proximity_far">Far</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Scan settings -->
@@ -28,6 +41,9 @@
     <string name="pref_ringtone_silent">Silent</string>
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <string name="pref_header_scanner">Scan</string>
+    <string name="pref_header_actions">Actions</string>
+
     <!-- titles activities-->
     <string name="title_activity_main_navigation">Beacon Locator</string>
     <string name="title_activity_settings">Settings</string>
@@ -43,19 +59,10 @@
     <string name="action_donate">Donate</string>
 
     <!-- left drawer menu actions -->
-
     <string name="title_action_group_beacon_manage">Beacons</string>
     <string name="action_scan_around">Scan</string>
     <string name="action_scan_managed">Radar</string>
-
-    <string name="dialog_error_functionality_limited">Functionality limited</string>
-    <string name="error_message_location_access_not_granted">\"Since location access has not been granted, this app will not be able to discover beacons when in the background.</string>
-    <string name="dialog_error_need_location_access">This app needs location access</string>
-    <string name="error_message_location_access_need_tobe_granted">Please grant location access so this app can detect beacons in the background.</string>
-    <string name="dialog_error_ble_not_enabled">Bluetooth not enabled</string>
-    <string name="error_message_please_enable_bluetooth">Please enable bluetooth in settings and restart this application.</string>
-    <string name="dialog_error_ble_not_supported">Bluetooth LE not available</string>
-    <string name="error_message_bluetooth_le_not_supported">Sorry, this device does not support Bluetooth LE.</string>
+    <string name="action_tracked_list">List</string>
 
     <!-- detected beacon properties -->
     <string name="mv_text_rssi">RSSI</string>
@@ -72,18 +79,20 @@
     <string name="mv_text_instance">Instance</string>
     <string name="mv_text_namespace">Namespace</string>
 
-    <string name="proximity_immediate">Immediate</string>
-    <string name="proximity_near">Near</string>
-    <string name="proximity_far">Far</string>
-
+    <!-- Radar fragment -->
+    <string name="title_fragment_radar_beacons">Beacon Radar</string>
     <string name="scanning">Scanning...</string>
     <string name="scanner_found_beacons_size">%1$d found</string>
 
+    <!-- Scan fragment -->
+    <string name="title_fragment_detected_beacons">Beacon Scanner</string>
     <string name="text_empty_list">No Data</string>
     <string name="text_scan_not_found">No beacon found in your neighborhood</string>
     <string name="text_please_start_scan">Press scan button for detecting beacons</string>
-    <string name="pref_header_scanner">Scan</string>
-    <string name="pref_header_actions">Actions</string>
+
+    <!-- tracked list fragment -->
+    <string name="title_fragment_tracked_beacons">Beacon List</string>
+    <string name="text_empty_list_tracked_beacons">No tracked beacons. Go to scan</string>
 
 
 </resources>

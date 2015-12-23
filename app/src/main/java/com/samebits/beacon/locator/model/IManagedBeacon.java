@@ -42,6 +42,7 @@ public interface IManagedBeacon {
     public boolean isEddyStoneUID();
     public boolean isEddyStoneURL();
     public boolean isEddystone();
+    public boolean isTracked();
 
     public enum BeaconType {
         UNSPECIFIED("Unspecified"),

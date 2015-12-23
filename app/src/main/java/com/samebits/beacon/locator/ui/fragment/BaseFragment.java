@@ -20,9 +20,15 @@ package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.widget.TextView;
 
 import com.samebits.beacon.locator.BuildConfig;
+import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -58,4 +64,13 @@ public class BaseFragment extends Fragment {
         }
     }
 
+    public class EmptyView {
+
+        @Bind(R.id.empty_text)
+        TextView text;
+
+        public EmptyView(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
 }

@@ -31,6 +31,8 @@ public final class Constants {
     public static final String TAG_FRAGMENT_SCAN_LIST = "SCAN_LIST";
     public static final String TAG_FRAGMENT_SCAN_RADAR = "SCAN_RADAR";
     public static final String TAG_FRAGMENT_BEACON_DETAIL = "BEACON_DETAIL";
+    public static final String TAG_FRAGMENT_TRACKED_BEACON_LIST = "TRACKED_BEACON_LIST";
+
 
     public static final int LIVE_BEACON_MODE = 0;
     public static final int TRACKED_BEACON_MODE = 1;

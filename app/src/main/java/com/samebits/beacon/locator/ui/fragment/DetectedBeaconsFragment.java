@@ -31,7 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.ui.adapter.DetectedBeaconAdapter;
@@ -101,6 +100,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(R.string.title_fragment_detected_beacons);
         }
     }
 
@@ -117,7 +117,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
     }
 
     private void setupTimer() {
-        mTimer = new CountDownTimer(SCAN_TIMEOUT, PreferencesUtil.getManualScanTimeout(getActivity())) {
+        mTimer = new CountDownTimer(SCAN_TIMEOUT, PreferencesUtil.getManualScanTimeout(getApplicationContext())) {
             public void onFinish() {
                 stopScanTimeout();
             }
@@ -136,6 +136,8 @@ public class DetectedBeaconsFragment extends ScanFragment {
         if (mBeaconsAdapter.getItemCount() == 0) {
             mEmpty.setVisibility(View.VISIBLE);
             mEmptyView.text.setText(getString(R.string.text_please_start_scan));
+        } else {
+            mEmpty.setVisibility(View.GONE);
         }
     }
 
@@ -151,7 +153,6 @@ public class DetectedBeaconsFragment extends ScanFragment {
     @Override
     public void stopScan() {
         mProgressBar.setVisibility(View.GONE);
-        emptyListSetup();
         super.stopScan();
         emptyListSetup();
     }
@@ -163,33 +164,28 @@ public class DetectedBeaconsFragment extends ScanFragment {
 
     @Override
     public void updateBeaconList(final Collection<Beacon> beacons, final org.altbeacon.beacon.Region region) {
-        //update list, even nothing, we want update last seen time on detected beacons
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                mBeaconsAdapter.notifyDataSetChanged();
-                Log.d(Constants.TAG, "called on region " + region.toString());
-            }
-        });
+        if (getActivity()!=null) {
+            //update list, even nothing, we want update last seen time on detected beacons
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    mBeaconsAdapter.notifyDataSetChanged();
+                    Log.d(Constants.TAG, "called on region " + region.toString());
+                }
+            });
+        }
     }
 
     @Override
     public void updateBeaconList(final Collection<Beacon> beacons) {
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                mBeaconsAdapter.insertBeacons(beacons);
-                mBeaconsAdapter.sort(PreferencesUtil.getScanBeaconSort(getActivity()));
-                mTimer.cancel();
-            }
-        });
-    }
-
-    public class EmptyView {
-
-        @Bind(R.id.empty_text)
-        TextView text;
-
-        public EmptyView(View view) {
-            ButterKnife.bind(this, view);
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    mBeaconsAdapter.insertBeacons(beacons);
+                    mBeaconsAdapter.sort(PreferencesUtil.getScanBeaconSort(getApplicationContext()));
+                    mTimer.cancel();
+                }
+            });
         }
     }
+
 }

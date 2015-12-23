@@ -25,42 +25,39 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
+import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
-import com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel;
-
-import org.altbeacon.beacon.Beacon;
+import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by vitas on 09/12/2015.
  */
-public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAdapter.BindingHolder> {
+public class TrackedBeaconAdapter extends RecyclerView.Adapter<TrackedBeaconAdapter.BindingHolder> {
 
     private Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
     private Context mContext;
 
-    public DetectedBeaconAdapter(Context context) {
+    public TrackedBeaconAdapter(Context context) {
         mContext = context;
     }
 
     @Override
     public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemDetectedBeaconBinding beaconBinding = DataBindingUtil.inflate(
+        ItemTrackedBeaconBinding beaconBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_detected_beacon,
+                R.layout.item_tracked_beacon,
                 parent,
                 false);
         return new BindingHolder(beaconBinding);
@@ -68,8 +65,8 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
 
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
-        ItemDetectedBeaconBinding beaconBinding = holder.binding;
-        beaconBinding.setViewModel(new DetectedBeaconViewModel(mContext, (DetectedBeacon) getItem(position)));
+        ItemTrackedBeaconBinding beaconBinding = holder.binding;
+        beaconBinding.setViewModel(new TrackedBeaconViewModel(mContext, (TrackedBeacon) getItem(position)));
     }
 
     @Override
@@ -91,11 +88,7 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
     }
 
     public long getItemId(int idx) {
-        DetectedBeacon selectedBeacon = (DetectedBeacon) this.getItem(idx);
-        if (selectedBeacon.isEddystone()) {
-            return selectedBeacon.getServiceUuid();
-        }
-        return UUID.fromString(selectedBeacon.getId1().toString()).getMostSignificantBits();
+        return 0;
     }
 
     public void clearAll() {
@@ -103,19 +96,15 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
         notifyDataSetChanged();
     }
 
-    public void insertBeacon(Beacon beacon) {
-        DetectedBeacon dBeacon = new DetectedBeacon(beacon);
-        dBeacon.setTimeLastSeen(System.currentTimeMillis());
-        this.mBeacons.put(dBeacon.getId(), dBeacon);
+    public void insertBeacon(IManagedBeacon beacon) {
+        this.mBeacons.put(beacon.getId(), beacon);
         notifyDataSetChanged();
     }
 
-    public void insertBeacons(Collection<Beacon> beacons) {
-        Iterator<Beacon> iterator = beacons.iterator();
-        while (iterator.hasNext()) {
-            DetectedBeacon dBeacon = new DetectedBeacon(iterator.next());
-            dBeacon.setTimeLastSeen(System.currentTimeMillis());
-            this.mBeacons.put(dBeacon.getId(), dBeacon);
+    public void insertBeacons(List<IManagedBeacon> beacons) {
+        for (IManagedBeacon beacon :
+                beacons) {
+            this.mBeacons.put(beacon.getId(), beacon);
         }
         notifyDataSetChanged();
     }
@@ -125,9 +114,9 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
     }
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
-        private ItemDetectedBeaconBinding binding;
+        private ItemTrackedBeaconBinding binding;
 
-        public BindingHolder(ItemDetectedBeaconBinding binding) {
+        public BindingHolder(ItemTrackedBeaconBinding binding) {
             super(binding.cardView);
             this.binding = binding;
         }

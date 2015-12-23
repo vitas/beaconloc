@@ -120,6 +120,7 @@ public class ScanRadarFragment extends ScanFragment {
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(R.string.title_fragment_radar_beacons);
         }
     }
 
@@ -145,11 +146,13 @@ public class ScanRadarFragment extends ScanFragment {
         if (mRadar == null || beacons.size() == 0) {
             return;
         }
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                mRadar.onDetectedBeacons(beacons);
-            }
-        });
+        if (getActivity()!=null) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    mRadar.onDetectedBeacons(beacons);
+                }
+            });
+        }
     }
 
 }

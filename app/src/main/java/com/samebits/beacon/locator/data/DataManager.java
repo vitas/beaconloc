@@ -23,6 +23,7 @@ import android.content.Context;
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.injection.component.DaggerDataComponent;
 import com.samebits.beacon.locator.injection.module.DataModule;
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import java.util.List;
@@ -49,16 +50,16 @@ public class DataManager {
                 .inject(this);
     }
 
-    public boolean storeBeacon(TrackedBeacon beacon) {
+    public boolean storeBeacon(IManagedBeacon beacon) {
         return mStoreService.createBeacon(beacon);
     }
 
-    public TrackedBeacon getBeacon(String id) {
+    public IManagedBeacon getBeacon(String id) {
         return mStoreService.getBeacon(id);
     }
 
 
-    public List<TrackedBeacon> getAllBeacons() {
+    public List<IManagedBeacon> getAllBeacons() {
         return mStoreService.getBeacons();
     }
 }

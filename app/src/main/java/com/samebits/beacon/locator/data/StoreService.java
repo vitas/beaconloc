@@ -18,6 +18,7 @@
 
 package com.samebits.beacon.locator.data;
 
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import java.util.List;
@@ -27,10 +28,10 @@ import java.util.List;
  */
 public interface StoreService {
 
-    boolean createBeacon(final TrackedBeacon beacon);
-    boolean updateBeacon(final TrackedBeacon beacon);
+    boolean createBeacon(final IManagedBeacon beacon);
+    boolean updateBeacon(final IManagedBeacon beacon);
     boolean deleteBeacon(final String id);
-    TrackedBeacon getBeacon(String id);
-    List<TrackedBeacon> getBeacons();
+    IManagedBeacon getBeacon(String id);
+    List<IManagedBeacon> getBeacons();
 
 }

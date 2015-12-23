@@ -29,6 +29,7 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -41,17 +42,20 @@ import butterknife.ButterKnife;
  */
 public class DetailFragment extends Fragment {
 
-    protected DataManager mDataManager;
-    protected DetectedBeacon mBeacon;
+    protected  DataManager mDataManager;
+    protected IManagedBeacon mBeacon;
 
-    public static DetailFragment newInstance(DetectedBeacon beacon) {
+
+    public static DetailFragment newInstance(IManagedBeacon beacon) {
         DetailFragment detailFragment = new DetailFragment();
         if (beacon != null) {
-            Bundle args = new Bundle();
-            args.putParcelable("BEACON", beacon);
-            detailFragment.setArguments(args);
+            detailFragment.setBeacon(beacon);
         }
         return detailFragment;
+    }
+
+    public void setBeacon(IManagedBeacon beacon) {
+        this.mBeacon = beacon;
     }
 
     @Override
@@ -61,9 +65,6 @@ public class DetailFragment extends Fragment {
         mDataManager = BeaconLocatorApp.from(getActivity()).getComponent().dataManager();
 
         setRetainInstance(true);
-
-        //FIXME
-        getBeacon();
 
     }
 
@@ -81,29 +82,9 @@ public class DetailFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    private void getBeacon() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            //mMode = bundle.getInt("MODE", Constants.LIVE_BEACON_MODE );
-            mBeacon = bundle.getParcelable("BEACON");
-            if (mBeacon != null) {
-                TrackedBeacon trackedBeacon = new TrackedBeacon(mBeacon);
-                if (mDataManager.storeBeacon(trackedBeacon)) {
-                    Log.d(Constants.TAG, String.format("Beacon %s is stored in db", mBeacon.getId()));
-                }
-            }
+    private void storeBeacon() {
+        if (mDataManager.storeBeacon(mBeacon)) {
+            Log.d(Constants.TAG, String.format("Beacon %s is stored in db", mBeacon.getId()));
         }
-
-        //FIXME remove it after completed
-        List<TrackedBeacon> l = mDataManager.getAllBeacons();
-        if (l.size() > 0) {
-            Log.d(Constants.TAG, "found first beacons: " + l.get(0).getId());
-        }
-        TrackedBeacon trackedBeacon = mDataManager.getBeacon(mBeacon.getId());
-        if(trackedBeacon!= null) {
-            Log.d(Constants.TAG, String.format("Beacon %s is loaded from db", trackedBeacon.getId()));
-
-        }
-
     }
 }
