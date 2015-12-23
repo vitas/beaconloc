@@ -21,22 +21,23 @@ package com.samebits.beacon.locator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.samebits.beacon.locator.util.BeaconUtil;
+
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.utils.UrlBeaconUrlCompressor;
 
-import java.text.DecimalFormat;
-
 /**
  * Created by vitas on 09/12/2015.
  */
-public class DetectedBeacon extends Beacon {
+public class DetectedBeacon extends Beacon implements IManagedBeacon {
 
     public static final int TYPE_EDDYSTONE_TLM = 32;
     public static final int TYPE_EDDYSTONE_UID = 0;
     public static final int TYPE_EDDYSTONE_URL = 16;
     public static final int TYPE_IBEACON_ALTBEACON = 1;
-    private long mLastSeen;
+
+    protected long mLastSeen;
 
     public static final Parcelable.Creator<DetectedBeacon> CREATOR =
             new Parcelable.Creator<DetectedBeacon>() {
@@ -64,15 +65,8 @@ public class DetectedBeacon extends Beacon {
         parcel.writeLong(mLastSeen);
     }
 
-    public double getRoundedDistance() {
-        return Math.ceil(getDistance() * 100.0D) / 100.0D;
-    }
 
-    public String getRoundedDistanceString() {
-        double d = Math.ceil(getDistance() * 100.0D) / 100.0D;
-        return new DecimalFormat("##0.00").format(d);
-    }
-
+    @Override
     public long getTimeLastSeen() {
         return this.mLastSeen;
     }
@@ -81,20 +75,49 @@ public class DetectedBeacon extends Beacon {
         this.mLastSeen = lastSeen;
     }
 
+    @Override
+    public boolean equalTo(IManagedBeacon target) {
+        return getId().equals(target);
+    }
+
+    @Override
     public boolean isEddyStoneTLM() {
-        return getBeaconTypeCode() == 32;
+        return getBeaconTypeCode() == TYPE_EDDYSTONE_TLM;
     }
 
+    @Override
     public boolean isEddyStoneUID() {
-        return getBeaconTypeCode() == 0;
+        return getBeaconTypeCode() == TYPE_EDDYSTONE_UID;
     }
 
+    @Override
     public boolean isEddyStoneURL() {
-        return getBeaconTypeCode() == 16;
+        return getBeaconTypeCode() == TYPE_EDDYSTONE_URL;
     }
 
+    @Override
     public boolean isEddystone() {
-        return (getBeaconTypeCode() == 0) || (getBeaconTypeCode() == 16) || (getBeaconTypeCode() == 32);
+        return (getBeaconTypeCode() == TYPE_EDDYSTONE_UID)
+                || (getBeaconTypeCode() == TYPE_EDDYSTONE_URL) || (getBeaconTypeCode() == TYPE_EDDYSTONE_TLM);
+    }
+
+    @Override
+    public BeaconType getBeaconType() {
+        if (isEddystone()) {
+            switch (getBeaconTypeCode()) {
+                case TYPE_IBEACON_ALTBEACON:
+                    return BeaconType.ALTBEACON;
+                case TYPE_EDDYSTONE_TLM:
+                    return BeaconType.EDDYSTONE_TLM;
+                case TYPE_EDDYSTONE_UID:
+                    return BeaconType.EDDYSTONE_UID;
+                case TYPE_EDDYSTONE_URL:
+                    return BeaconType.EDDYSTONE_URL;
+                default:
+                    return BeaconType.EDDYSTONE;
+            }
+        }
+        return BeaconType.IBEACON;
     }
 
     public Identifier getId2() {
@@ -111,25 +134,36 @@ public class DetectedBeacon extends Beacon {
         return super.getId3();
     }
 
+    @Override
     public String getId() {
-        if ((getBeaconTypeCode() == 0) || (getBeaconTypeCode() == 16) || (getBeaconTypeCode() == 32)) {
-            return getId1().toString() + ":" + getId2().toHexString() + "::" + getBluetoothAddress();
-        }
-        return getId1().toString() + ":" + getId2().toString() + ":" + getId3().toString() + "::" + getBluetoothAddress();
+        return getUUID() + ":" + getMajor() + ":" + getMinor() + "::" + getBluetoothAddress();
     }
 
+    @Override
+    public int getType() {
+        return getBeaconTypeCode();
+    }
+
+    @Override
     public String getUUID() {
         return getId1().toString();
     }
 
+
+    @Override
+    public String getMajor() {
+        if (isEddystone()) {
+            return getId2().toHexString();
+        }
+        return getId2().toString();
+    }
+
+    @Override
     public String getMinor() {
         return getId3().toString();
     }
 
-    public String getMajor() {
-        return getId2().toString();
-    }
-
+    @Override
     public String getEddystoneURL() {
         return UrlBeaconUrlCompressor.uncompress(getId1().toByteArray());
     }
@@ -138,13 +172,13 @@ public class DetectedBeacon extends Beacon {
     public String toString() {
         if (isEddystone()) {
             if (isEddyStoneUID()) {
-                return "Namespace: " + getId1().toString() + ", Instance: " + getId2().toString() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + getRoundedDistance() + "m";
+                return "Namespace: " + getUUID() + ", Instance: " + getMajor() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + BeaconUtil.getRoundedDistance(getDistance()) + "m";
             }
             if (isEddyStoneURL()) {
-                return "URL: " + getEddystoneURL() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + getRoundedDistance() + "m";
+                return "URL: " + getEddystoneURL() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + BeaconUtil.getRoundedDistance(getDistance()) + "m";
             }
-            return "UUID: " + getId1().toString() + ", Major: " + getId2().toString() + ", Minor: " + getId3().toString() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + getRoundedDistance() + "m";
+            return "UUID: " + getUUID() + ", Major: " + getMajor() + ", Minor: " + getMinor() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + BeaconUtil.getRoundedDistance(getDistance()) + "m";
         }
-        return "UUID: " + getId1().toString() + ", Major: " + getId2().toString() + ", Minor: " + getId3().toString() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + getRoundedDistance() + "m";
+        return "UUID: " + getUUID() + ", Major: " + getMajor() + ", Minor: " + getMinor() + "\n" + "RSSI: " + getRssi() + " dBm, TX: " + getTxPower() + " dBm\n" + "Distance: " + BeaconUtil.getRoundedDistance(getDistance()) + "m";
     }
 }

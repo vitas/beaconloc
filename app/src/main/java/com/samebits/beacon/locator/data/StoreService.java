@@ -16,7 +16,7 @@
  *
  */
 
-package com.samebits.beacon.locator.db;
+package com.samebits.beacon.locator.data;
 
 import com.samebits.beacon.locator.model.TrackedBeacon;
 

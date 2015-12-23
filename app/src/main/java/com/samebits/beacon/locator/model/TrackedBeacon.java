@@ -18,35 +18,51 @@
 
 package com.samebits.beacon.locator.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.samebits.beacon.locator.util.BeaconUtil;
+
 /**
  * Created by vitas on 20/12/15.
  */
-public class TrackedBeacon {
+public class TrackedBeacon implements IManagedBeacon, Parcelable {
+    public static final Creator<TrackedBeacon> CREATOR = new Creator<TrackedBeacon>() {
+        @Override
+        public TrackedBeacon createFromParcel(Parcel in) {
+            return new TrackedBeacon(in);
+        }
+
+        @Override
+        public TrackedBeacon[] newArray(int size) {
+            return new TrackedBeacon[size];
+        }
+    };
     private String id;
     private String uuid = "";
     private long lastSeenTime;
     private String major = "";
     private String minor = "";
-    private double txPower;
-    private double rssi;
-    private String distance;
+    private int txPower;
+    private int rssi;
+    private double distance;
     private String bleName;
     private String bleAddress;
     private int type;
-    private String url;
+    private String urlEddystone;
     private boolean tracked;
 
     public TrackedBeacon(DetectedBeacon detectedBeacon) {
         setId(detectedBeacon.getId());
-        setLastSeenTime(detectedBeacon.getTimeLastSeen());
-        setBleName(detectedBeacon.getBluetoothName());
-        setBleAddress(detectedBeacon.getBluetoothAddress());
-        setUuid(detectedBeacon.getUUID());
+        setTimeLastSeen(detectedBeacon.getTimeLastSeen());
+        setBluetoothName(detectedBeacon.getBluetoothName());
+        setBluetoothAddress(detectedBeacon.getBluetoothAddress());
+        setUUID(detectedBeacon.getUUID());
         setRssi(detectedBeacon.getRssi());
         setTxPower(detectedBeacon.getTxPower());
         setType(detectedBeacon.getBeaconTypeCode());
         setUrl(detectedBeacon.getEddystoneURL());
-        setDistance(detectedBeacon.getRoundedDistanceString());
+        setDistance(detectedBeacon.getDistance());
         setMajor(detectedBeacon.getMajor());
         setMinor(detectedBeacon.getMinor());
     }
@@ -55,78 +71,128 @@ public class TrackedBeacon {
 
     }
 
-    public String getUuid() {
-        return uuid;
+    protected TrackedBeacon(Parcel in) {
+        id = in.readString();
+        uuid = in.readString();
+        lastSeenTime = in.readLong();
+        major = in.readString();
+        minor = in.readString();
+        txPower = in.readInt();
+        rssi = in.readInt();
+        distance = in.readDouble();
+        bleName = in.readString();
+        bleAddress = in.readString();
+        type = in.readInt();
+        urlEddystone = in.readString();
+        tracked = in.readByte() != 0;
     }
 
+    @Override
+    public BeaconType getBeaconType() {
+        return getType() == -1 ? BeaconType.UNSPECIFIED : BeaconType.values()[getType()];
+    }
+
+    @Override
     public String getMajor() {
         return major;
-    }
-
-    public String getMinor() {
-        return minor;
-    }
-
-    public double getTxPower() {
-        return txPower;
-    }
-
-    public long getLastSeenTime() {
-        return lastSeenTime;
-    }
-
-    public double getRssi() {
-        return rssi;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public String getBleName() {
-        return bleName;
-    }
-
-    public String getBleAddress() {
-        return bleAddress;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     public void setMajor(String major) {
         this.major = major;
     }
 
+    @Override
+    public String getEddystoneURL() {
+        return urlEddystone;
+    }
+
+    @Override
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    @Override
+    public long getTimeLastSeen() {
+        return lastSeenTime;
+    }
+
+    public void setTimeLastSeen(long lastSeenTime) {
+        this.lastSeenTime = lastSeenTime;
+    }
+
+    @Override
+    public String getMinor() {
+        return minor;
+    }
+
     public void setMinor(String minor) {
         this.minor = minor;
     }
 
-    public void setTxPower(double txPower) {
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getUUID() {
+        return uuid;
+    }
+
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public int getTxPower() {
+        return txPower;
+    }
+
+    public void setTxPower(int txPower) {
         this.txPower = txPower;
     }
 
-    public void setLastSeenTime(long lastSeenTime) {
-        this.lastSeenTime = lastSeenTime;
+    @Override
+    public int getRssi() {
+        return rssi;
     }
 
-    public void setRssi(double rssi) {
+    public void setRssi(int rssi) {
         this.rssi = rssi;
     }
 
-    public void setDistance(String distance) {
-        this.distance = distance;
+    @Override
+    public boolean equalTo(IManagedBeacon target) {
+        return getId().equals(target);
     }
 
-    public void setBleName(String bleName) {
+    @Override
+    public String getBluetoothName() {
+        return bleName;
+    }
+
+    public void setBluetoothName(String bleName) {
         this.bleName = bleName;
     }
 
-    public void setBleAddress(String bleAddress) {
+    @Override
+    public String getBluetoothAddress() {
+        return bleAddress;
+    }
+
+    public void setBluetoothAddress(String bleAddress) {
         this.bleAddress = bleAddress;
     }
 
+    @Override
     public int getType() {
         return type;
     }
@@ -135,20 +201,8 @@ public class TrackedBeacon {
         this.type = type;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
     public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.urlEddystone = url;
     }
 
     public boolean isTracked() {
@@ -158,4 +212,49 @@ public class TrackedBeacon {
     public void setTracked(boolean tracked) {
         this.tracked = tracked;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(uuid);
+        dest.writeLong(lastSeenTime);
+        dest.writeString(major);
+        dest.writeString(minor);
+        dest.writeInt(txPower);
+        dest.writeInt(rssi);
+        dest.writeDouble(distance);
+        dest.writeString(bleName);
+        dest.writeString(bleAddress);
+        dest.writeInt(type);
+        dest.writeString(urlEddystone);
+        dest.writeByte((byte) (tracked ? 1 : 0));
+    }
+
+    @Override
+    public boolean isEddyStoneTLM() {
+        return getBeaconType() == BeaconType.EDDYSTONE_TLM;
+    }
+
+    @Override
+    public boolean isEddyStoneUID() {
+        return getBeaconType() == BeaconType.EDDYSTONE_UID;
+    }
+
+    @Override
+    public boolean isEddyStoneURL() {
+        return getBeaconType() == BeaconType.EDDYSTONE_URL;
+    }
+
+    @Override
+    public boolean isEddystone() {
+        return (getBeaconType() == BeaconType.EDDYSTONE_UID)
+                || (getBeaconType() == BeaconType.EDDYSTONE_URL) || (getBeaconType() == BeaconType.EDDYSTONE_TLM);
+    }
+
+
 }

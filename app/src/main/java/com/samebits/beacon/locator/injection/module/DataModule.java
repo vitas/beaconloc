@@ -20,11 +20,9 @@ package com.samebits.beacon.locator.injection.module;
 
 import android.content.Context;
 
-import com.samebits.beacon.locator.db.DbStoreService;
-import com.samebits.beacon.locator.db.StoreService;
+import com.samebits.beacon.locator.data.DbStoreService;
+import com.samebits.beacon.locator.data.StoreService;
 import com.samebits.beacon.locator.injection.UserScope;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

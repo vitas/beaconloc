@@ -16,14 +16,13 @@
  *
  */
 
-package com.samebits.beacon.locator.db;
+package com.samebits.beacon.locator.data;
 
 import android.content.Context;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.injection.component.DaggerDataComponent;
 import com.samebits.beacon.locator.injection.module.DataModule;
-import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import java.util.List;
@@ -40,10 +39,6 @@ public class DataManager {
 
     public DataManager(Context context) {
         injectDependencies(context);
-    }
-
-    public DataManager(StoreService storeService) {
-        mStoreService = storeService;
     }
 
     protected void injectDependencies(Context context) {

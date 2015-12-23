@@ -23,6 +23,8 @@ import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by vitas on 09/12/2015.
  */
@@ -38,16 +40,16 @@ public final class BeaconUtil {
         return R.string.proximity_far;
     }
 
-    public static boolean equalBeacons(DetectedBeacon detectedBeacon, TrackedBeacon trackedBeacon) {
-
-        if (detectedBeacon != null && trackedBeacon!= null) {
-            if (detectedBeacon.getUUID().equals(trackedBeacon.getUuid()) &&
-                    trackedBeacon.getMajor().equals(detectedBeacon.getMajor()) &&
-                    trackedBeacon.getMinor().equals(detectedBeacon.getMinor())) {
-                return true;
-            }
-        }
-        return false;
+    public static double getRoundedDistance(double distance) {
+        return Math.ceil(distance * 100.0D) / 100.0D;
     }
 
+    public static String getRoundedDistanceString(double distance) {
+        double d = Math.ceil(distance * 100.0D) / 100.0D;
+        return new DecimalFormat("##0.00").format(d);
+    }
+
+    public static TrackedBeacon convertToTracked(DetectedBeacon detectedBeacon) {
+        return new TrackedBeacon(detectedBeacon);
+    }
 }

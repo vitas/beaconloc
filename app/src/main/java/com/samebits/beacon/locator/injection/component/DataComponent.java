@@ -18,7 +18,7 @@
 
 package com.samebits.beacon.locator.injection.component;
 
-import com.samebits.beacon.locator.db.DataManager;
+import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.injection.UserScope;
 import com.samebits.beacon.locator.injection.module.DataModule;
 

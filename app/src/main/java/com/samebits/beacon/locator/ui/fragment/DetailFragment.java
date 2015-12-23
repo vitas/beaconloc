@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.db.DataManager;
+import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.Constants;
