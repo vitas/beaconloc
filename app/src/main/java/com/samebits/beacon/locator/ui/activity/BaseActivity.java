@@ -18,6 +18,7 @@
 
 package com.samebits.beacon.locator.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -32,6 +33,7 @@ import com.samebits.beacon.locator.R;
 /**
  * Created by vitas on 19/10/15.
  */
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     final static int GLOBAL_SETTING_REQUEST = 1;

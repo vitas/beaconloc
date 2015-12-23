@@ -81,7 +81,7 @@ public final class BeaconUtil {
                         return i;
                     }
                     if ((!obj1.getValue().isEddystone()) && (!obj2.getValue().isEddystone())) {
-                        return obj1.getValue().getMinor().toString().compareTo(obj2.getValue().getMinor());
+                        return obj1.getValue().getMinor().compareTo(obj2.getValue().getMinor());
                     }
                     return 0;
                 }

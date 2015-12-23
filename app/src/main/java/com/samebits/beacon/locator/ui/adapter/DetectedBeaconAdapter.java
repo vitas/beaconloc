@@ -29,18 +29,13 @@ import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
-import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel;
 
 import org.altbeacon.beacon.Beacon;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -79,9 +74,8 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
 
     public Object getItem(int idx) {
         int i = 0;
-        Iterator localIterator = this.mBeacons.entrySet().iterator();
-        while (localIterator.hasNext()) {
-            Map.Entry localEntry = (Map.Entry) localIterator.next();
+        for (Object o : this.mBeacons.entrySet()) {
+            Map.Entry localEntry = (Map.Entry) o;
             if (i == idx) {
                 return localEntry.getValue();
             }

@@ -7,4 +7,4 @@
     android:pivotY="50%"
     android:shareInterpolator="true"
     android:toXScale="0.0"
-    android:toYScale="0.0"></scale>
+    android:toYScale="0.0"/>

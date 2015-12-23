@@ -19,7 +19,6 @@
 package com.samebits.beacon.locator.data;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import java.util.List;
 

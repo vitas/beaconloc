@@ -3,7 +3,7 @@
 
     <string-array name="pref_scan_sorting_titles">
         <item>Nearest first</item>
-        <item>Farest first</item>
+        <item>Furthest first</item>
         <item>UUID, Major and Minor</item>
     </string-array>
     <string-array name="pref_scan_sorting_values">

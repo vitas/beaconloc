@@ -26,17 +26,11 @@ import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
-import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
-import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,9 +70,8 @@ public class TrackedBeaconAdapter extends RecyclerView.Adapter<TrackedBeaconAdap
 
     public Object getItem(int idx) {
         int i = 0;
-        Iterator localIterator = this.mBeacons.entrySet().iterator();
-        while (localIterator.hasNext()) {
-            Map.Entry localEntry = (Map.Entry) localIterator.next();
+        for (Object o : this.mBeacons.entrySet()) {
+            Map.Entry localEntry = (Map.Entry) o;
             if (i == idx) {
                 return localEntry.getValue();
             }

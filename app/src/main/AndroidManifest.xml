@@ -12,7 +12,6 @@
 
     <application
         android:name=".BeaconLocatorApp"
-        android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,7 +33,7 @@
         <activity
             android:name=".ui.activity.BeaconActivity"
             android:label="@string/title_activity_beacon"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

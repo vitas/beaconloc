@@ -238,10 +238,8 @@ public class RadarScanView extends View implements SensorEventListener {
             addText(canvas, getRatioDistanceText(0.75f), center, center + radius * 3 / 4);
             addText(canvas, getRatioDistanceText(1.0f), center, center + radius);
 
-            Iterator<Map.Entry<String, DetectedBeacon>> itr = mBeacons.entrySet().iterator();
-            while (itr.hasNext()) {
-                Map.Entry<String, DetectedBeacon> entry = itr.next();
-                String key = entry.getKey();
+            for (Map.Entry<String, DetectedBeacon> entry : mBeacons.entrySet()) {
+                //String key = entry.getKey();
                 DetectedBeacon dBeacon = entry.getValue();
                 System.out.println("value: " + dBeacon);
 
@@ -264,7 +262,7 @@ public class RadarScanView extends View implements SensorEventListener {
      * max radar range is 15 meters
      *
      * @param distance
-     * @return
+     * @return distance in px
      */
     private float distanceToPix(double distance) {
         int center = getWidth() / 2;
@@ -368,7 +366,7 @@ public class RadarScanView extends View implements SensorEventListener {
     }
 
     private void updateDistanceText(double distanceM) {
-        String displayDistance = "0";
+        String displayDistance;
         if (mUseMetric) {
             displayDistance = String.format(mMetricDisplayFormat, distanceM);
         } else {

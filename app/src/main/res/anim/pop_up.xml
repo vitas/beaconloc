@@ -9,4 +9,4 @@
     android:shareInterpolator="true"
     android:startOffset="200"
     android:toXScale="1.0"
-    android:toYScale="1.0"></scale>
+    android:toYScale="1.0"/>

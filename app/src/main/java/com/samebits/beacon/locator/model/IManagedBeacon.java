@@ -18,7 +18,6 @@
 
 package com.samebits.beacon.locator.model;
 
-import android.os.Parcelable;
 
 /**
  * Created by vitas on 23/12/15.

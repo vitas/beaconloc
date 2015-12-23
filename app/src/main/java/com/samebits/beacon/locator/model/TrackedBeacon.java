@@ -21,7 +21,6 @@ package com.samebits.beacon.locator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.samebits.beacon.locator.util.BeaconUtil;
 
 /**
  * Created by vitas on 20/12/15.

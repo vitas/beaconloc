@@ -29,7 +29,7 @@ public class AngleLowpassFilter {
     private final int LENGTH = 10;
     private float sumSin, sumCos;
 
-    private ArrayDeque<Float> queue = new ArrayDeque<Float>();
+    private ArrayDeque<Float> queue = new ArrayDeque<>();
 
     public void add(float radians) {
 
