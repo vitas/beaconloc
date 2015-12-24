@@ -7,31 +7,13 @@
     android:fitsSystemWindows="true"
     tools:context="com.samebits.beacon.locator.ui.activity.BeaconActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
+    <include android:id="@+id/appbar" layout="@layout/toolbar"/>
 
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp" />
+    <include android:id="@+id/fab" layout="@layout/fab"/>
 
 </android.support.design.widget.CoordinatorLayout>

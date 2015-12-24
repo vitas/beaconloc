@@ -61,8 +61,6 @@ public class BeaconActivity extends BaseActivity {
 
     private void setupToolbar() {
 
-        setSupportActionBar(toolbar);
-
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
