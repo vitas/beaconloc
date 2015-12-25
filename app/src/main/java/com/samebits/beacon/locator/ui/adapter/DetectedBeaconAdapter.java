@@ -20,15 +20,21 @@ package com.samebits.beacon.locator.ui.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.design.widget.SwipeDismissBehavior;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
+import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
+import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel;
 
 import org.altbeacon.beacon.Beacon;
@@ -42,10 +48,7 @@ import java.util.UUID;
 /**
  * Created by vitas on 09/12/2015.
  */
-public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAdapter.BindingHolder> {
-
-    private Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
-    private Context mContext;
+public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.BindingHolder> {
 
     public DetectedBeaconAdapter(Context context) {
         mContext = context;
@@ -67,42 +70,6 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
         beaconBinding.setViewModel(new DetectedBeaconViewModel(mContext, (DetectedBeacon) getItem(position)));
     }
 
-    @Override
-    public int getItemCount() {
-        return mBeacons.size();
-    }
-
-    public Object getItem(int idx) {
-        int i = 0;
-        for (Object o : this.mBeacons.entrySet()) {
-            Map.Entry localEntry = (Map.Entry) o;
-            if (i == idx) {
-                return localEntry.getValue();
-            }
-            i += 1;
-        }
-        return null;
-    }
-
-    public long getItemId(int idx) {
-        DetectedBeacon selectedBeacon = (DetectedBeacon) this.getItem(idx);
-        if (selectedBeacon.isEddystone()) {
-            return selectedBeacon.getServiceUuid();
-        }
-        return UUID.fromString(selectedBeacon.getId1().toString()).getMostSignificantBits();
-    }
-
-    public void clearAll() {
-        this.mBeacons.clear();
-        notifyDataSetChanged();
-    }
-
-    public void insertBeacon(Beacon beacon) {
-        DetectedBeacon dBeacon = new DetectedBeacon(beacon);
-        dBeacon.setTimeLastSeen(System.currentTimeMillis());
-        this.mBeacons.put(dBeacon.getId(), dBeacon);
-        notifyDataSetChanged();
-    }
 
     public void insertBeacons(Collection<Beacon> beacons) {
         Iterator<Beacon> iterator = beacons.iterator();
@@ -114,9 +81,6 @@ public class DetectedBeaconAdapter extends RecyclerView.Adapter<DetectedBeaconAd
         notifyDataSetChanged();
     }
 
-    public void sort(final int sortMode) {
-        this.mBeacons = BeaconUtil.sortBecons(mBeacons, sortMode);
-    }
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
         private ItemDetectedBeaconBinding binding;

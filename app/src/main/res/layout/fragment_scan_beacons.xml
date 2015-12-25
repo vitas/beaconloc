@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/bg_light_grey">
 
+    <include android:id="@+id/appbar" layout="@layout/toolbar"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,20 +38,5 @@
             android:layout="@layout/layout_empty_list" />
 
     </RelativeLayout>
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/hn_orange"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:theme="@style/AppTheme.ActionBar" />
-
-    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

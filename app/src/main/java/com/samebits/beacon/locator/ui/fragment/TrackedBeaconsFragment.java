@@ -19,11 +19,13 @@
 package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +44,12 @@ import butterknife.ButterKnife;
 /**
  * Created by vitas on 9/11/15.
  */
-public class TrackedBeaconsFragment extends BaseFragment {
+public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.recycler_beacons)
     RecyclerView mListBeacons;
+    @Bind(R.id.swipe_container)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.progress_indicator)
     ProgressBar mProgressBar;
     @Bind(R.id.empty_view)
@@ -53,6 +57,7 @@ public class TrackedBeaconsFragment extends BaseFragment {
     EmptyView mEmptyView;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
     private TrackedBeaconAdapter mBeaconsAdapter;
     private DataManager mDataManager;
 
@@ -76,15 +81,17 @@ public class TrackedBeaconsFragment extends BaseFragment {
 
         setupToolbar();
         setupRecyclerView();
+        setupSwipe();
         loadBeacons();
 
         return fragmentView;
     }
 
     private void loadBeacons() {
+        showLoadingViews();
         mBeaconsAdapter.insertBeacons(mDataManager.getAllBeacons());
         emptyListUpdate();
-
+        hideLoadingViews();
     }
 
     @Override
@@ -97,7 +104,7 @@ public class TrackedBeaconsFragment extends BaseFragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setTitle(R.string.title_fragment_tracked_beacons);
         }
     }
@@ -107,12 +114,34 @@ public class TrackedBeaconsFragment extends BaseFragment {
         mEmptyView = new EmptyView(viewFromEmpty);
         mEmptyView.text.setText(getString(R.string.text_empty_list_tracked_beacons));
 
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.hn_orange);
+
         mListBeacons.setLayoutManager(new LinearLayoutManager(getActivity()));
         mListBeacons.setHasFixedSize(true);
         mProgressBar.setVisibility(View.GONE);
         mListBeacons.setAdapter(mBeaconsAdapter);
+
     }
 
+    private void setupSwipe() {
+
+        ItemTouchHelper swipeToDismissTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                // callback for drag-n-drop, false to skip this feature
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // callback for swipe to dismiss, removing item from data and adapter
+                mBeaconsAdapter.removeBeacon(viewHolder.getAdapterPosition());
+            }
+        });
+        swipeToDismissTouchHelper.attachToRecyclerView(mListBeacons);
+    }
 
     private void emptyListUpdate() {
         if (mBeaconsAdapter.getItemCount() == 0) {
@@ -123,5 +152,21 @@ public class TrackedBeaconsFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onRefresh() {
+        loadBeacons();
+    }
 
+    private void hideLoadingViews() {
+        if(mProgressBar != null) {
+            mProgressBar.setVisibility(View.GONE);
+        }
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void showLoadingViews() {
+        if(mProgressBar != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+    }
 }

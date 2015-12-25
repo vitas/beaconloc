@@ -145,7 +145,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
     public void startScan() {
         mProgressBar.setVisibility(View.VISIBLE);
         mEmpty.setVisibility(View.GONE);
-        mBeaconsAdapter.clearAll();
+        mBeaconsAdapter.removeAll();
         mTimer.start();
         super.startScan();
     }

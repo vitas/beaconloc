@@ -20,8 +20,12 @@ package com.samebits.beacon.locator.ui.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.design.widget.SwipeDismissBehavior;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
@@ -29,6 +33,7 @@ import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
+import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
 
 import java.util.LinkedHashMap;
@@ -38,10 +43,8 @@ import java.util.Map;
 /**
  * Created by vitas on 09/12/2015.
  */
-public class TrackedBeaconAdapter extends RecyclerView.Adapter<TrackedBeaconAdapter.BindingHolder> {
+public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.BindingHolder> {
 
-    private Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
-    private Context mContext;
 
     public TrackedBeaconAdapter(Context context) {
         mContext = context;
@@ -54,6 +57,7 @@ public class TrackedBeaconAdapter extends RecyclerView.Adapter<TrackedBeaconAdap
                 R.layout.item_tracked_beacon,
                 parent,
                 false);
+        setupSwipe(beaconBinding);
         return new BindingHolder(beaconBinding);
     }
 
@@ -63,47 +67,24 @@ public class TrackedBeaconAdapter extends RecyclerView.Adapter<TrackedBeaconAdap
         beaconBinding.setViewModel(new TrackedBeaconViewModel(mContext, (TrackedBeacon) getItem(position)));
     }
 
-    @Override
-    public int getItemCount() {
-        return mBeacons.size();
-    }
 
-    public Object getItem(int idx) {
-        int i = 0;
-        for (Object o : this.mBeacons.entrySet()) {
-            Map.Entry localEntry = (Map.Entry) o;
-            if (i == idx) {
-                return localEntry.getValue();
+    private void setupSwipe(ItemTrackedBeaconBinding beaconBinding) {
+
+        final SwipeDismissBehavior<CardView> swipe = new SwipeDismissBehavior();
+        swipe.setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_ANY);
+        swipe.setListener(new SwipeDismissBehavior.OnDismissListener() {
+            @Override
+            public void onDismiss(View view) {
+                Log.d(Constants.TAG, "Swipe +");
             }
-            i += 1;
-        }
-        return null;
-    }
 
-    public long getItemId(int idx) {
-        return 0;
-    }
+            @Override
+            public void onDragStateChanged(int state) {
+            }
+        });
 
-    public void clearAll() {
-        this.mBeacons.clear();
-        notifyDataSetChanged();
-    }
-
-    public void insertBeacon(IManagedBeacon beacon) {
-        this.mBeacons.put(beacon.getId(), beacon);
-        notifyDataSetChanged();
-    }
-
-    public void insertBeacons(List<IManagedBeacon> beacons) {
-        for (IManagedBeacon beacon :
-                beacons) {
-            this.mBeacons.put(beacon.getId(), beacon);
-        }
-        notifyDataSetChanged();
-    }
-
-    public void sort(final int sortMode) {
-        this.mBeacons = BeaconUtil.sortBecons(mBeacons, sortMode);
+        //CoordinatorLayout.LayoutParams coordinatorParams = (CoordinatorLayout.LayoutParams) beaconBinding.cardView.getLayoutParams();
+        //coordinatorParams.setBehavior(swipe);
     }
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
@@ -112,6 +93,7 @@ public class TrackedBeaconAdapter extends RecyclerView.Adapter<TrackedBeaconAdap
         public BindingHolder(ItemTrackedBeaconBinding binding) {
             super(binding.cardView);
             this.binding = binding;
+
         }
     }
 
