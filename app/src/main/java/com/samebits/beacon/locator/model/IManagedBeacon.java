@@ -24,23 +24,41 @@ package com.samebits.beacon.locator.model;
  */
 public interface IManagedBeacon {
     public String getId();
+
     public int getType();
+
     public String getUUID();
+
     public String getMinor();
+
     public String getMajor();
+
     public double getDistance();
+
     public String getEddystoneURL();
+
     public long getTimeLastSeen();
+
     public String getBluetoothName();
+
     public String getBluetoothAddress();
+
     public int getTxPower();
+
     public int getRssi();
+
     public boolean equalTo(IManagedBeacon target);
+
     public BeaconType getBeaconType();
+
     public boolean isEddyStoneTLM();
+
     public boolean isEddyStoneUID();
+
     public boolean isEddyStoneURL();
+
     public boolean isEddystone();
+
     public boolean isTracked();
 
     public enum BeaconType {
@@ -74,7 +92,6 @@ public interface IManagedBeacon {
         }
 
     }
-
 
 
 }

@@ -20,30 +20,19 @@ package com.samebits.beacon.locator.ui.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.design.widget.SwipeDismissBehavior;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
-import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.DetectedBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.util.BeaconUtil;
-import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel;
 
 import org.altbeacon.beacon.Beacon;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by vitas on 09/12/2015.

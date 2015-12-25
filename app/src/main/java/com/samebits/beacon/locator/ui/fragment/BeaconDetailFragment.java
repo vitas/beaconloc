@@ -19,7 +19,7 @@
 package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,23 +31,28 @@ import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
-
 import butterknife.ButterKnife;
 
 /**
  * Created by vitas on 20/12/15.
  */
-public class DetailFragment extends Fragment {
+public class BeaconDetailFragment extends BaseFragment {
 
-    protected  DataManager mDataManager;
+    public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String ARG_BEACON = "ARG_BEACON";
+    protected DataManager mDataManager;
     protected IManagedBeacon mBeacon;
+    private int mPage;
 
-
-    public static DetailFragment newInstance(IManagedBeacon beacon) {
-        DetailFragment detailFragment = new DetailFragment();
+    public static BeaconDetailFragment newInstance(IManagedBeacon beacon, int page) {
+        BeaconDetailFragment detailFragment = new BeaconDetailFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
         if (beacon != null) {
-            detailFragment.setBeacon(beacon);
+            // detailFragment.setBeacon(beacon);
+            args.putParcelable(ARG_BEACON, (Parcelable) beacon);
         }
+        detailFragment.setArguments(args);
         return detailFragment;
     }
 
@@ -61,8 +66,16 @@ public class DetailFragment extends Fragment {
 
         mDataManager = BeaconLocatorApp.from(getActivity()).getComponent().dataManager();
 
+        readArguments();
         setRetainInstance(true);
 
+    }
+
+    private void readArguments() {
+        if (getArguments() != null) {
+            mPage = getArguments().getInt(ARG_PAGE);
+            mBeacon = getArguments().getParcelable(ARG_BEACON);
+        }
     }
 
     @Override

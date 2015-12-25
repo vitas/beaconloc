@@ -22,13 +22,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.ui.fragment.DetailFragment;
+import com.samebits.beacon.locator.ui.adapter.DetailFragmentPagerAdapter;
 import com.samebits.beacon.locator.util.Constants;
 
 import butterknife.Bind;
@@ -37,12 +38,18 @@ import butterknife.ButterKnife;
 
 public class BeaconActivity extends BaseActivity {
 
+    public static final String ARG_BEACON = "ARG_BEACON";
+    public static final String ARG_MODE = "ARG_MODE";
     protected int mMode = Constants.LIVE_BEACON_MODE;
     protected IManagedBeacon mBeacon;
     @Bind(R.id.fab)
     FloatingActionButton fab;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.viewpager)
+    ViewPager viewPager;
+    @Bind(R.id.sliding_tabs)
+    TabLayout slidingTabs;
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, BeaconActivity.class);
@@ -56,7 +63,16 @@ public class BeaconActivity extends BaseActivity {
 
         setupToolbar();
         readExtras();
+        setupTabs();
 
+    }
+
+    private void setupTabs() {
+        viewPager.setAdapter(new DetailFragmentPagerAdapter(getSupportFragmentManager(),
+                mBeacon,
+                BeaconActivity.this));
+
+        slidingTabs.setupWithViewPager(viewPager);
     }
 
     private void setupToolbar() {
@@ -70,30 +86,8 @@ public class BeaconActivity extends BaseActivity {
     private void readExtras() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
-            mMode = intent.getIntExtra("MODE", Constants.TRACKED_BEACON_MODE);
-            mBeacon = intent.getExtras().getParcelable("BEACON");
-            addDetailBeaconFragment(mBeacon);
-        }
-    }
-
-    private void switchMode(int mode) {
-        switch (mode) {
-            case Constants.LIVE_BEACON_MODE:
-                break;
-            case Constants.TRACKED_BEACON_MODE:
-                break;
-        }
-    }
-
-    private void addDetailBeaconFragment(IManagedBeacon beacon) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager != null) {
-            if (checkFragmentInstance(R.id.content_frame, DetailFragment.class) == null) {
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.content_frame, DetailFragment.newInstance(beacon), Constants.TAG_FRAGMENT_BEACON_DETAIL)
-                        .commit();
-            }
+            mMode = intent.getExtras().getInt(ARG_MODE, Constants.TRACKED_BEACON_MODE);
+            mBeacon = intent.getExtras().getParcelable(ARG_BEACON);
         }
     }
 

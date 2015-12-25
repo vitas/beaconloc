@@ -28,9 +28,13 @@ import java.util.List;
 public interface StoreService {
 
     boolean createBeacon(final IManagedBeacon beacon);
+
     boolean updateBeacon(final IManagedBeacon beacon);
+
     boolean deleteBeacon(final String id);
+
     IManagedBeacon getBeacon(String id);
+
     List<IManagedBeacon> getBeacons();
 
 }

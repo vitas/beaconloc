@@ -47,7 +47,7 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
     private double distance;
     private String bleName;
     private String bleAddress;
-    private int type =-1;
+    private int type = -1;
     private String urlEddystone;
     private boolean tracked;
 

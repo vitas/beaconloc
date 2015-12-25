@@ -20,10 +20,10 @@ package com.samebits.beacon.locator.viewModel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.activity.BeaconActivity;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -38,8 +38,8 @@ public class TrackedBeaconViewModel extends DetectedBeaconViewModel {
 
     protected void launchBeaconDetailsActivity() {
         Intent intent = BeaconActivity.getStartIntent(context);
-        intent.putExtra("BEACON", (TrackedBeacon) managedBeacon);
-        intent.putExtra("MODE", Constants.TRACKED_BEACON_MODE);
+        intent.putExtra(ARG_BEACON, (Parcelable) managedBeacon);
+        intent.putExtra(ARG_MODE, Constants.TRACKED_BEACON_MODE);
         context.startActivity(intent);
     }
 }

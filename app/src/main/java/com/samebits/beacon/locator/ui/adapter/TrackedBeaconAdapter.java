@@ -30,15 +30,9 @@ import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
-import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
-import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by vitas on 09/12/2015.

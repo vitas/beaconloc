@@ -42,7 +42,6 @@ import com.samebits.beacon.locator.R;
 import java.util.List;
 
 
-
 public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
      * A preference value change listener that updates the preference's summary

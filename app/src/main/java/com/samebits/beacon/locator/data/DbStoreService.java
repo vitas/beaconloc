@@ -118,17 +118,17 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     public boolean createBeacon(IManagedBeacon beacon) {
         ContentValues values = new ContentValues();
 
-        values.put(ScanColumns.COLUMN_NAME_ID,  beacon.getId());
-        values.put(ScanColumns.COLUMN_NAME_LAST_SEEN_TIME,  beacon.getTimeLastSeen());
-        values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_NAME,  beacon.getBluetoothName());
-        values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_ADDRESS,  beacon.getBluetoothAddress());
-        values.put(ScanColumns.COLUMN_NAME_UUID,  beacon.getUUID());
-        values.put(ScanColumns.COLUMN_NAME_DISTANCE,  beacon.getDistance());
+        values.put(ScanColumns.COLUMN_NAME_ID, beacon.getId());
+        values.put(ScanColumns.COLUMN_NAME_LAST_SEEN_TIME, beacon.getTimeLastSeen());
+        values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_NAME, beacon.getBluetoothName());
+        values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_ADDRESS, beacon.getBluetoothAddress());
+        values.put(ScanColumns.COLUMN_NAME_UUID, beacon.getUUID());
+        values.put(ScanColumns.COLUMN_NAME_DISTANCE, beacon.getDistance());
         values.put(ScanColumns.COLUMN_NAME_RSSI, beacon.getRssi());
-        values.put(ScanColumns.COLUMN_NAME_TXPOWER,  beacon.getTxPower());
-        values.put(ScanColumns.COLUMN_NAME_TYPE,  beacon.getType());
-        values.put(ScanColumns.COLUMN_NAME_URL,  beacon.getEddystoneURL());
-        values.put(ScanColumns.COLUMN_NAME_MAJOR,  beacon.getMajor());
+        values.put(ScanColumns.COLUMN_NAME_TXPOWER, beacon.getTxPower());
+        values.put(ScanColumns.COLUMN_NAME_TYPE, beacon.getType());
+        values.put(ScanColumns.COLUMN_NAME_URL, beacon.getEddystoneURL());
+        values.put(ScanColumns.COLUMN_NAME_MAJOR, beacon.getMajor());
         values.put(ScanColumns.COLUMN_NAME_MINOR, beacon.getMinor());
         values.put(ScanColumns.COLUMN_NAME_IS_TRACKED, beacon.isTracked());
 
@@ -136,7 +136,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
         long res = db.insert(ScanColumns.TABLE_NAME, null, values);
         db.close();
-        return (res == -1)?false:true;
+        return (res == -1) ? false : true;
 
     }
 
@@ -170,7 +170,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
 
         if (cursor != null) {
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
 
                 beacon.setId(cursor.getString(0));
                 beacon.setTimeLastSeen(Long.parseLong(cursor.getString(1)));
@@ -233,7 +233,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         SQLiteDatabase db = getDb();
         int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_NAME_UUID + "=?", new String[]{String.valueOf(id)});
         db.close();
-        return (numDeleted==0)?false:true;
+        return (numDeleted == 0) ? false : true;
     }
 
     protected static abstract class ScanColumns implements BaseColumns {

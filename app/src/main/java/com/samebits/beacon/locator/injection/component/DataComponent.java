@@ -22,11 +22,10 @@ import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.injection.UserScope;
 import com.samebits.beacon.locator.injection.module.DataModule;
 
-
 import dagger.Component;
 
 @UserScope
-@Component(dependencies = ApplicationComponent.class, modules = { DataModule.class })
+@Component(dependencies = ApplicationComponent.class, modules = {DataModule.class})
 public interface DataComponent {
 
     void inject(DataManager dataManager);

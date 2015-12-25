@@ -34,6 +34,8 @@ import com.samebits.beacon.locator.util.BeaconUtil;
  */
 public class BeaconViewModel extends BaseObservable {
 
+    public static final String ARG_BEACON = "ARG_BEACON";
+    public static final String ARG_MODE = "ARG_MODE";
     protected Context context;
     protected IManagedBeacon managedBeacon;
 

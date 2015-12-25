@@ -164,7 +164,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
 
     @Override
     public void updateBeaconList(final Collection<Beacon> beacons, final org.altbeacon.beacon.Region region) {
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             //update list, even nothing, we want update last seen time on detected beacons
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {

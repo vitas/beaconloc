@@ -19,22 +19,11 @@
 package com.samebits.beacon.locator.ui.adapter;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.support.design.widget.SwipeDismissBehavior;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
-import com.samebits.beacon.locator.util.Constants;
-import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,16 +36,8 @@ import java.util.Map;
 public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
 
-    public static class VH extends RecyclerView.ViewHolder{
-
-        public VH (View v){
-            super(v);
-        }
-    }
-
     protected Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
     protected Context mContext;
-
 
     public void insertBeacon(IManagedBeacon beacon) {
         this.mBeacons.put(beacon.getId(), beacon);
@@ -76,8 +57,8 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     public void removeBeacon(int position) {
-        IManagedBeacon beacon = (IManagedBeacon)getItem(position);
-        if (beacon!= null) {
+        IManagedBeacon beacon = (IManagedBeacon) getItem(position);
+        if (beacon != null) {
             this.mBeacons.remove(beacon.getId());
             notifyDataSetChanged();
         }
@@ -103,6 +84,13 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
     public void removeAll() {
         this.mBeacons.clear();
         notifyDataSetChanged();
+    }
+
+    public static class VH extends RecyclerView.ViewHolder {
+
+        public VH(View v) {
+            super(v);
+        }
     }
 
 }

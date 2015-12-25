@@ -55,7 +55,9 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    DataManager provideDataManager() {  return new DataManager(this.application); }
+    DataManager provideDataManager() {
+        return new DataManager(this.application);
+    }
 
     @Provides
     @Singleton

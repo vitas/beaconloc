@@ -158,14 +158,14 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     }
 
     private void hideLoadingViews() {
-        if(mProgressBar != null) {
+        if (mProgressBar != null) {
             mProgressBar.setVisibility(View.GONE);
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void showLoadingViews() {
-        if(mProgressBar != null) {
+        if (mProgressBar != null) {
             mProgressBar.setVisibility(View.VISIBLE);
         }
     }

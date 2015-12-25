@@ -93,6 +93,8 @@
     <!-- tracked list fragment -->
     <string name="title_fragment_tracked_beacons">Beacon List</string>
     <string name="text_empty_list_tracked_beacons">No tracked beacons. Go to scan</string>
+    <string name="tab_title_beacon_info">Beacon Data</string>
+    <string name="tab_title_beacon_actions">Triggered Actions</string>
 
 
 </resources>

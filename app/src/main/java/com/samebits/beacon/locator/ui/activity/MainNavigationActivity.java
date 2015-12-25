@@ -122,7 +122,7 @@ public class MainNavigationActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
-        if(ab != null) {
+        if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 

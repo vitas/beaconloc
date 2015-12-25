@@ -146,7 +146,7 @@ public class ScanRadarFragment extends ScanFragment {
         if (mRadar == null || beacons.size() == 0) {
             return;
         }
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
                     mRadar.onDetectedBeacons(beacons);
