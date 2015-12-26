@@ -107,6 +107,11 @@ public class DetectedBeacon extends Beacon implements IManagedBeacon {
     }
 
     @Override
+    public void setTracked(boolean value) {
+
+    }
+
+    @Override
     public BeaconType getBeaconType() {
         if (isEddystone()) {
             switch (getBeaconTypeCode()) {

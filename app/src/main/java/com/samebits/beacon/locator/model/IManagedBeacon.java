@@ -61,6 +61,8 @@ public interface IManagedBeacon {
 
     public boolean isTracked();
 
+    public void setTracked(boolean value);
+
     public enum BeaconType {
         UNSPECIFIED("Unspecified"),
         EDDYSTONE("Eddystone"),

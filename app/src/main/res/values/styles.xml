@@ -16,6 +16,7 @@
         <item name="android:itemTextAppearance">@style/OptionsMenuTextColor</item>
         <item name="android:textColorPrimary">@color/black_87pc</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">

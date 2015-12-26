@@ -49,6 +49,7 @@ import butterknife.ButterKnife;
  */
 public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    public static final float ALPHA_FULL = 1.0f;
     @Bind(R.id.recycler_beacons)
     RecyclerView mListBeacons;
     @Bind(R.id.swipe_container)
@@ -60,8 +61,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     EmptyView mEmptyView;
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-
-    public static final float ALPHA_FULL = 1.0f;
     private TrackedBeaconAdapter mBeaconsAdapter;
     private DataManager mDataManager;
 

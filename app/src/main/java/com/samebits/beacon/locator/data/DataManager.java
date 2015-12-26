@@ -53,6 +53,10 @@ public class DataManager {
         return mStoreService.createBeacon(beacon);
     }
 
+    public boolean updateBeacon(IManagedBeacon beacon) {
+        return mStoreService.updateBeacon(beacon);
+    }
+
     public IManagedBeacon getBeacon(String id) {
         return mStoreService.getBeacon(id);
     }

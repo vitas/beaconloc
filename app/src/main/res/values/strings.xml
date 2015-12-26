@@ -93,8 +93,22 @@
     <!-- tracked list fragment -->
     <string name="title_fragment_tracked_beacons">Beacon List</string>
     <string name="text_empty_list_tracked_beacons">No tracked beacons. Go to scan</string>
-    <string name="tab_title_beacon_info">Beacon Data</string>
+    <string name="tab_title_beacon_info">Beacon Info</string>
     <string name="tab_title_beacon_actions">Triggered Actions</string>
 
+    <!-- Beacon Details info dialog tab -->
+    <string name="pref_bd_switch_active">Track it</string>
+    <string name="pref_bd_summary_switch_active">Enables tracking for the beacon</string>
+    <string name="pref_bd_uuid">UUID</string>
+    <string name="pref_bd_rssi">RSSI</string>
+    <string name="pref_bd_txpower">Tx Power</string>
+    <string name="pref_bd_bluetooth_name">Bluetooth Name</string>
+    <string name="pref_bd_distance">Distance</string>
+    <string name="pref_bd_major">Major</string>
+    <string name="pref_bd_minor">Minor</string>
+
+    <!-- Beacon action dialog tab -->
+    <string name="pref_ba_switch_enable">Enable All</string>
+    <string name="pref_ba_summary_switch_enable">Enables actions defined below</string>
 
 </resources>

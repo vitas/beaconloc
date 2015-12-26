@@ -19,82 +19,64 @@
 package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
-import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by vitas on 20/12/15.
  */
-public class BeaconDetailFragment extends Fragment {
+public abstract class PageBeaconFragment extends PreferenceFragmentCompat {
 
-    public static final String ARG_PAGE = "ARG_PAGE";
-    public static final String ARG_BEACON = "ARG_BEACON";
     protected DataManager mDataManager;
     protected IManagedBeacon mBeacon;
-    private int mPage;
+    protected int mPage;
 
-    public static BeaconDetailFragment newInstance(IManagedBeacon beacon, int page) {
-        BeaconDetailFragment detailFragment = new BeaconDetailFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
-        if (beacon != null) {
-            // detailFragment.setBeacon(beacon);
-            args.putParcelable(ARG_BEACON, (Parcelable) beacon);
-        }
-        detailFragment.setArguments(args);
-        return detailFragment;
-    }
 
     public void setBeacon(IManagedBeacon beacon) {
         this.mBeacon = beacon;
     }
 
+    abstract public void onCreatePreferences(Bundle savedInstanceState, String rootKey);
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mDataManager = BeaconLocatorApp.from(getActivity()).getComponent().dataManager();
-
-        readArguments();
-        setRetainInstance(true);
-
-    }
-
-    private void readArguments() {
-        if (getArguments() != null) {
-            mPage = getArguments().getInt(ARG_PAGE);
-            mBeacon = getArguments().getParcelable(ARG_BEACON);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_beacon_detail, container, false);
-        ButterKnife.bind(this, fragmentView);
+        View fragmentView = super.onCreateView(inflater, container, savedInstanceState);
+
+        readArguments();
+        setData();
 
         return fragmentView;
     }
 
+    protected abstract void setData();
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    protected void readArguments() {
+        if (getArguments() != null) {
+            mPage = getArguments().getInt(Constants.ARG_PAGE);
+            mBeacon = getArguments().getParcelable(Constants.ARG_BEACON);
+        }
     }
 
-    private void storeBeacon() {
+    protected void updateBeacon() {
+        mDataManager.updateBeacon(mBeacon);
+    }
+
+
+    protected void storeBeacon() {
         if (mDataManager.storeBeacon(mBeacon)) {
             Log.d(Constants.TAG, String.format("Beacon %s is stored in db", mBeacon.getId()));
         }

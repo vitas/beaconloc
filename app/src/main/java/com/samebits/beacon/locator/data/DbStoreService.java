@@ -96,10 +96,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
 
-    public SQLiteDatabase getDb() {
-        return getWritableDatabase();
-    }
-
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_DATA);
     }
@@ -132,7 +128,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         values.put(ScanColumns.COLUMN_NAME_MINOR, beacon.getMinor());
         values.put(ScanColumns.COLUMN_NAME_IS_TRACKED, beacon.isTracked());
 
-        SQLiteDatabase db = getDb();
+        SQLiteDatabase db = getWritableDatabase();
 
         long res = db.insert(ScanColumns.TABLE_NAME, null, values);
         db.close();
@@ -230,8 +226,8 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
     @Override
     public boolean deleteBeacon(String id) {
-        SQLiteDatabase db = getDb();
-        int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_NAME_UUID + "=?", new String[]{String.valueOf(id)});
+        SQLiteDatabase db = getWritableDatabase();
+        int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
         return (numDeleted == 0) ? false : true;
     }

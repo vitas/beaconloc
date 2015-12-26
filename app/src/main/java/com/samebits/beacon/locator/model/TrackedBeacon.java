@@ -208,6 +208,7 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
         return tracked;
     }
 
+    @Override
     public void setTracked(boolean tracked) {
         this.tracked = tracked;
     }

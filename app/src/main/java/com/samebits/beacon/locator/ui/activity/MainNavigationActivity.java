@@ -46,6 +46,7 @@ import android.view.animation.AnimationUtils;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.fragment.DetectedBeaconsFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanRadarFragment;
@@ -104,7 +105,7 @@ public class MainNavigationActivity extends BaseActivity
         ButterKnife.bind(this);
 
         if (null == savedInstanceState) {
-            launchScanBeaconView();
+            launchTrackedListView();
         }
 
         setupToolbar();
@@ -355,4 +356,17 @@ public class MainNavigationActivity extends BaseActivity
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == Constants.REQ_UPDATED_TRACKED_BEACON) {
+            if (data != null && data.hasExtra(Constants.ARG_BEACON)) {
+                IManagedBeacon updatedBecon = data.getParcelableExtra(Constants.ARG_BEACON);
+
+                //TODO put as extra updated beacon
+                launchTrackedListView();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

@@ -18,6 +18,7 @@
 
 package com.samebits.beacon.locator.viewModel;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -40,6 +41,6 @@ public class TrackedBeaconViewModel extends DetectedBeaconViewModel {
         Intent intent = BeaconActivity.getStartIntent(context);
         intent.putExtra(ARG_BEACON, (Parcelable) managedBeacon);
         intent.putExtra(ARG_MODE, Constants.TRACKED_BEACON_MODE);
-        context.startActivity(intent);
+        ((Activity) context).startActivityForResult(intent, Constants.REQ_UPDATED_TRACKED_BEACON);
     }
 }

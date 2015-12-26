@@ -20,16 +20,17 @@ package com.samebits.beacon.locator.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.ui.fragment.BeaconDetailFragment;
+import com.samebits.beacon.locator.ui.fragment.BeaconActionPageFragment;
+import com.samebits.beacon.locator.ui.fragment.BeaconDetailPageFragment;
+import com.samebits.beacon.locator.ui.fragment.PageBeaconFragment;
 
 /**
  * Created by vitas on 25/12/15.
  */
-public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
+public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
     private int tabTitleResources[] = new int[]{R.string.tab_title_beacon_info, R.string.tab_title_beacon_actions};
     private Context mContext;
@@ -47,16 +48,14 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public BeaconDetailFragment getItem(int position) {
+    public PageBeaconFragment getItem(int position) {
         switch (position) {
             case 0:
-                return BeaconDetailFragment.newInstance(mBeacon, position + 1);
+                return BeaconDetailPageFragment.newInstance(mBeacon, position + 1);
             case 1:
-                //FIXME
-                return BeaconDetailFragment.newInstance(mBeacon, position + 1);
-            default:
-                return BeaconDetailFragment.newInstance(mBeacon, position + 1);
+                return BeaconActionPageFragment.newInstance(mBeacon, position + 1);
         }
+        return null;
     }
 
     @Override
