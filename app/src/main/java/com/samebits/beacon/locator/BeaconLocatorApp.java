@@ -26,6 +26,9 @@ import com.samebits.beacon.locator.injection.component.ApplicationComponent;
 import com.samebits.beacon.locator.injection.component.DaggerApplicationComponent;
 import com.samebits.beacon.locator.injection.module.ApplicationModule;
 
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
+
 
 /**
  * Created by vitas on 18/10/15.
@@ -33,6 +36,9 @@ import com.samebits.beacon.locator.injection.module.ApplicationModule;
 public class BeaconLocatorApp extends Application {
 
     ApplicationComponent applicationComponent;
+
+    private BackgroundPowerSaver backgroundPowerSaver;
+    private BeaconManager beaconManager;
 
     public static BeaconLocatorApp from(@NonNull Context context) {
         return (BeaconLocatorApp) context.getApplicationContext();
@@ -46,6 +52,9 @@ public class BeaconLocatorApp extends Application {
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
+
+        backgroundPowerSaver = new BackgroundPowerSaver(this);
+        beaconManager = applicationComponent.beaconManager();
 
     }
 

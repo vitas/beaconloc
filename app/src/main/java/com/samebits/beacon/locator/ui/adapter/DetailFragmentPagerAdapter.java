@@ -48,7 +48,15 @@ public class DetailFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public BeaconDetailFragment getItem(int position) {
-        return BeaconDetailFragment.newInstance(mBeacon, position + 1);
+        switch (position) {
+            case 0:
+                return BeaconDetailFragment.newInstance(mBeacon, position + 1);
+            case 1:
+                //FIXME
+                return BeaconDetailFragment.newInstance(mBeacon, position + 1);
+            default:
+                return BeaconDetailFragment.newInstance(mBeacon, position + 1);
+        }
     }
 
     @Override

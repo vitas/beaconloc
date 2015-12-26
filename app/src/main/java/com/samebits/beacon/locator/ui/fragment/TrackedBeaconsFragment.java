@@ -18,6 +18,8 @@
 
 package com.samebits.beacon.locator.ui.fragment;
 
+
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -36,6 +38,7 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.ui.adapter.TrackedBeaconAdapter;
+import com.samebits.beacon.locator.ui.view.RemovableViewHolder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,6 +61,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    public static final float ALPHA_FULL = 1.0f;
     private TrackedBeaconAdapter mBeaconsAdapter;
     private DataManager mDataManager;
 
@@ -126,20 +130,8 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
 
     private void setupSwipe() {
 
-        ItemTouchHelper swipeToDismissTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                // callback for drag-n-drop, false to skip this feature
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                // callback for swipe to dismiss, removing item from data and adapter
-                mBeaconsAdapter.removeBeacon(viewHolder.getAdapterPosition());
-            }
-        });
+        ItemTouchHelper swipeToDismissTouchHelper = new ItemTouchHelper(new UndoSwipableCallback(
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT));
         swipeToDismissTouchHelper.attachToRecyclerView(mListBeacons);
     }
 
@@ -169,4 +161,63 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
             mProgressBar.setVisibility(View.VISIBLE);
         }
     }
+
+    class UndoSwipableCallback extends ItemTouchHelper.SimpleCallback {
+
+        public UndoSwipableCallback(int dragDirs, int swipeDirs) {
+            super(dragDirs, swipeDirs);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            mBeaconsAdapter.removeBeacon(viewHolder.getAdapterPosition());
+        }
+
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            if (viewHolder instanceof RemovableViewHolder) {
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(0, swipeFlags);
+            } else
+                return 0;
+        }
+
+        @Override
+        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            getDefaultUIUtil().clearView(((RemovableViewHolder) viewHolder).getSwipableView());
+        }
+
+        @Override
+        public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+            if (viewHolder != null) {
+                getDefaultUIUtil().onSelected(((RemovableViewHolder) viewHolder).getSwipableView());
+            }
+        }
+
+        public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                View v = ((RemovableViewHolder) viewHolder).getSwipableView();
+                // Fade out the view as it is swiped out of the parent's bounds
+                final float alpha = ALPHA_FULL - Math.abs(dX) / (float) v.getWidth();
+                v.setAlpha(alpha);
+                v.setTranslationX(dX);
+                getDefaultUIUtil().onDraw(c, recyclerView, v, dX, dY, actionState, isCurrentlyActive);
+
+            } else {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        }
+
+        public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            getDefaultUIUtil().onDrawOver(c, recyclerView, ((RemovableViewHolder) viewHolder).getSwipableView(), dX, dY, actionState, isCurrentlyActive);
+        }
+
+    }
+
+
 }

@@ -75,7 +75,7 @@ public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.B
         private ItemDetectedBeaconBinding binding;
 
         public BindingHolder(ItemDetectedBeaconBinding binding) {
-            super(binding.cardView);
+            super(binding.contentView);
             this.binding = binding;
         }
     }

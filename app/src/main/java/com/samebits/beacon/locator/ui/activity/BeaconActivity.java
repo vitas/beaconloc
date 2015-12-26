@@ -32,11 +32,12 @@ import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.adapter.DetailFragmentPagerAdapter;
 import com.samebits.beacon.locator.util.Constants;
 
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class BeaconActivity extends BaseActivity {
+public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     public static final String ARG_BEACON = "ARG_BEACON";
     public static final String ARG_MODE = "ARG_MODE";
@@ -91,4 +92,18 @@ public class BeaconActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }

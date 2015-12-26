@@ -20,6 +20,7 @@ package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ import butterknife.ButterKnife;
 /**
  * Created by vitas on 20/12/15.
  */
-public class BeaconDetailFragment extends BaseFragment {
+public class BeaconDetailFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String ARG_BEACON = "ARG_BEACON";
@@ -85,6 +86,7 @@ public class BeaconDetailFragment extends BaseFragment {
 
         return fragmentView;
     }
+
 
     @Override
     public void onDestroyView() {

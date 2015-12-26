@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.ui.view.RemovableViewHolder;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
 
@@ -81,7 +82,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         //coordinatorParams.setBehavior(swipe);
     }
 
-    public static class BindingHolder extends RecyclerView.ViewHolder {
+    public static class BindingHolder extends RemovableViewHolder {
         private ItemTrackedBeaconBinding binding;
 
         public BindingHolder(ItemTrackedBeaconBinding binding) {

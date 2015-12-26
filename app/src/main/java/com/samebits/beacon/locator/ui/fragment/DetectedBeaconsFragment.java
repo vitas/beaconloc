@@ -34,6 +34,7 @@ import android.widget.ProgressBar;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.ui.adapter.DetectedBeaconAdapter;
+import com.samebits.beacon.locator.ui.view.DividerItemDecoration;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.PreferencesUtil;
 
@@ -112,7 +113,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
         mListBeacons.setLayoutManager(new LinearLayoutManager(getActivity()));
         mListBeacons.setHasFixedSize(true);
         mProgressBar.setVisibility(View.GONE);
-        // mListBeacons.addItemDecoration(new DividerItemDecoration(getActivity()));
+        mListBeacons.addItemDecoration(new DividerItemDecoration(getActivity()));
         mListBeacons.setAdapter(mBeaconsAdapter);
     }
 
