@@ -18,6 +18,7 @@
 
 package com.samebits.beacon.locator.ui.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -69,7 +70,7 @@ public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChan
     @Override
     public void finish() {
         //Constants.REQ_UPDATED_TRACKED_BEACON
-        int resultCode = 0;
+        int resultCode = Activity.RESULT_OK;
         Intent resultIntent = new Intent();
         resultIntent.putExtra(Constants.ARG_BEACON, (Parcelable) mBeacon);
         setResult(resultCode, resultIntent);

@@ -19,7 +19,6 @@
         <activity
             android:name=".ui.activity.MainNavigationActivity"
             android:label="@string/title_activity_main_navigation"
-            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

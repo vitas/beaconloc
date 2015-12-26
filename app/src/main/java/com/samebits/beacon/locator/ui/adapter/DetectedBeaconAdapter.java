@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel;
 
 import org.altbeacon.beacon.Beacon;
@@ -39,8 +40,8 @@ import java.util.Iterator;
  */
 public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.BindingHolder> {
 
-    public DetectedBeaconAdapter(Context context) {
-        mContext = context;
+    public DetectedBeaconAdapter(BaseFragment fragment) {
+        mFragment = fragment;
     }
 
     @Override
@@ -56,7 +57,7 @@ public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.B
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
         ItemDetectedBeaconBinding beaconBinding = holder.binding;
-        beaconBinding.setViewModel(new DetectedBeaconViewModel(mContext, (DetectedBeacon) getItem(position)));
+        beaconBinding.setViewModel(new DetectedBeaconViewModel( mFragment, (DetectedBeacon) getItem(position)));
     }
 
 

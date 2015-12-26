@@ -19,6 +19,7 @@
 package com.samebits.beacon.locator.ui.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -37,8 +38,10 @@ import android.widget.ProgressBar;
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.adapter.TrackedBeaconAdapter;
 import com.samebits.beacon.locator.ui.view.RemovableViewHolder;
+import com.samebits.beacon.locator.util.Constants;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,9 +73,22 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQ_UPDATED_TRACKED_BEACON) {
+            if (data != null && data.hasExtra(Constants.ARG_BEACON)) {
+                IManagedBeacon updatedBeacon = data.getParcelableExtra(Constants.ARG_BEACON);
+                if (updatedBeacon != null) {
+                    mBeaconsAdapter.insertBeacon(updatedBeacon);
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBeaconsAdapter = new TrackedBeaconAdapter(getActivity());
+        mBeaconsAdapter = new TrackedBeaconAdapter(this);
         mDataManager = BeaconLocatorApp.from(getActivity()).getComponent().dataManager();
         setRetainInstance(true);
     }

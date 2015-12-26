@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.util.BeaconUtil;
 
 import java.util.LinkedHashMap;
@@ -38,6 +39,7 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
 
     protected Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
     protected Context mContext;
+    protected BaseFragment mFragment;
 
     public void insertBeacon(IManagedBeacon beacon) {
         this.mBeacons.put(beacon.getId(), beacon);

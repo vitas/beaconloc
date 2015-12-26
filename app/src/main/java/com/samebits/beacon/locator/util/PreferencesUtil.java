@@ -33,7 +33,7 @@ public final class PreferencesUtil {
 
     public static SharedPreferences getSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
-        //return BeaconLocatorApp.from(context).getSharedPreferences("beaconloc_pref_name", Context.MODE_PRIVATE);
+        //return BeaconLocatorApp.from(mContext).getSharedPreferences("beaconloc_pref_name", Context.MODE_PRIVATE);
     }
 
     public static String getDefaultRegionName(Context context) {

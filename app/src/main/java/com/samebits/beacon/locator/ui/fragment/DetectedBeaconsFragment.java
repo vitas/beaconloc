@@ -74,7 +74,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBeaconsAdapter = new DetectedBeaconAdapter(getActivity());
+        mBeaconsAdapter = new DetectedBeaconAdapter(this);
     }
 
     @Override

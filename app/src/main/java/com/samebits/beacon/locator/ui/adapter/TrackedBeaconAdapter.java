@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.ui.view.RemovableViewHolder;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
@@ -39,9 +40,8 @@ import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
  */
 public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.BindingHolder> {
 
-
-    public TrackedBeaconAdapter(Context context) {
-        mContext = context;
+    public TrackedBeaconAdapter(BaseFragment fragment) {
+        mFragment = fragment;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
         ItemTrackedBeaconBinding beaconBinding = holder.binding;
-        beaconBinding.setViewModel(new TrackedBeaconViewModel(mContext, (TrackedBeacon) getItem(position)));
+        beaconBinding.setViewModel(new TrackedBeaconViewModel(mFragment, (TrackedBeacon) getItem(position)));
     }
 
 

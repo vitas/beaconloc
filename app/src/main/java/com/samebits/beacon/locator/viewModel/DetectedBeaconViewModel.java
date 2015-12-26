@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.activity.BeaconActivity;
+import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.util.Constants;
 
 /**
@@ -32,14 +33,14 @@ import com.samebits.beacon.locator.util.Constants;
  */
 public class DetectedBeaconViewModel extends BeaconViewModel {
 
-    public DetectedBeaconViewModel(Context context, @NonNull IManagedBeacon managedBeacon) {
-        super(context, managedBeacon);
+    public DetectedBeaconViewModel(@NonNull BaseFragment fragment, @NonNull IManagedBeacon managedBeacon) {
+        super(fragment, managedBeacon);
     }
 
     protected void launchBeaconDetailsActivity() {
-        Intent intent = BeaconActivity.getStartIntent(context);
-        intent.putExtra(ARG_BEACON, (Parcelable) managedBeacon);
+        Intent intent = BeaconActivity.getStartIntent(mFragment.getActivity());
+        intent.putExtra(ARG_BEACON, (Parcelable) mManagedBeacon);
         intent.putExtra(ARG_MODE, Constants.LIVE_BEACON_MODE);
-        context.startActivity(intent);
+        mFragment.startActivity(intent);
     }
 }

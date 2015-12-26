@@ -54,13 +54,14 @@ public class BeaconActionPageFragment extends PageBeaconFragment {
     protected void setData() {
 
         SwitchPreferenceCompat switch_manage = (SwitchPreferenceCompat) findPreference("ba_switch_enable");
-        switch_manage.setChecked(mBeacon.isTracked());
+        //switch_manage.setChecked(mBeacon.isTracked());
 
         switch_manage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue instanceof Boolean) {
                     //TODO save action for beacon
+                    isDirty = true;
                 }
                 return true;
             }

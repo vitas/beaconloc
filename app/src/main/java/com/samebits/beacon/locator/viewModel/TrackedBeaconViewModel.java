@@ -26,21 +26,22 @@ import android.support.annotation.NonNull;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.activity.BeaconActivity;
+import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 19/10/15.
  */
-public class TrackedBeaconViewModel extends DetectedBeaconViewModel {
+public class TrackedBeaconViewModel extends BeaconViewModel {
 
-    public TrackedBeaconViewModel(Context context, @NonNull IManagedBeacon managedBeacon) {
-        super(context, managedBeacon);
+    public TrackedBeaconViewModel(@NonNull BaseFragment fragment, @NonNull IManagedBeacon managedBeacon) {
+        super(fragment, managedBeacon);
     }
 
     protected void launchBeaconDetailsActivity() {
-        Intent intent = BeaconActivity.getStartIntent(context);
-        intent.putExtra(ARG_BEACON, (Parcelable) managedBeacon);
+        Intent intent = BeaconActivity.getStartIntent(mFragment.getActivity());
+        intent.putExtra(ARG_BEACON, (Parcelable) mManagedBeacon);
         intent.putExtra(ARG_MODE, Constants.TRACKED_BEACON_MODE);
-        ((Activity) context).startActivityForResult(intent, Constants.REQ_UPDATED_TRACKED_BEACON);
+        mFragment.startActivityForResult(intent, Constants.REQ_UPDATED_TRACKED_BEACON);
     }
 }

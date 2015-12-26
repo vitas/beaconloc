@@ -27,6 +27,7 @@ import android.view.View;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.util.BeaconUtil;
 
 /**
@@ -36,106 +37,108 @@ public class BeaconViewModel extends BaseObservable {
 
     public static final String ARG_BEACON = "ARG_BEACON";
     public static final String ARG_MODE = "ARG_MODE";
-    protected Context context;
-    protected IManagedBeacon managedBeacon;
+    protected Context mContext;
+    protected IManagedBeacon mManagedBeacon;
+    protected BaseFragment mFragment;
 
-    public BeaconViewModel(Context context, @NonNull IManagedBeacon managedBeacon) {
-        this.context = context;
-        this.managedBeacon = managedBeacon;
+    public BeaconViewModel(@NonNull BaseFragment fragment, @NonNull IManagedBeacon managedBeacon) {
+        this.mManagedBeacon = managedBeacon;
+        this.mFragment = fragment;
+        this.mContext = fragment.getActivity();
     }
 
     public String getRssi() {
-        return String.format("%d", managedBeacon.getRssi());
+        return String.format("%d", mManagedBeacon.getRssi());
     }
 
     public String getTxPower() {
-        return String.format("%d", managedBeacon.getTxPower());
+        return String.format("%d", mManagedBeacon.getTxPower());
     }
 
     public String getId() {
-        return managedBeacon.getId();
+        return mManagedBeacon.getId();
     }
 
     public String getDistance() {
-        return BeaconUtil.getRoundedDistanceString(managedBeacon.getDistance());
+        return BeaconUtil.getRoundedDistanceString(mManagedBeacon.getDistance());
     }
 
     public String getName() {
-        return (managedBeacon.getBluetoothName() == null || managedBeacon.getBluetoothName().isEmpty()) ? managedBeacon.getBluetoothAddress() :
-                managedBeacon.getBluetoothName();
+        return (mManagedBeacon.getBluetoothName() == null || mManagedBeacon.getBluetoothName().isEmpty()) ? mManagedBeacon.getBluetoothAddress() :
+                mManagedBeacon.getBluetoothName();
     }
 
     public String getSeenSince() {
-        return DateUtils.getRelativeTimeSpanString(managedBeacon.getTimeLastSeen(), System.currentTimeMillis(), 0L).toString();
+        return DateUtils.getRelativeTimeSpanString(mManagedBeacon.getTimeLastSeen(), System.currentTimeMillis(), 0L).toString();
     }
 
     private boolean isLostBeacon() {
-        return ((System.currentTimeMillis() - managedBeacon.getTimeLastSeen()) / 1000L > 5L);
+        return ((System.currentTimeMillis() - mManagedBeacon.getTimeLastSeen()) / 1000L > 5L);
     }
 
     public String getBeaconType() {
-        return managedBeacon.getBeaconType().getString();
+        return mManagedBeacon.getBeaconType().getString();
     }
 
     public String getProximity() {
         if (isLostBeacon()) {
             return getSeenSince();
         }
-        return context.getString(BeaconUtil.getProximityResourceId(managedBeacon.getDistance()));
+        return mContext.getString(BeaconUtil.getProximityResourceId(mManagedBeacon.getDistance()));
     }
 
     public int getProximityColor() {
         if (isLostBeacon()) {
-            return context.getResources().getColor(R.color.hn_orange_dark);
+            return mContext.getResources().getColor(R.color.hn_orange_dark);
         }
-        return context.getResources().getColor(android.R.color.tab_indicator_text);
+        return mContext.getResources().getColor(android.R.color.tab_indicator_text);
     }
 
 
     public int visibilityMajor() {
-        return (managedBeacon.isEddyStoneURL()) ? View.GONE : View.VISIBLE;
+        return (mManagedBeacon.isEddyStoneURL()) ? View.GONE : View.VISIBLE;
     }
 
     public int visibilityMinor() {
-        return (managedBeacon.isEddyStoneURL() || managedBeacon.isEddyStoneUID()) ? View.GONE : View.VISIBLE;
+        return (mManagedBeacon.isEddyStoneURL() || mManagedBeacon.isEddyStoneUID()) ? View.GONE : View.VISIBLE;
     }
 
     public String getUuid() {
-        return managedBeacon.getUUID();
+        return mManagedBeacon.getUUID();
     }
 
     public String getMajor() {
-        return managedBeacon.getMajor();
+        return mManagedBeacon.getMajor();
     }
 
     public String getMinor() {
-        return managedBeacon.getMinor();
+        return mManagedBeacon.getMinor();
     }
 
     public String getNameUuid() {
 
-        switch (managedBeacon.getType()) {
+        switch (mManagedBeacon.getType()) {
             case DetectedBeacon.TYPE_EDDYSTONE_URL:
-                return context.getString(R.string.mv_text_url);
+                return mContext.getString(R.string.mv_text_url);
             case DetectedBeacon.TYPE_EDDYSTONE_UID:
-                return context.getString(R.string.mv_text_namespace);
+                return mContext.getString(R.string.mv_text_namespace);
             default:
-                return context.getString(R.string.mv_text_uuid);
+                return mContext.getString(R.string.mv_text_uuid);
         }
     }
 
     public String getNameMajor() {
 
-        switch (managedBeacon.getType()) {
+        switch (mManagedBeacon.getType()) {
             case DetectedBeacon.TYPE_EDDYSTONE_UID:
-                return context.getString(R.string.mv_text_instance);
+                return mContext.getString(R.string.mv_text_instance);
             default:
-                return context.getString(R.string.mv_text_major);
+                return mContext.getString(R.string.mv_text_major);
         }
     }
 
     public String getNameMinor() {
-        return context.getString(R.string.mv_text_minor);
+        return mContext.getString(R.string.mv_text_minor);
     }
 
 

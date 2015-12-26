@@ -62,6 +62,7 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue instanceof Boolean) {
                     mBeacon.setTracked(((Boolean) newValue).booleanValue());
+                    isDirty = true;
                     updateBeacon();
                 }
                 return true;
@@ -71,7 +72,7 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
         findPreference("bd_uuid_info").setSummary(mBeacon.getUUID());
         findPreference("bd_txpower_info").setSummary(String.format("%d dB", mBeacon.getTxPower()));
         findPreference("bd_rssi_info").setSummary(String.format("%d dB", mBeacon.getRssi()));
-        findPreference("bd_bluetooth_name_info").setSummary(mBeacon.getBluetoothName().equals("") ? mBeacon.getBluetoothAddress() : mBeacon.getBluetoothName());
+        findPreference("bd_bluetooth_name_info").setSummary((mBeacon.getBluetoothName() == null || mBeacon.getBluetoothName().equals("")) ? mBeacon.getBluetoothAddress() : mBeacon.getBluetoothName());
         findPreference("bd_distance_info").setSummary(BeaconUtil.getRoundedDistanceString(mBeacon.getDistance()) + " m");
         findPreference("bd_major_info").setSummary(mBeacon.getMajor());
         findPreference("bd_minor_info").setSummary(mBeacon.getMinor());

@@ -38,7 +38,7 @@ public abstract class PageBeaconFragment extends PreferenceFragmentCompat {
     protected DataManager mDataManager;
     protected IManagedBeacon mBeacon;
     protected int mPage;
-
+    protected  boolean isDirty;
 
     public void setBeacon(IManagedBeacon beacon) {
         this.mBeacon = beacon;
