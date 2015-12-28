@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             app:tabMode="scrollable"
             app:tabTextColor="@color/white"
-            app:tabGravity="fill" />
+            app:tabGravity="center" />
 
         <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
 

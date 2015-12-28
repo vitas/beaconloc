@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="key_event">
+
+    <ListPreference
+        android:title="@string/pref_be_event_range"
+        android:key="be_event_range"
+        android:defaultValue="0"
+        android:entries="@array/pref_be_event_range_array"
+        android:entryValues="@array/pref_be_event_values" />
+
+    <CheckBoxPreference
+        android:title="@string/pref_be_event_enter_region"
+        android:key="be_event_enter_region"
+        android:summary="@string/pref_be_summary_event_enter_region"
+        android:checked="true"/>
+
+    <CheckBoxPreference
+        android:title="@string/pref_be_event_leave_region"
+        android:key="be_event_leaves_region"
+        android:summary="@string/pref_be_summary_event_leave_region" />
+
+    <CheckBoxPreference
+        android:title="@string/pref_be_event_near"
+        android:key="be_event_near_you"
+        android:summary="@string/pref_be_summary_event_near" />
+
+</PreferenceScreen>

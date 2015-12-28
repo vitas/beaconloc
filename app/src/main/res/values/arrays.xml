@@ -23,4 +23,17 @@
         <item>60000</item>
     </string-array>
 
+    <string-array name="pref_be_event_range_array">
+        <item>@string/pref_be_event_enter_region</item>
+        <item>@string/pref_be_event_leave_region</item>
+        <item>@string/pref_be_event_near</item>
+    </string-array>
+
+    <string-array name="pref_be_event_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+
 </resources>

@@ -21,6 +21,7 @@ package com.samebits.beacon.locator.viewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.view.View;
 
@@ -89,9 +90,9 @@ public class BeaconViewModel extends BaseObservable {
 
     public int getProximityColor() {
         if (isLostBeacon()) {
-            return mContext.getResources().getColor(R.color.hn_orange_dark);
+            return ContextCompat.getColor(mContext, R.color.hn_orange_dark);
         }
-        return mContext.getResources().getColor(android.R.color.tab_indicator_text);
+        return ContextCompat.getColor(mContext, android.R.color.tab_indicator_text);
     }
 
 

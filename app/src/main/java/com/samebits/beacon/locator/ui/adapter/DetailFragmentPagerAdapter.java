@@ -25,14 +25,14 @@ import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.fragment.BeaconActionPageFragment;
 import com.samebits.beacon.locator.ui.fragment.BeaconDetailPageFragment;
+import com.samebits.beacon.locator.ui.fragment.BeaconEventPageFragment;
 import com.samebits.beacon.locator.ui.fragment.PageBeaconFragment;
 
 /**
  * Created by vitas on 25/12/15.
  */
 public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
-    final int PAGE_COUNT = 2;
-    private int tabTitleResources[] = new int[]{R.string.tab_title_beacon_info, R.string.tab_title_beacon_actions};
+    private int tabTitleResources[] = new int[]{R.string.tab_title_beacon_info, R.string.tab_title_beacon_event, R.string.tab_title_beacon_action};
     private Context mContext;
     private IManagedBeacon mBeacon;
 
@@ -44,7 +44,7 @@ public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentP
 
     @Override
     public int getCount() {
-        return PAGE_COUNT;
+        return tabTitleResources.length;
     }
 
     @Override
@@ -53,6 +53,8 @@ public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentP
             case 0:
                 return BeaconDetailPageFragment.newInstance(mBeacon, position + 1);
             case 1:
+                return BeaconEventPageFragment.newInstance(mBeacon, position + 1);
+            case 2:
                 return BeaconActionPageFragment.newInstance(mBeacon, position + 1);
         }
         return null;
