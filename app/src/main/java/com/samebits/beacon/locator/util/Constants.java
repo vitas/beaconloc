@@ -33,7 +33,6 @@ public final class Constants {
     public static final String TAG_FRAGMENT_BEACON_DETAIL = "BEACON_DETAIL";
     public static final String TAG_FRAGMENT_TRACKED_BEACON_LIST = "TRACKED_BEACON_LIST";
 
-
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String ARG_MODE = "ARG_MODE";
     public static final String ARG_BEACON = "ARG_BEACON";
@@ -42,6 +41,19 @@ public final class Constants {
     public static final int TRACKED_BEACON_MODE = 1;
 
     public static final int REQ_UPDATED_TRACKED_BEACON = 10080;
+    public static final int REQ_TASKER_ACTION_NAME_REQUEST = 10081;
+
+    public final static int EVENT_EMPTY = 0;
+    public final static int EVENT_ENTERS_REGION = 1;
+    public final static int EVENT_LEAVES_REGION = 2;
+    public final static int EVENT_NEAR_YOU = 3;
+
+    public final static int ACTION_EMPTY = 0;
+    public final static int ACTION_INTENT_ACTION = 1;
+    public final static int ACTION_URL = 2;
+    public final static int ACTION_NOTIFICATION = 3;
+    public final static int ACTION_SILENT_MODE = 4;
+    public final static int ACTION_TASKER = 5;
 
 
     private Constants() {

@@ -18,6 +18,8 @@
 
 package com.samebits.beacon.locator.ui.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.preference.Preference;
@@ -31,7 +33,6 @@ import com.samebits.beacon.locator.util.Constants;
  * Created by vitas on 20/12/15.
  */
 public class BeaconActionPageFragment extends PageBeaconFragment {
-
 
     public static BeaconActionPageFragment newInstance(IManagedBeacon beacon, int page) {
         BeaconActionPageFragment detailFragment = new BeaconActionPageFragment();
@@ -69,4 +70,18 @@ public class BeaconActionPageFragment extends PageBeaconFragment {
 
     }
 
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQ_TASKER_ACTION_NAME_REQUEST) {
+            if (data != null) {
+                final String id = data.getStringExtra("id");
+                final String taskName = data.getDataString();
+
+               // mDataManager.updateBeaconAction(id, taskName);
+                //updateAction(BeaconContract.ACTION_TASKER);
+            }
+        }
+    }
 }

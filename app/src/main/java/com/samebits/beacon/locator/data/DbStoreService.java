@@ -26,6 +26,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
@@ -42,7 +43,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     public static final String DATABASE_PATH = "com.samebits.beacon.locator";
 
     private static final String SEPARATOR = ",";
-    private static final String SQL_CREATE_DATA = "CREATE TABLE IF NOT EXISTS "
+    private static final String BEACON_SQL_CREATE_DATA = "CREATE TABLE IF NOT EXISTS "
             + ScanColumns.TABLE_NAME
             + "("
             + ScanColumns.COLUMN_NAME_ID
@@ -88,20 +89,52 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
             + ScanColumns.COLUMN_NAME_LAST_SEEN_TIME + SEPARATOR
             + ScanColumns.COLUMN_NAME_ID + "))";
 
-    private static final String SQL_DELETE_DATA = "DROP TABLE IF EXISTS "
+    private static final String BEACON_ACTION_SQL_CREATE_DATA = "CREATE TABLE IF NOT EXISTS "
+            + ActionColumns.TABLE_NAME
+            + "("
+            + ActionColumns.COLUMN_ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT"
+            + SEPARATOR
+            + ActionColumns.COLUMN_NAME_BEACON_ID
+            + " TEXT NOT NULL"
+            + SEPARATOR
+            + ActionColumns.COLUMN_NAME
+            + " TEXT"
+            + SEPARATOR
+            + ActionColumns.COLUMN_EVENT_TYPE
+            + " INTEGER NOT NULL"
+            + SEPARATOR
+            + ActionColumns.COLUMN_ACTION_TYPE
+            + " INTEGER NOT NULL"
+            + SEPARATOR
+            + ActionColumns.COLUMN_ACTION_PARAMS
+            + " TEXT"
+            + SEPARATOR
+            + ActionColumns.COLUMN_IS_ENABLED
+            + " BOOLEAN"
+            + SEPARATOR
+            + " PRIMARY KEY ("
+            + ActionColumns.COLUMN_ID + SEPARATOR
+            + ActionColumns.COLUMN_NAME_BEACON_ID + "))";
+
+    private static final String BEACON_SQL_DELETE_DATA = "DROP TABLE IF EXISTS "
             + ScanColumns.TABLE_NAME;
+
+    private static final String BEACON_ACTION_SQL_DELETE_DATA = "DROP TABLE IF EXISTS "
+            + ActionColumns.TABLE_NAME;
 
     public DbStoreService(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_DATA);
+        db.execSQL(BEACON_SQL_CREATE_DATA);
+        db.execSQL(BEACON_ACTION_SQL_CREATE_DATA);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_DATA);
+        db.execSQL(BEACON_SQL_DELETE_DATA);
+        db.execSQL(BEACON_ACTION_SQL_DELETE_DATA);
 
         onCreate(db);
     }
@@ -136,6 +169,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
     }
 
+
     @Override
     public boolean updateBeacon(IManagedBeacon beacon) {
         deleteBeacon(beacon.getId());
@@ -163,7 +197,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                         ScanColumns.COLUMN_NAME_IS_TRACKED
                 },
                 ScanColumns.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
-
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -224,6 +257,52 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         return beacons;
     }
 
+
+    @Override
+    public boolean createBeaconAction(ActionBeacon beacon) {
+        ContentValues values = new ContentValues();
+
+        values.put(ActionColumns.COLUMN_NAME_BEACON_ID, beacon.getBeaconId());
+        values.put(ActionColumns.COLUMN_TIME, beacon.getTime());
+        values.put(ActionColumns.COLUMN_NAME, beacon.getName());
+        values.put(ActionColumns.COLUMN_EVENT_TYPE, beacon.getEventType());
+        values.put(ActionColumns.COLUMN_ACTION_TYPE, beacon.getActionType());
+        values.put(ActionColumns.COLUMN_ACTION_PARAMS, beacon.getActionParam());
+        values.put(ActionColumns.COLUMN_IS_ENABLED, beacon.isEnabled());
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        long res = db.insert(ActionColumns.TABLE_NAME, null, values);
+        db.close();
+        return (res == -1) ? false : true;
+    }
+
+    @Override
+    public boolean updateBeaconAction(ActionBeacon beacon) {
+        deleteBeaconAction(beacon.getId());
+        return createBeaconAction(beacon);
+    }
+
+    @Override
+    public List<ActionBeacon> getBeaconActions(String beaconId) {
+        return null;
+    }
+
+
+    @Override
+    public boolean deleteBeaconAction(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        int numDeleted = db.delete(ActionColumns.TABLE_NAME, ActionColumns.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+        db.close();
+        return (numDeleted == 0) ? false : true;
+    }
+
+    @Override
+    public boolean deleteBeaconActions(String beaconId) {
+        return false;
+    }
+
+
     @Override
     public boolean deleteBeacon(String id) {
         SQLiteDatabase db = getWritableDatabase();
@@ -247,7 +326,17 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         public static final String COLUMN_NAME_MAJOR = "major";
         public static final String COLUMN_NAME_MINOR = "minor";
         public static final String COLUMN_NAME_IS_TRACKED = "is_tracked";
-
     }
 
+    protected static abstract class ActionColumns implements BaseColumns {
+        public static final String TABLE_NAME = "ActionBeacon";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_NAME_BEACON_ID = "beacon_id";
+        public static final String COLUMN_TIME = "time";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_EVENT_TYPE = "event_type";
+        public static final String COLUMN_ACTION_TYPE = "action_type";
+        public static final String COLUMN_ACTION_PARAMS = "action_param";
+        public static final String COLUMN_IS_ENABLED = "is_enabled";
+    }
 }

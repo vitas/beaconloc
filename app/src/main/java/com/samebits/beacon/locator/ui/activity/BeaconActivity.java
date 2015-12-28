@@ -115,4 +115,5 @@ public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChan
     public void onPageScrollStateChanged(int state) {
 
     }
+
 }
