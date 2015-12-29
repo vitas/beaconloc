@@ -26,17 +26,7 @@ import android.os.Parcelable;
  * Created by vitas on 20/12/15.
  */
 public class TrackedBeacon implements IManagedBeacon, Parcelable {
-    public static final Creator<TrackedBeacon> CREATOR = new Creator<TrackedBeacon>() {
-        @Override
-        public TrackedBeacon createFromParcel(Parcel in) {
-            return new TrackedBeacon(in);
-        }
 
-        @Override
-        public TrackedBeacon[] newArray(int size) {
-            return new TrackedBeacon[size];
-        }
-    };
     private String id;
     private String uuid = "";
     private long lastSeenTime;
@@ -85,6 +75,18 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
         urlEddystone = in.readString();
         tracked = in.readByte() != 0;
     }
+
+    public static final Creator<TrackedBeacon> CREATOR = new Creator<TrackedBeacon>() {
+        @Override
+        public TrackedBeacon createFromParcel(Parcel in) {
+            return new TrackedBeacon(in);
+        }
+
+        @Override
+        public TrackedBeacon[] newArray(int size) {
+            return new TrackedBeacon[size];
+        }
+    };
 
     @Override
     public BeaconType getBeaconType() {
