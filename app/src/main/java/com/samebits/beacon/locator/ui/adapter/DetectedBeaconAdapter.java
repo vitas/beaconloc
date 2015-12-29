@@ -70,7 +70,6 @@ public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.B
         notifyDataSetChanged();
     }
 
-
     public static class BindingHolder extends RecyclerView.ViewHolder {
         private ItemDetectedBeaconBinding binding;
 

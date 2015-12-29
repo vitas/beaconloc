@@ -41,7 +41,6 @@ import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.adapter.TrackedBeaconAdapter;
-import com.samebits.beacon.locator.ui.view.RemovableViewHolder;
 import com.samebits.beacon.locator.util.Constants;
 
 import butterknife.Bind;
@@ -56,8 +55,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     public static final float ALPHA_FULL = 1.0f;
     @Bind(R.id.recycler_beacons)
     RecyclerView mListBeacons;
-    @Bind(R.id.swipe_container)
-    SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.progress_indicator)
     ProgressBar mProgressBar;
     @Bind(R.id.empty_view)
@@ -101,7 +98,8 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
 
         setupToolbar();
         setupRecyclerView();
-        setupSwipe();
+
+        //setupSwipe();
         loadBeacons();
 
         return fragmentView;
@@ -109,6 +107,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
 
     private void loadBeacons() {
         showLoadingViews();
+
         mBeaconsAdapter.insertBeacons(mDataManager.getAllBeacons());
 
         if (getArguments() != null && !getArguments().isEmpty()) {
@@ -145,9 +144,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         mEmptyView = new EmptyView(viewFromEmpty);
         mEmptyView.text.setText(getString(R.string.text_empty_list_tracked_beacons));
 
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.hn_orange);
-
         mListBeacons.setLayoutManager(new LinearLayoutManager(getActivity()));
         mListBeacons.setHasFixedSize(true);
         mProgressBar.setVisibility(View.GONE);
@@ -180,7 +176,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.GONE);
         }
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void showLoadingViews() {
@@ -203,45 +198,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
             mBeaconsAdapter.removeBeacon(viewHolder.getAdapterPosition());
-        }
-
-        @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            if (viewHolder instanceof RemovableViewHolder) {
-                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-                return makeMovementFlags(0, swipeFlags);
-            } else
-                return 0;
-        }
-
-        @Override
-        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            getDefaultUIUtil().clearView(((RemovableViewHolder) viewHolder).getSwipableView());
-        }
-
-        @Override
-        public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
-            if (viewHolder != null) {
-                getDefaultUIUtil().onSelected(((RemovableViewHolder) viewHolder).getSwipableView());
-            }
-        }
-
-        public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                View v = ((RemovableViewHolder) viewHolder).getSwipableView();
-                // Fade out the view as it is swiped out of the parent's bounds
-                final float alpha = ALPHA_FULL - Math.abs(dX) / (float) v.getWidth();
-                v.setAlpha(alpha);
-                v.setTranslationX(dX);
-                getDefaultUIUtil().onDraw(c, recyclerView, v, dX, dY, actionState, isCurrentlyActive);
-
-            } else {
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-        }
-
-        public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            getDefaultUIUtil().onDrawOver(c, recyclerView, ((RemovableViewHolder) viewHolder).getSwipableView(), dX, dY, actionState, isCurrentlyActive);
         }
 
     }

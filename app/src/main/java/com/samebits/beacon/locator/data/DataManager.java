@@ -24,7 +24,7 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.injection.component.DaggerDataComponent;
 import com.samebits.beacon.locator.injection.module.DataModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import java.util.List;
 
@@ -50,19 +50,19 @@ public class DataManager {
                 .inject(this);
     }
 
-    public boolean storeBeacon(IManagedBeacon beacon) {
+    public boolean storeBeacon(TrackedBeacon beacon) {
         return mStoreService.createBeacon(beacon);
     }
 
-    public boolean updateBeacon(IManagedBeacon beacon) {
+    public boolean updateBeacon(TrackedBeacon beacon) {
         return mStoreService.updateBeacon(beacon);
     }
 
-    public IManagedBeacon getBeacon(String id) {
+    public TrackedBeacon getBeacon(String id) {
         return mStoreService.getBeacon(id);
     }
 
-    public List<IManagedBeacon> getAllBeacons() {
+    public List<TrackedBeacon> getAllBeacons() {
         return mStoreService.getBeacons();
     }
 

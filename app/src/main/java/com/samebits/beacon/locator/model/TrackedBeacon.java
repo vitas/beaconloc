@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by vitas on 20/12/15.
  */
-public class TrackedBeacon implements IManagedBeacon, Parcelable {
+public class TrackedBeacon implements IManagedBeacon, ITraceable, Parcelable {
 
     private String id;
     private String uuid = "";
@@ -212,8 +212,14 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
         this.urlEddystone = url;
     }
 
+    @Override
     public boolean isTracked() {
         return tracked;
+    }
+
+    @Override
+    public void setTracked(boolean tracked) {
+        this.tracked = tracked;
     }
 
     @Override
@@ -225,12 +231,6 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
             //throw
         }
     }
-
-    @Override
-    public void setTracked(boolean tracked) {
-        this.tracked = tracked;
-    }
-
 
     @Override
     public List<ActionBeacon> getActions() {

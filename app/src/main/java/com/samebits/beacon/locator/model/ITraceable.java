@@ -16,27 +16,21 @@
  *
  */
 
-package com.samebits.beacon.locator.ui.view;
+package com.samebits.beacon.locator.model;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ListView;
-
-import com.samebits.beacon.locator.R;
+import java.util.List;
 
 /**
- * Created by vitas on 25/12/15.
+ * Created by vitas on 29/12/15.
  */
-public class RemovableViewHolder extends RecyclerView.ViewHolder {
-    private View mRemoveableView;
+public interface ITraceable {
+    void addAction(ActionBeacon action);
 
-    public RemovableViewHolder(final View itemView) {
-        super(itemView);
-        mRemoveableView = itemView.findViewById(R.id.removable_item);
-    }
+    List<ActionBeacon> getActions();
 
-    public View getSwipableView() {
-        return mRemoveableView;
-    }
+    void addActions(List<ActionBeacon> actions);
 
+    public boolean isTracked();
+
+    public void setTracked(boolean value);
 }

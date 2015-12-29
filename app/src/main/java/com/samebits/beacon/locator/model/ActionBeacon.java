@@ -21,6 +21,8 @@ package com.samebits.beacon.locator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 /**
  * Created by vitas on 28/12/15.
  */
@@ -31,16 +33,17 @@ public class ActionBeacon implements Parcelable {
     private String name;
     private EventType eventType = EventType.EVENT_EMPTY;
     private ActionType actionType = ActionType.ACTION_EMPTY;
-    private String actionParam;
+    private String actionParam = "";
     private boolean isEnabled;
 
     public ActionBeacon(String beaconId, String name) {
         this.beaconId = beaconId;
         this.name = name;
+        this.time = new Date().getTime();
     }
 
     public ActionBeacon() {
-
+        this.time = new Date().getTime();
     }
 
     protected ActionBeacon(Parcel in) {
@@ -173,9 +176,8 @@ public class ActionBeacon implements Parcelable {
         ACTION_INTENT_ACTION(1),
         ACTION_URL(2),
         ACTION_NOTIFICATION(3),
-        EDDYSTONE_TLM(4),
-        ACTION_SILENT_MODE(5),
-        ACTION_TASKER(6);
+        ACTION_SILENT_MODE(4),
+        ACTION_TASKER(5);
 
         private final int value;
         ActionType(int value) {

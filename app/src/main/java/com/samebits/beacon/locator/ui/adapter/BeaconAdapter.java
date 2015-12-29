@@ -38,7 +38,6 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH> {
 
     protected Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
-    protected Context mContext;
     protected BaseFragment mFragment;
 
     public void insertBeacon(IManagedBeacon beacon) {
@@ -46,7 +45,7 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-    public void insertBeacons(List<IManagedBeacon> beacons) {
+    public void insertBeacons(List<? extends IManagedBeacon> beacons) {
         for (IManagedBeacon beacon :
                 beacons) {
             this.mBeacons.put(beacon.getId(), beacon);
@@ -87,7 +86,6 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
         this.mBeacons.clear();
         notifyDataSetChanged();
     }
-
 
 
 }

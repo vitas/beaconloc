@@ -106,31 +106,6 @@ public class DetectedBeacon extends Beacon implements IManagedBeacon {
     }
 
     @Override
-    public boolean isTracked() {
-        return false;
-    }
-
-    @Override
-    public void setTracked(boolean value) {
-
-    }
-
-    @Override
-    public void addAction(ActionBeacon action) {
-
-    }
-
-    @Override
-    public List<ActionBeacon> getActions() {
-        return Collections.EMPTY_LIST;
-    }
-
-    @Override
-    public void addActions(List<ActionBeacon> actions) {
-
-    }
-
-    @Override
     public BeaconType getBeaconType() {
         if (isEddystone()) {
             switch (getBeaconTypeCode()) {

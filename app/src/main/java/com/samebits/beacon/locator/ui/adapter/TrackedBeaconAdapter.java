@@ -18,32 +18,22 @@
 
 package com.samebits.beacon.locator.ui.adapter;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.SwipeDismissBehavior;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
-import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
-import com.samebits.beacon.locator.ui.view.RemovableViewHolder;
 import com.samebits.beacon.locator.ui.view.WrapLinearLayoutManager;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
-
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by vitas on 09/12/2015.
@@ -97,8 +87,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
 
     }
 
-
-    public static class BindingHolder extends RemovableViewHolder {
+    public static class BindingHolder extends RecyclerView.ViewHolder {
         private ItemTrackedBeaconBinding binding;
 
         public BindingHolder(ItemTrackedBeaconBinding binding) {

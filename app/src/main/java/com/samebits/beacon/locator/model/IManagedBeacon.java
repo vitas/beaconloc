@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by vitas on 23/12/15.
  */
-public interface IManagedBeacon {
+public interface IManagedBeacon  {
     public String getId();
 
     public int getType();
@@ -61,15 +61,6 @@ public interface IManagedBeacon {
 
     public boolean isEddystone();
 
-    public boolean isTracked();
-
-    public void setTracked(boolean value);
-
-    void addAction(ActionBeacon action);
-
-    List<ActionBeacon> getActions();
-
-    void addActions(List<ActionBeacon> actions);
 
     public enum BeaconType {
         UNSPECIFIED("Unspecified"),
@@ -111,6 +102,5 @@ public interface IManagedBeacon {
         }
 
     }
-
 
 }
