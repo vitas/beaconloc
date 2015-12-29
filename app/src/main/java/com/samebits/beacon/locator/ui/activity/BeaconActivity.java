@@ -40,8 +40,6 @@ import butterknife.ButterKnife;
 
 public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
-    protected int mMode = Constants.LIVE_BEACON_MODE;
-    protected IManagedBeacon mBeacon;
     @Bind(R.id.fab)
     FloatingActionButton fab;
     @Bind(R.id.toolbar)
@@ -90,14 +88,6 @@ public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChan
         final ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    private void readExtras() {
-        Intent intent = getIntent();
-        if (intent.getExtras() != null) {
-            mMode = intent.getExtras().getInt(Constants.ARG_MODE, Constants.TRACKED_BEACON_MODE);
-            mBeacon = intent.getExtras().getParcelable(Constants.ARG_BEACON);
         }
     }
 

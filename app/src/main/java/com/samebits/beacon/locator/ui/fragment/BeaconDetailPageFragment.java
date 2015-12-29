@@ -24,7 +24,9 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -63,12 +65,18 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
                 if (newValue instanceof Boolean) {
                     mBeacon.setTracked(((Boolean) newValue).booleanValue());
                     isDirty = true;
+
+                    //FIXME remove
+                    mBeacon.addAction(new ActionBeacon("test1", "test1"));
+                    mBeacon.addAction(new ActionBeacon("test2", "test2"));
+
                     updateBeacon();
                 }
                 return true;
             }
         });
 
+        findPreference("bd_type_info").setSummary(mBeacon.getBeaconType().getString());
         findPreference("bd_uuid_info").setSummary(mBeacon.getUUID());
         findPreference("bd_txpower_info").setSummary(String.format("%d dB", mBeacon.getTxPower()));
         findPreference("bd_rssi_info").setSummary(String.format("%d dB", mBeacon.getRssi()));

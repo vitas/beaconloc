@@ -39,7 +39,6 @@ public class TrackedBeaconViewModel extends BeaconViewModel {
     protected void launchBeaconDetailsActivity() {
         Intent intent = BeaconActivity.getStartIntent(mFragment.getActivity());
         intent.putExtra(ARG_BEACON, (Parcelable) mManagedBeacon);
-        intent.putExtra(ARG_MODE, Constants.TRACKED_BEACON_MODE);
         mFragment.startActivityForResult(intent, Constants.REQ_UPDATED_TRACKED_BEACON);
     }
 }

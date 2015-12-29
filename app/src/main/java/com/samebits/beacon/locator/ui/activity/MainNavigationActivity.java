@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -97,16 +98,11 @@ public class MainNavigationActivity extends BaseActivity
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_navigation);
         ButterKnife.bind(this);
-
-        if (null == savedInstanceState) {
-            launchTrackedListView();
-        }
 
         setupToolbar();
 
@@ -116,6 +112,13 @@ public class MainNavigationActivity extends BaseActivity
 
         checkPermissions();
         verifyBluetooth();
+
+        readExtras();
+
+        if (null == savedInstanceState || mBeacon != null) {
+            launchTrackedListView();
+        }
+
     }
 
     private void setupToolbar() {
@@ -287,10 +290,17 @@ public class MainNavigationActivity extends BaseActivity
     private void addTrackedListFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager != null) {
-            if (checkFragmentInstance(R.id.content_frame, TrackedBeaconsFragment.class) == null) {
+            Fragment frg = checkFragmentInstance(R.id.content_frame, TrackedBeaconsFragment.class);
+            if ( frg == null) {
+                TrackedBeaconsFragment tFrg = TrackedBeaconsFragment.newInstance();
+                if (mBeacon != null) {
+                    Bundle bundles = new Bundle();
+                    bundles.putParcelable(Constants.ARG_BEACON, mBeacon);
+                    tFrg.setArguments(bundles);
+                }
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.content_frame, TrackedBeaconsFragment.newInstance(), Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST)
+                        .replace(R.id.content_frame, tFrg, Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST)
                         .commit();
             }
         }

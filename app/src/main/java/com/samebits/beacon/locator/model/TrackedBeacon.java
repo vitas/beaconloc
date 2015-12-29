@@ -21,6 +21,9 @@ package com.samebits.beacon.locator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by vitas on 20/12/15.
@@ -40,8 +43,9 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
     private int type = -1;
     private String urlEddystone;
     private boolean tracked;
+    private List<ActionBeacon> actions = new ArrayList<>();
 
-    public TrackedBeacon(DetectedBeacon detectedBeacon) {
+    public TrackedBeacon(IManagedBeacon detectedBeacon) {
         setId(detectedBeacon.getId());
         setTimeLastSeen(detectedBeacon.getTimeLastSeen());
         setBluetoothName(detectedBeacon.getBluetoothName());
@@ -74,6 +78,8 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
         type = in.readInt();
         urlEddystone = in.readString();
         tracked = in.readByte() != 0;
+        this.actions = new ArrayList<>();
+        in.readList(actions, getClass().getClassLoader());
     }
 
     public static final Creator<TrackedBeacon> CREATOR = new Creator<TrackedBeacon>() {
@@ -90,7 +96,7 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
 
     @Override
     public BeaconType getBeaconType() {
-        return getType() == -1 ? BeaconType.UNSPECIFIED : BeaconType.values()[getType()];
+        return getType() == -1 ? BeaconType.UNSPECIFIED : BeaconType.fromInt(getType());
     }
 
     @Override
@@ -211,8 +217,29 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
     }
 
     @Override
+    public void addAction(ActionBeacon action) {
+        if (!this.actions.contains(action)) {
+            action.setBeaconId(getId());
+            this.actions.add(action);
+        } else {
+            //throw
+        }
+    }
+
+    @Override
     public void setTracked(boolean tracked) {
         this.tracked = tracked;
+    }
+
+
+    @Override
+    public List<ActionBeacon> getActions() {
+        return actions;
+    }
+
+    @Override
+    public void addActions(List<ActionBeacon> actions) {
+        this.actions.addAll(actions);
     }
 
     @Override
@@ -235,6 +262,7 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
         dest.writeInt(type);
         dest.writeString(urlEddystone);
         dest.writeByte((byte) (tracked ? 1 : 0));
+        dest.writeList(actions);
     }
 
     @Override
@@ -257,6 +285,4 @@ public class TrackedBeacon implements IManagedBeacon, Parcelable {
         return (getBeaconType() == BeaconType.EDDYSTONE_UID)
                 || (getBeaconType() == BeaconType.EDDYSTONE_URL) || (getBeaconType() == BeaconType.EDDYSTONE_TLM);
     }
-
-
 }

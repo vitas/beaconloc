@@ -20,6 +20,7 @@ package com.samebits.beacon.locator.ui.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ListView;
 
 import com.samebits.beacon.locator.R;
 

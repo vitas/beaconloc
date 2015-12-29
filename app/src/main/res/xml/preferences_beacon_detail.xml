@@ -7,6 +7,9 @@
         android:key="bd_switch_active"
         android:summary="@string/pref_bd_summary_switch_active"/>
     <Preference
+        android:title="@string/pref_bd_type"
+        android:key="bd_type_info"/>
+    <Preference
         android:title="@string/pref_bd_uuid"
         android:key="bd_uuid_info"/>
     <Preference

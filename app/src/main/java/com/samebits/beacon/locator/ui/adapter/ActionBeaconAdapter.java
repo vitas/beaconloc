@@ -18,36 +18,41 @@
 
 package com.samebits.beacon.locator.ui.adapter;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+
 import com.samebits.beacon.locator.R;
+//import com.samebits.beacon.locator.databinding.ItemActionBeaconBinding;
+import com.samebits.beacon.locator.databinding.ItemActionBeaconBinding;
 import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
-import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
-import com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel;
+import com.samebits.beacon.locator.viewModel.ActionBeaconViewModel;
 
-import org.altbeacon.beacon.Beacon;
-
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by vitas on 09/12/2015.
+ * Created by vitas on 19/10/15.
  */
-public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.BindingHolder> {
+public class ActionBeaconAdapter extends RecyclerView.Adapter<ActionBeaconAdapter.BindingHolder> {
+    private List<ActionBeacon> mItemsList;
+    private BaseFragment mFragment;
 
-    public DetectedBeaconAdapter(BaseFragment fragment) {
+    public ActionBeaconAdapter(BaseFragment fragment) {
         mFragment = fragment;
+        mItemsList = new ArrayList<>();
     }
 
     @Override
     public BindingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemDetectedBeaconBinding beaconBinding = DataBindingUtil.inflate(
+        ItemActionBeaconBinding beaconBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_detected_beacon,
+                R.layout.item_action_beacon,
                 parent,
                 false);
         return new BindingHolder(beaconBinding);
@@ -55,26 +60,34 @@ public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.B
 
     @Override
     public void onBindViewHolder(BindingHolder holder, int position) {
-        ItemDetectedBeaconBinding beaconBinding = holder.binding;
-        beaconBinding.setViewModel(new DetectedBeaconViewModel( mFragment, (DetectedBeacon) getItem(position)));
+        ItemActionBeaconBinding itemBinding = holder.binding;
+        itemBinding.setViewModel(new ActionBeaconViewModel(mFragment, mItemsList.get(position)));
     }
 
+    @Override
+    public int getItemCount() {
+        return mItemsList.size();
+    }
 
-    public void insertBeacons(Collection<Beacon> beacons) {
-        Iterator<Beacon> iterator = beacons.iterator();
-        while (iterator.hasNext()) {
-            DetectedBeacon dBeacon = new DetectedBeacon(iterator.next());
-            dBeacon.setTimeLastSeen(System.currentTimeMillis());
-            this.mBeacons.put(dBeacon.getId(), dBeacon);
-        }
+    public void setItems(List<ActionBeacon> itemsList) {
+        this.mItemsList = itemsList;
         notifyDataSetChanged();
     }
 
+    public void addItem(ActionBeacon itemsList) {
+        if (!this.mItemsList.contains(itemsList)) {
+            this.mItemsList.add(itemsList);
+            notifyItemInserted(this.mItemsList.size() - 1);
+        } else {
+            this.mItemsList.set(mItemsList.indexOf(itemsList), itemsList);
+            notifyItemChanged(this.mItemsList.indexOf(itemsList));
+        }
+    }
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
-        private ItemDetectedBeaconBinding binding;
+        private ItemActionBeaconBinding binding;
 
-        public BindingHolder(ItemDetectedBeaconBinding binding) {
+        public BindingHolder(ItemActionBeaconBinding binding) {
             super(binding.contentView);
             this.binding = binding;
         }

@@ -19,6 +19,8 @@
 package com.samebits.beacon.locator.model;
 
 
+import java.util.List;
+
 /**
  * Created by vitas on 23/12/15.
  */
@@ -63,6 +65,12 @@ public interface IManagedBeacon {
 
     public void setTracked(boolean value);
 
+    void addAction(ActionBeacon action);
+
+    List<ActionBeacon> getActions();
+
+    void addActions(List<ActionBeacon> actions);
+
     public enum BeaconType {
         UNSPECIFIED("Unspecified"),
         EDDYSTONE("Eddystone"),
@@ -76,6 +84,15 @@ public interface IManagedBeacon {
 
         BeaconType(String string) {
             this.string = string;
+        }
+
+        public static BeaconType fromInt(int value) {
+            for (BeaconType type : BeaconType.values()) {
+                if (type.ordinal() == value) {
+                    return type;
+                }
+            }
+            return UNSPECIFIED;
         }
 
         public static BeaconType fromString(String string) {

@@ -88,11 +88,6 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-    public static class VH extends RecyclerView.ViewHolder {
 
-        public VH(View v) {
-            super(v);
-        }
-    }
 
 }

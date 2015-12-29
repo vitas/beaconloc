@@ -31,14 +31,9 @@ public final class Constants {
     public static final String TAG_FRAGMENT_SCAN_LIST = "SCAN_LIST";
     public static final String TAG_FRAGMENT_SCAN_RADAR = "SCAN_RADAR";
     public static final String TAG_FRAGMENT_TRACKED_BEACON_LIST = "TRACKED_BEACON_LIST";
-    public static final String TAG_FRAGMENT_ACTION_BEACON_LIST = "ACTION_BEACON_LIST";
 
     public static final String ARG_PAGE = "ARG_PAGE";
-    public static final String ARG_MODE = "ARG_MODE";
     public static final String ARG_BEACON = "ARG_BEACON";
-
-    public static final int LIVE_BEACON_MODE = 0;
-    public static final int TRACKED_BEACON_MODE = 1;
 
     public static final int REQ_UPDATED_TRACKED_BEACON = 10080;
     public static final int REQ_TASKER_ACTION_NAME_REQUEST = 10081;

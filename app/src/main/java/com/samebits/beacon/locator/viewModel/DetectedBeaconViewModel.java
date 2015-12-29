@@ -24,7 +24,9 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.activity.BeaconActivity;
+import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -38,9 +40,9 @@ public class DetectedBeaconViewModel extends BeaconViewModel {
     }
 
     protected void launchBeaconDetailsActivity() {
-        Intent intent = BeaconActivity.getStartIntent(mFragment.getActivity());
-        intent.putExtra(ARG_BEACON, (Parcelable) mManagedBeacon);
-        intent.putExtra(ARG_MODE, Constants.LIVE_BEACON_MODE);
+        //find better way to change fragment from scan to tracked
+        Intent intent = MainNavigationActivity.getStartIntent(mFragment.getActivity());
+        intent.putExtra(ARG_BEACON, new TrackedBeacon(mManagedBeacon));
         mFragment.startActivity(intent);
     }
 }

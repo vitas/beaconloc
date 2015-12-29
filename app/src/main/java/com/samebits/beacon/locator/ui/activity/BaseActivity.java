@@ -28,6 +28,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.util.Constants;
 
 
 /**
@@ -37,6 +40,7 @@ import com.samebits.beacon.locator.R;
 public class BaseActivity extends AppCompatActivity {
 
     final static int GLOBAL_SETTING_REQUEST = 1;
+    protected TrackedBeacon mBeacon;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,6 +70,13 @@ public class BaseActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    protected void readExtras() {
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            mBeacon = intent.getExtras().getParcelable(Constants.ARG_BEACON);
         }
     }
 

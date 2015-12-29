@@ -39,6 +39,7 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.adapter.TrackedBeaconAdapter;
 import com.samebits.beacon.locator.ui.view.RemovableViewHolder;
 import com.samebits.beacon.locator.util.Constants;
@@ -109,9 +110,20 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     private void loadBeacons() {
         showLoadingViews();
         mBeaconsAdapter.insertBeacons(mDataManager.getAllBeacons());
+
+        if (getArguments() != null && !getArguments().isEmpty()) {
+
+            TrackedBeacon beacon = getArguments().getParcelable(Constants.ARG_BEACON);
+            if (beacon != null) {
+                //FIXME make selected somehow!
+                mBeaconsAdapter.insertBeacon(beacon);
+            }
+        }
         emptyListUpdate();
         hideLoadingViews();
     }
+
+
 
     @Override
     public void onDestroyView() {

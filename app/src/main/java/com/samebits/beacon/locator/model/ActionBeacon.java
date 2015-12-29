@@ -29,13 +29,18 @@ public class ActionBeacon implements Parcelable {
     private String beaconId;
     private long time;
     private String name;
-    private EventType eventType;
-    private ActionType actionType;
+    private EventType eventType = EventType.EVENT_EMPTY;
+    private ActionType actionType = ActionType.ACTION_EMPTY;
     private String actionParam;
     private boolean isEnabled;
 
-    public ActionBeacon(String beaconId) {
+    public ActionBeacon(String beaconId, String name) {
         this.beaconId = beaconId;
+        this.name = name;
+    }
+
+    public ActionBeacon() {
+
     }
 
     protected ActionBeacon(Parcel in) {
@@ -94,7 +99,7 @@ public class ActionBeacon implements Parcelable {
     }
 
     public EventType getEventType() {
-        return eventType;
+        return this.eventType;
     }
 
     public void setEventType(EventType eventType) {
