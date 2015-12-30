@@ -31,6 +31,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
@@ -140,14 +141,14 @@ public class RadarScanView extends View implements SensorEventListener {
 
         // Outer ring of the sweep
         mSweepPaint0 = new Paint();
-        mSweepPaint0.setColor(getResources().getColor(R.color.hn_orange));
+        mSweepPaint0.setColor(ContextCompat.getColor(context, R.color.hn_orange));
         mSweepPaint0.setAntiAlias(true);
         mSweepPaint0.setStyle(Style.STROKE);
         mSweepPaint0.setStrokeWidth(3f);
 
         // Middle ring of the sweep
         mSweepPaint1 = new Paint();
-        mSweepPaint1.setColor(getResources().getColor(R.color.hn_orange));
+        mSweepPaint1.setColor(ContextCompat.getColor(context, R.color.hn_orange));
 
         mSweepPaint1.setAntiAlias(true);
         mSweepPaint1.setStyle(Style.STROKE);
@@ -155,13 +156,13 @@ public class RadarScanView extends View implements SensorEventListener {
 
         // Inner ring of the sweep
         mSweepPaint2 = new Paint();
-        mSweepPaint2.setColor(getResources().getColor(R.color.hn_orange));
+        mSweepPaint2.setColor(ContextCompat.getColor(context, R.color.hn_orange));
 
         mSweepPaint2.setAntiAlias(true);
         mSweepPaint2.setStyle(Style.STROKE);
         mSweepPaint2.setStrokeWidth(3f);
 
-        mBlip = ((BitmapDrawable) getResources().getDrawable(R.drawable.blip_grey)).getBitmap();
+        mBlip = ((BitmapDrawable) ContextCompat.getDrawable(context, R.drawable.ic_location_on_black_24dp)).getBitmap();
 
     }
 

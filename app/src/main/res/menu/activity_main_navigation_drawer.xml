@@ -6,7 +6,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_scan_around"
-            android:icon="@drawable/ic_cast_black_24dp"
+            android:icon="@drawable/ic_tap_and_play_black_24dp"
             android:title="@string/action_scan_around" />
         <item
             android:id="@+id/nav_scan_radar"
@@ -14,7 +14,7 @@
             android:title="@string/action_scan_managed" />
         <item
             android:id="@+id/nav_tracked_list"
-            android:icon="@drawable/ic_tag_black_24dp"
+            android:icon="@drawable/ic_playlist_play_black_24dp"
             android:title="@string/action_tracked_list" />
     </group>
 

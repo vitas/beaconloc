@@ -61,7 +61,7 @@
     <string name="title_action_group_beacon_manage">Beacons</string>
     <string name="action_scan_around">Scan</string>
     <string name="action_scan_managed">Radar</string>
-    <string name="action_tracked_list">List</string>
+    <string name="action_tracked_list">Manage</string>
 
     <!-- detected beacon properties -->
     <string name="mv_text_rssi">RSSI</string>

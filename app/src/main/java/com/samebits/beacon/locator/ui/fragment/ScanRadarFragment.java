@@ -119,8 +119,8 @@ public class ScanRadarFragment extends ScanFragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle(R.string.title_fragment_radar_beacons);
+           // actionBar.setDisplayShowTitleEnabled(true);
+            mToolbar.setSubtitle(R.string.title_fragment_radar_beacons);
         }
     }
 

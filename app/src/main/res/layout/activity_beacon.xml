@@ -18,7 +18,9 @@
             android:layout_height="wrap_content"
             app:tabMode="scrollable"
             app:tabTextColor="@color/white"
-            app:tabGravity="center" />
+            app:tabIndicatorColor="@color/dark_grey"
+            app:tabSelectedTextColor="@color/cardview_dark_background"
+            app:tabGravity="fill" />
 
         <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
 
@@ -32,6 +34,5 @@
 
     </android.support.v4.view.ViewPager>
 
-    <include android:id="@+id/fab" layout="@layout/fab"/>
 
 </android.support.design.widget.CoordinatorLayout>

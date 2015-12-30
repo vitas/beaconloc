@@ -40,8 +40,6 @@ import butterknife.ButterKnife;
 
 public class BeaconActionActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.viewpager)
