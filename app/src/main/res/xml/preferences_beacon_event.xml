@@ -2,13 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="key_event">
 
-    <ListPreference
-        android:title="@string/pref_be_event_range"
-        android:key="be_event_range"
-        android:defaultValue="0"
-        android:entries="@array/pref_be_event_range_array"
-        android:entryValues="@array/pref_be_event_values" />
-
     <CheckBoxPreference
         android:title="@string/pref_be_event_enter_region"
         android:key="be_event_enter_region"

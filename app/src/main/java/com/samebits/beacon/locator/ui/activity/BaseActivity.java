@@ -39,8 +39,6 @@ import com.samebits.beacon.locator.util.Constants;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
-    final static int GLOBAL_SETTING_REQUEST = 1;
-    protected TrackedBeacon mBeacon;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,12 +71,6 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void readExtras() {
-        Intent intent = getIntent();
-        if (intent.getExtras() != null) {
-            mBeacon = intent.getExtras().getParcelable(Constants.ARG_BEACON);
-        }
-    }
 
     private void launchGitHubPage() {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
@@ -93,15 +85,16 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void launchSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
-        startActivityForResult(intent, GLOBAL_SETTING_REQUEST);
+        startActivityForResult(intent, Constants.REQ_GLOBAL_SETTING);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GLOBAL_SETTING_REQUEST) {
+        if (requestCode == Constants.REQ_GLOBAL_SETTING) {
             //TODO settings
         }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     protected Fragment checkFragmentInstance(int id, Object instanceClass) {

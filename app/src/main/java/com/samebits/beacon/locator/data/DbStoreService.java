@@ -247,7 +247,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                 beacon.setUrl(cursor.getString(9));
                 beacon.setMajor(cursor.getString(10));
                 beacon.setMinor(cursor.getString(11));
-                beacon.setTracked(cursor.getInt(12)==1?true:false);
+                beacon.setTracked(cursor.getInt(12) == 1 ? true : false);
 
                 List<ActionBeacon> actions = getBeaconActions(beacon.getId());
                 beacon.addActions(actions);
@@ -278,6 +278,9 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
         long res = db.insert(ActionColumns.TABLE_NAME, null, values);
         db.close();
+        if (res != -1) {
+            beacon.setId((int)res);
+        }
         return (res == -1) ? false : true;
     }
 

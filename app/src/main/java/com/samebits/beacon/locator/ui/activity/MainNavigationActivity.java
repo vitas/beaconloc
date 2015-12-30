@@ -48,6 +48,7 @@ import android.view.animation.AnimationUtils;
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.fragment.DetectedBeaconsFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanRadarFragment;
@@ -79,6 +80,7 @@ public class MainNavigationActivity extends BaseActivity
     NavigationView navigationView;
 
     BeaconManager mBeaconManager;
+    TrackedBeacon mBeacon;
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, MainNavigationActivity.class);
@@ -94,7 +96,8 @@ public class MainNavigationActivity extends BaseActivity
             case Constants.TAG_FRAGMENT_SCAN_RADAR:
                 ((ScanFragment) currentFragment).scanStartStopAction();
                 break;
-
+            case Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST:
+                break;
         }
     }
 
@@ -119,6 +122,13 @@ public class MainNavigationActivity extends BaseActivity
             launchTrackedListView();
         }
 
+    }
+
+    protected void readExtras() {
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            mBeacon = intent.getExtras().getParcelable(Constants.ARG_BEACON);
+        }
     }
 
     private void setupToolbar() {
@@ -340,6 +350,7 @@ public class MainNavigationActivity extends BaseActivity
                 break;
             default:
                 setFabIcon(R.drawable.ic_add_white_24dp);
+                hideFab();
         }
     }
 

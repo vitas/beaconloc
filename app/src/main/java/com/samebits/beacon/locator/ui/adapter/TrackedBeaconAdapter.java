@@ -29,17 +29,25 @@ import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
+import com.samebits.beacon.locator.model.ActionBeacon;
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 import com.samebits.beacon.locator.ui.view.WrapLinearLayoutManager;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
+
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Created by vitas on 09/12/2015.
  */
 public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.BindingHolder> {
 
+    private Map<String, ActionBeaconAdapter> mActionAdapters = new HashMap<>();
     public TrackedBeaconAdapter(BaseFragment fragment) {
         mFragment = fragment;
     }
@@ -59,14 +67,16 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
     public void onBindViewHolder(BindingHolder holder, int position) {
         ItemTrackedBeaconBinding beaconBinding = holder.binding;
 
-        ActionBeaconAdapter adapter = new ActionBeaconAdapter(mFragment);
+        ActionBeaconAdapter adapter = new ActionBeaconAdapter((TrackedBeaconsFragment)mFragment);
         beaconBinding.recyclerActions.setLayoutManager(new WrapLinearLayoutManager(mFragment.getActivity()));
         beaconBinding.recyclerActions.setAdapter(adapter);
 
         TrackedBeacon beacon = (TrackedBeacon) getItem(position);
         adapter.setItems(beacon.getActions());
 
-        beaconBinding.setViewModel(new TrackedBeaconViewModel(mFragment,beacon));
+        mActionAdapters.put(beacon.getId(), adapter);
+
+        beaconBinding.setViewModel(new TrackedBeaconViewModel(mFragment, beacon));
     }
 
 
@@ -86,6 +96,28 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         });
 
     }
+
+    public void removeBeaconAction(String beaconId, int id) {
+        ActionBeaconAdapter adapter = mActionAdapters.get(beaconId);
+        if (adapter != null) {
+            adapter.removeItemById(id);
+        }
+    }
+
+    public void addBeaconAction(ActionBeacon newAction) {
+        ActionBeaconAdapter adapter = mActionAdapters.get(newAction.getBeaconId());
+        if (adapter != null) {
+            adapter.addItem(newAction);
+        }
+    }
+
+    public void updateBeaconAction(ActionBeacon action) {
+        ActionBeaconAdapter adapter = mActionAdapters.get(action.getBeaconId());
+        if (adapter != null) {
+            adapter.addItem(action);
+        }
+    }
+
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
         private ItemTrackedBeaconBinding binding;

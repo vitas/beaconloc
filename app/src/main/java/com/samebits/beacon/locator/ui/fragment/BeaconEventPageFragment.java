@@ -33,15 +33,8 @@ import com.samebits.beacon.locator.util.Constants;
 public class BeaconEventPageFragment extends PageBeaconFragment {
 
 
-    public static BeaconEventPageFragment newInstance(IManagedBeacon beacon, int page) {
+    public static BeaconEventPageFragment newInstance(int page) {
         BeaconEventPageFragment detailFragment = new BeaconEventPageFragment();
-        Bundle args = new Bundle();
-        args.putInt(Constants.ARG_PAGE, page);
-        if (beacon != null) {
-            // detailFragment.setBeacon(beacon);
-            args.putParcelable(Constants.ARG_BEACON, (Parcelable) beacon);
-        }
-        detailFragment.setArguments(args);
         return detailFragment;
     }
 

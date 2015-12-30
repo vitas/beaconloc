@@ -158,8 +158,7 @@ public class ActionBeacon implements Parcelable {
         ActionBeacon that = (ActionBeacon) o;
 
         if (getId() != that.getId()) return false;
-        if (!getBeaconId().equals(that.getBeaconId())) return false;
-        return getName().equals(that.getName());
+        return getBeaconId().equals(that.getBeaconId());
 
     }
 
@@ -167,9 +166,9 @@ public class ActionBeacon implements Parcelable {
     public int hashCode() {
         int result = getId();
         result = 31 * result + getBeaconId().hashCode();
-        result = 31 * result + getName().hashCode();
         return result;
     }
+
 
     public enum ActionType {
         ACTION_EMPTY(0),

@@ -30,7 +30,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.ui.adapter.DetailFragmentPagerAdapter;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -38,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class BeaconActionActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     @Bind(R.id.fab)
     FloatingActionButton fab;
@@ -49,8 +49,9 @@ public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChan
     @Bind(R.id.sliding_tabs)
     TabLayout slidingTabs;
 
+    private ActionBeacon mActionBeacon;
     public static Intent getStartIntent(Context context) {
-        return new Intent(context, BeaconActivity.class);
+        return new Intent(context, BeaconActionActivity.class);
     }
 
     @Override
@@ -65,20 +66,27 @@ public class BeaconActivity extends BaseActivity implements ViewPager.OnPageChan
 
     }
 
+    protected void readExtras() {
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            mActionBeacon = intent.getExtras().getParcelable(Constants.ARG_ACTION_BEACON);
+        }
+    }
+
     @Override
     public void finish() {
-        //Constants.REQ_UPDATED_TRACKED_BEACON
+        //Constants.REQ_UPDATED_ACTION_BEACON
         int resultCode = Activity.RESULT_OK;
         Intent resultIntent = new Intent();
-        resultIntent.putExtra(Constants.ARG_BEACON, (Parcelable) mBeacon);
+        resultIntent.putExtra(Constants.ARG_ACTION_BEACON, mActionBeacon);
         setResult(resultCode, resultIntent);
         super.finish();
     }
 
     private void setupTabs() {
         viewPager.setAdapter(new DetailFragmentPagerAdapter(getSupportFragmentManager(),
-                mBeacon,
-                BeaconActivity.this));
+                mActionBeacon,
+                BeaconActionActivity.this));
 
         slidingTabs.setupWithViewPager(viewPager);
     }

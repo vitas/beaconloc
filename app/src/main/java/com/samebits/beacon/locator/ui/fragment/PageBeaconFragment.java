@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.data.DataManager;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.Constants;
@@ -37,9 +38,10 @@ import com.samebits.beacon.locator.util.Constants;
 public abstract class PageBeaconFragment extends PreferenceFragmentCompat {
 
     protected DataManager mDataManager;
+    protected ActionBeacon mActionBeacon;
     protected TrackedBeacon mBeacon;
     protected int mPage;
-    protected  boolean isDirty;
+    protected boolean isDirty;
 
     abstract public void onCreatePreferences(Bundle savedInstanceState, String rootKey);
 
@@ -64,18 +66,14 @@ public abstract class PageBeaconFragment extends PreferenceFragmentCompat {
     protected void readArguments() {
         if (getArguments() != null) {
             mPage = getArguments().getInt(Constants.ARG_PAGE);
-            mBeacon = getArguments().getParcelable(Constants.ARG_BEACON);
+            mActionBeacon = getArguments().getParcelable(Constants.ARG_ACTION_BEACON);
+            mBeacon = mDataManager.getBeacon(mActionBeacon.getBeaconId());
         }
     }
 
-    protected void updateBeacon() {
-        mDataManager.updateBeacon(mBeacon);
+    protected boolean updateActionBeacon() {
+        return mDataManager.updateBeaconAction(mActionBeacon);
     }
 
 
-    protected void storeBeacon() {
-        if (mDataManager.storeBeacon(mBeacon)) {
-            Log.d(Constants.TAG, String.format("Beacon %s is stored in db", mBeacon.getId()));
-        }
-    }
 }

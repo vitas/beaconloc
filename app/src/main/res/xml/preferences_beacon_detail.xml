@@ -6,24 +6,18 @@
         android:title="@string/pref_bd_switch_active"
         android:key="bd_switch_active"
         android:summary="@string/pref_bd_summary_switch_active"/>
+    <EditTextPreference
+        android:title="@string/pref_bd_name"
+        android:key="bd_name_info"/>
     <Preference
         android:title="@string/pref_bd_type"
         android:key="bd_type_info"/>
     <Preference
-        android:title="@string/pref_bd_uuid"
-        android:key="bd_uuid_info"/>
-    <Preference
         android:title="@string/pref_bd_bluetooth_name"
         android:key="bd_bluetooth_name_info"/>
     <Preference
-        android:title="@string/pref_bd_txpower"
-        android:key="bd_txpower_info"/>
-    <Preference
-        android:title="@string/pref_bd_rssi"
-        android:key="bd_rssi_info"/>
-    <Preference
-        android:title="@string/pref_bd_distance"
-        android:key="bd_distance_info"/>
+        android:title="@string/pref_bd_uuid"
+        android:key="bd_uuid_info"/>
     <Preference
         android:title="@string/pref_bd_major"
         android:key="bd_major_info"/>

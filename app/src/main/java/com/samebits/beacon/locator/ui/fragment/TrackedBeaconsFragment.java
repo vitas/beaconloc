@@ -38,10 +38,12 @@ import android.widget.ProgressBar;
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.adapter.TrackedBeaconAdapter;
 import com.samebits.beacon.locator.util.Constants;
+import com.samebits.beacon.locator.util.PreferencesUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -72,11 +74,11 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQ_UPDATED_TRACKED_BEACON) {
-            if (data != null && data.hasExtra(Constants.ARG_BEACON)) {
-                IManagedBeacon updatedBeacon = data.getParcelableExtra(Constants.ARG_BEACON);
-                if (updatedBeacon != null) {
-                    mBeaconsAdapter.insertBeacon(updatedBeacon);
+        if (requestCode == Constants.REQ_UPDATED_ACTION_BEACON) {
+            if (data != null && data.hasExtra(Constants.ARG_ACTION_BEACON)) {
+                ActionBeacon actionBeacon = data.getParcelableExtra(Constants.ARG_ACTION_BEACON);
+                if (actionBeacon != null) {
+                    mBeaconsAdapter.updateBeaconAction(actionBeacon);
                 }
             }
         }
@@ -110,19 +112,61 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
 
         mBeaconsAdapter.insertBeacons(mDataManager.getAllBeacons());
 
-        if (getArguments() != null && !getArguments().isEmpty()) {
+        getExtras();
 
-            TrackedBeacon beacon = getArguments().getParcelable(Constants.ARG_BEACON);
-            if (beacon != null) {
-                //FIXME make selected somehow!
-                mBeaconsAdapter.insertBeacon(beacon);
-            }
-        }
         emptyListUpdate();
         hideLoadingViews();
     }
 
+    private void getExtras() {
+        if (getArguments() != null && !getArguments().isEmpty()) {
 
+            TrackedBeacon beacon = getArguments().getParcelable(Constants.ARG_BEACON);
+            if (beacon != null) {
+                if (!mBeaconsAdapter.isItemExists(beacon.getId())) {
+                    if (mDataManager.createBeacon(beacon)) {
+                        mBeaconsAdapter.insertBeacon(beacon);
+                    } else {
+                        //TODO
+                    }
+                } else {
+                    //FIXME make selected somehow!
+                    if (mDataManager.updateBeacon(beacon)) {
+                        mBeaconsAdapter.insertBeacon(beacon);
+                    } else {
+                        //TODO
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void removeBeacon(String beaconId) {
+        if (mDataManager.deleteBeacon(beaconId)) {
+            mBeaconsAdapter.removeBeaconById(beaconId);
+            emptyListUpdate();
+        } else {
+            //TODO error
+        }
+    }
+
+    public void removeBeaconAction(String beaconId, int id) {
+        if (mDataManager.deleteActionBeacon(id)) {
+            mBeaconsAdapter.removeBeaconAction(beaconId, id);
+        } else {
+            //TODO error
+        }
+    }
+
+    public void newBeaconAction(String beaconId) {
+        ActionBeacon newAction = new ActionBeacon(beaconId, PreferencesUtil.getDefaultRegionName(getActivity()));
+        if (mDataManager.createBeaconAction(newAction)) {
+            mBeaconsAdapter.addBeaconAction(newAction);
+        } else {
+            //TODO error
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -183,6 +227,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
             mProgressBar.setVisibility(View.VISIBLE);
         }
     }
+
 
     class UndoSwipableCallback extends ItemTouchHelper.SimpleCallback {
 

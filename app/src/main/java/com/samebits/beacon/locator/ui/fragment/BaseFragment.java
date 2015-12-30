@@ -39,6 +39,7 @@ public class BaseFragment extends Fragment {
     protected boolean isDebug() {
         return BuildConfig.DEBUG;
     }
+    protected boolean mNeedFab;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,16 +53,24 @@ public class BaseFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (getActivity() instanceof MainNavigationActivity) {
-            ((MainNavigationActivity) getActivity()).swappingFabUp();
+            if (mNeedFab) {
+                ((MainNavigationActivity) getActivity()).swappingFabUp();
+            } else {
+                ((MainNavigationActivity) getActivity()).hideFab();
+            }
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (getActivity() instanceof MainNavigationActivity) {
+        if (getActivity() instanceof MainNavigationActivity && mNeedFab) {
             ((MainNavigationActivity) getActivity()).swappingFabAway();
         }
+    }
+
+    public void setNeedFab(boolean mNeedFab) {
+        this.mNeedFab = mNeedFab;
     }
 
     public class EmptyView {

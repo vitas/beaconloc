@@ -99,6 +99,7 @@
     <!-- Beacon Details info dialog tab -->
     <string name="pref_bd_switch_active">Track it</string>
     <string name="pref_bd_summary_switch_active">Enables tracking for the beacon</string>
+    <string name="pref_bd_name">Tracking Name</string>
     <string name="pref_bd_uuid">UUID</string>
     <string name="pref_bd_type">Type</string>
     <string name="pref_bd_rssi">RSSI</string>

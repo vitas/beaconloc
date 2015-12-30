@@ -19,14 +19,18 @@
 package com.samebits.beacon.locator.ui.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.fragment.BeaconActionPageFragment;
 import com.samebits.beacon.locator.ui.fragment.BeaconDetailPageFragment;
 import com.samebits.beacon.locator.ui.fragment.BeaconEventPageFragment;
 import com.samebits.beacon.locator.ui.fragment.PageBeaconFragment;
+import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 25/12/15.
@@ -34,12 +38,12 @@ import com.samebits.beacon.locator.ui.fragment.PageBeaconFragment;
 public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
     private int tabTitleResources[] = new int[]{R.string.tab_title_beacon_info, R.string.tab_title_beacon_event, R.string.tab_title_beacon_action};
     private Context mContext;
-    private IManagedBeacon mBeacon;
+    private ActionBeacon mActionBeacon;
 
-    public DetailFragmentPagerAdapter(FragmentManager fm, IManagedBeacon beacon, Context context) {
+    public DetailFragmentPagerAdapter(FragmentManager fm, ActionBeacon beacon, Context context) {
         super(fm);
         this.mContext = context;
-        this.mBeacon = beacon;
+        this.mActionBeacon = beacon;
     }
 
     @Override
@@ -49,15 +53,28 @@ public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentP
 
     @Override
     public PageBeaconFragment getItem(int position) {
+        Bundle args = new Bundle();
+        args.putInt(Constants.ARG_PAGE, position + 1);
+
+        PageBeaconFragment frg = BeaconDetailPageFragment.newInstance(position + 1);
         switch (position) {
             case 0:
-                return BeaconDetailPageFragment.newInstance(mBeacon, position + 1);
+                frg = BeaconDetailPageFragment.newInstance(position + 1);
+                break;
             case 1:
-                return BeaconEventPageFragment.newInstance(mBeacon, position + 1);
+                frg = BeaconEventPageFragment.newInstance(position + 1);
+                break;
             case 2:
-                return BeaconActionPageFragment.newInstance(mBeacon, position + 1);
+                frg = BeaconActionPageFragment.newInstance(position + 1);
+                break;
         }
-        return null;
+
+        if (mActionBeacon != null) {
+            args.putParcelable(Constants.ARG_ACTION_BEACON,  mActionBeacon);
+        }
+        frg.setArguments(args);
+
+        return frg;
     }
 
     @Override

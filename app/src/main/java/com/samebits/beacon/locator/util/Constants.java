@@ -34,7 +34,10 @@ public final class Constants {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String ARG_BEACON = "ARG_BEACON";
+    public static final String ARG_ACTION_BEACON = "ARG_ACTION_BEACON";
 
+    public static final int REQ_GLOBAL_SETTING = 10078;
+    public static final int REQ_UPDATED_ACTION_BEACON = 10079;
     public static final int REQ_UPDATED_TRACKED_BEACON = 10080;
     public static final int REQ_TASKER_ACTION_NAME_REQUEST = 10081;
 

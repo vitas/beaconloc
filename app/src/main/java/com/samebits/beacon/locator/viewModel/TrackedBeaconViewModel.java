@@ -18,14 +18,12 @@
 
 package com.samebits.beacon.locator.viewModel;
 
-import android.content.Intent;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.ui.activity.BeaconActivity;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
-import com.samebits.beacon.locator.util.Constants;
+import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 
 /**
  * Created by vitas on 19/10/15.
@@ -36,9 +34,23 @@ public class TrackedBeaconViewModel extends BeaconViewModel {
         super(fragment, managedBeacon);
     }
 
-    protected void launchBeaconDetailsActivity() {
-        Intent intent = BeaconActivity.getStartIntent(mFragment.getActivity());
-        intent.putExtra(ARG_BEACON, (Parcelable) mManagedBeacon);
-        mFragment.startActivityForResult(intent, Constants.REQ_UPDATED_TRACKED_BEACON);
+    public View.OnClickListener onClickBeaconDelete() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                ((TrackedBeaconsFragment)mFragment).removeBeacon(mManagedBeacon.getId());
+            }
+        };
     }
+
+    public View.OnClickListener onClickBeaconAdd() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((TrackedBeaconsFragment)mFragment).newBeaconAction(mManagedBeacon.getId());
+            }
+        };
+    }
+
 }

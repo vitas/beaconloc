@@ -19,34 +19,34 @@
 package com.samebits.beacon.locator.viewModel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
 
 import android.view.View;
 
 import com.samebits.beacon.locator.model.ActionBeacon;
+import com.samebits.beacon.locator.ui.activity.BeaconActionActivity;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
+import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 19/10/15.
  */
 public class ActionBeaconViewModel extends BaseObservable {
 
-    public static final String ARG_BEACON = "ARG_BEACON";
-    public static final String ARG_MODE = "ARG_MODE";
-    protected Context mContext;
     protected ActionBeacon mActionBeacon;
-    protected BaseFragment mFragment;
+    protected TrackedBeaconsFragment mFragment;
 
-    public ActionBeaconViewModel(@NonNull BaseFragment fragment, @NonNull ActionBeacon actionBeacon) {
+    public ActionBeaconViewModel(@NonNull TrackedBeaconsFragment fragment, @NonNull ActionBeacon actionBeacon) {
         this.mActionBeacon = actionBeacon;
         this.mFragment = fragment;
-        this.mContext = fragment.getActivity();
     }
 
     public String getName() { return mActionBeacon.getName();}
 
-    public View.OnClickListener onClickBeacon() {
+    public View.OnClickListener onClickEdit() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,5 +56,26 @@ public class ActionBeaconViewModel extends BaseObservable {
     }
 
     protected void launchActionDetailsActivity() {
+        Intent intent = BeaconActionActivity.getStartIntent(mFragment.getActivity());
+        intent.putExtra(Constants.ARG_ACTION_BEACON, mActionBeacon);
+        mFragment.startActivityForResult(intent, Constants.REQ_UPDATED_ACTION_BEACON);
+    }
+
+
+    public View.OnClickListener onClickDelete() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFragment.removeBeaconAction(mActionBeacon.getBeaconId(), mActionBeacon.getId());
+            }
+        };
+    }
+
+    public View.OnClickListener onClickEnable() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        };
     }
 }

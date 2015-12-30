@@ -19,16 +19,12 @@
 package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.model.TrackedBeacon;
-import com.samebits.beacon.locator.util.BeaconUtil;
-import com.samebits.beacon.locator.util.Constants;
+
 
 /**
  * Created by vitas on 20/12/15.
@@ -36,15 +32,8 @@ import com.samebits.beacon.locator.util.Constants;
 public class BeaconDetailPageFragment extends PageBeaconFragment {
 
 
-    public static BeaconDetailPageFragment newInstance(IManagedBeacon beacon, int page) {
+    public static BeaconDetailPageFragment newInstance(int page) {
         BeaconDetailPageFragment detailFragment = new BeaconDetailPageFragment();
-        Bundle args = new Bundle();
-        args.putInt(Constants.ARG_PAGE, page);
-        if (beacon != null) {
-            // detailFragment.setBeacon(beacon);
-            args.putParcelable(Constants.ARG_BEACON, (Parcelable) beacon);
-        }
-        detailFragment.setArguments(args);
         return detailFragment;
     }
 
@@ -57,31 +46,49 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
     protected void setData() {
 
         SwitchPreferenceCompat switch_manage = (SwitchPreferenceCompat) findPreference("bd_switch_active");
-        switch_manage.setChecked(mBeacon.isTracked());
+        switch_manage.setChecked(mActionBeacon.isEnabled());
 
         switch_manage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue instanceof Boolean) {
-                    mBeacon.setTracked(((Boolean) newValue).booleanValue());
+                    mActionBeacon.setIsEnabled(((Boolean) newValue).booleanValue());
                     isDirty = true;
-
-                    //FIXME remove
-                    mBeacon.addAction(new ActionBeacon("test1", "test1"));
-                    mBeacon.addAction(new ActionBeacon("test2", "test2"));
-
-                    updateBeacon();
+                    return updateActionBeacon();
                 }
                 return true;
             }
         });
 
+
+        EditTextPreference edit_name = (EditTextPreference) findPreference("bd_name_info");
+        edit_name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof String) {
+                    String newName = (String) newValue;
+                    if (newName != null && !newName.isEmpty()) {
+                        mActionBeacon.setName(newName);
+                        preference.setSummary(newName);
+                        isDirty = true;
+                        //TODO optimized update
+                        return updateActionBeacon();
+                    } else {
+                        //TODO cannot be null
+                    }
+                }
+                return true;
+            }
+        });
+        edit_name.setSummary(mActionBeacon.getName());
+
         findPreference("bd_type_info").setSummary(mBeacon.getBeaconType().getString());
         findPreference("bd_uuid_info").setSummary(mBeacon.getUUID());
-        findPreference("bd_txpower_info").setSummary(String.format("%d dB", mBeacon.getTxPower()));
-        findPreference("bd_rssi_info").setSummary(String.format("%d dB", mBeacon.getRssi()));
-        findPreference("bd_bluetooth_name_info").setSummary((mBeacon.getBluetoothName() == null || mBeacon.getBluetoothName().equals("")) ? mBeacon.getBluetoothAddress() : mBeacon.getBluetoothName());
-        findPreference("bd_distance_info").setSummary(BeaconUtil.getRoundedDistanceString(mBeacon.getDistance()) + " m");
+        //findPreference("bd_txpower_info").setSummary(String.format("%d dB", mBeacon.getTxPower()));
+        //findPreference("bd_rssi_info").setSummary(String.format("%d dB", mBeacon.getRssi()));
+        findPreference("bd_bluetooth_name_info").setSummary((mBeacon.getBluetoothName() == null
+                || mBeacon.getBluetoothName().equals("")) ? mBeacon.getBluetoothAddress() : mBeacon.getBluetoothName());
+        //findPreference("bd_distance_info").setSummary(BeaconUtil.getRoundedDistanceString(mBeacon.getDistance()) + " m");
         findPreference("bd_major_info").setSummary(mBeacon.getMajor());
         findPreference("bd_minor_info").setSummary(mBeacon.getMinor());
 

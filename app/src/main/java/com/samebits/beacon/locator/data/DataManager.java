@@ -50,7 +50,7 @@ public class DataManager {
                 .inject(this);
     }
 
-    public boolean storeBeacon(TrackedBeacon beacon) {
+    public boolean createBeacon(TrackedBeacon beacon) {
         return mStoreService.createBeacon(beacon);
     }
 
@@ -78,4 +78,11 @@ public class DataManager {
         return mStoreService.getBeaconActions(beaconId);
     }
 
+    public boolean deleteActionBeacon(int id) {
+        return mStoreService.deleteBeaconAction(id);
+    }
+
+    public boolean deleteBeacon(String beaconId) {
+        return mStoreService.deleteBeacon(beaconId);
+    }
 }

@@ -30,7 +30,7 @@
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".ui.activity.BeaconActivity"
+            android:name=".ui.activity.BeaconActionActivity"
             android:label="@string/title_activity_beacon"
             />
     </application>

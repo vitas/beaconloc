@@ -87,5 +87,12 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public boolean isItemExists(String id) {
+        return this.mBeacons.containsKey(id);
+    }
 
+    public void removeBeaconById(String beaconId) {
+        this.mBeacons.remove(beaconId);
+        notifyDataSetChanged();
+    }
 }

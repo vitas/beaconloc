@@ -26,11 +26,9 @@ import android.view.ViewGroup;
 
 
 import com.samebits.beacon.locator.R;
-//import com.samebits.beacon.locator.databinding.ItemActionBeaconBinding;
 import com.samebits.beacon.locator.databinding.ItemActionBeaconBinding;
-import com.samebits.beacon.locator.databinding.ItemDetectedBeaconBinding;
 import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 import com.samebits.beacon.locator.viewModel.ActionBeaconViewModel;
 
 import java.util.ArrayList;
@@ -41,9 +39,9 @@ import java.util.List;
  */
 public class ActionBeaconAdapter extends RecyclerView.Adapter<ActionBeaconAdapter.BindingHolder> {
     private List<ActionBeacon> mItemsList;
-    private BaseFragment mFragment;
+    private TrackedBeaconsFragment mFragment;
 
-    public ActionBeaconAdapter(BaseFragment fragment) {
+    public ActionBeaconAdapter(TrackedBeaconsFragment fragment) {
         mFragment = fragment;
         mItemsList = new ArrayList<>();
     }
@@ -81,6 +79,16 @@ public class ActionBeaconAdapter extends RecyclerView.Adapter<ActionBeaconAdapte
         } else {
             this.mItemsList.set(mItemsList.indexOf(itemsList), itemsList);
             notifyItemChanged(this.mItemsList.indexOf(itemsList));
+        }
+    }
+
+    public void removeItemById(int id) {
+        for(ActionBeacon action: mItemsList) {
+            if (action.getId()==id) {
+                mItemsList.remove(action);
+                notifyDataSetChanged();
+                break;
+            }
         }
     }
 

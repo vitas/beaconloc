@@ -29,6 +29,7 @@ import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 import com.samebits.beacon.locator.util.BeaconUtil;
 
 /**
@@ -36,16 +37,12 @@ import com.samebits.beacon.locator.util.BeaconUtil;
  */
 public class BeaconViewModel extends BaseObservable {
 
-    public static final String ARG_BEACON = "ARG_BEACON";
-    public static final String ARG_MODE = "ARG_MODE";
-    protected Context mContext;
     protected IManagedBeacon mManagedBeacon;
     protected BaseFragment mFragment;
 
     public BeaconViewModel(@NonNull BaseFragment fragment, @NonNull IManagedBeacon managedBeacon) {
         this.mManagedBeacon = managedBeacon;
         this.mFragment = fragment;
-        this.mContext = fragment.getActivity();
     }
 
     public String getRssi() {
@@ -85,14 +82,14 @@ public class BeaconViewModel extends BaseObservable {
         if (isLostBeacon()) {
             return getSeenSince();
         }
-        return mContext.getString(BeaconUtil.getProximityResourceId(mManagedBeacon.getDistance()));
+        return mFragment.getString(BeaconUtil.getProximityResourceId(mManagedBeacon.getDistance()));
     }
 
     public int getProximityColor() {
         if (isLostBeacon()) {
-            return ContextCompat.getColor(mContext, R.color.hn_orange_dark);
+            return ContextCompat.getColor(mFragment.getActivity(), R.color.hn_orange_dark);
         }
-        return ContextCompat.getColor(mContext, android.R.color.tab_indicator_text);
+        return ContextCompat.getColor(mFragment.getActivity(), android.R.color.tab_indicator_text);
     }
 
 
@@ -120,11 +117,11 @@ public class BeaconViewModel extends BaseObservable {
 
         switch (mManagedBeacon.getType()) {
             case DetectedBeacon.TYPE_EDDYSTONE_URL:
-                return mContext.getString(R.string.mv_text_url);
+                return mFragment.getString(R.string.mv_text_url);
             case DetectedBeacon.TYPE_EDDYSTONE_UID:
-                return mContext.getString(R.string.mv_text_namespace);
+                return mFragment.getString(R.string.mv_text_namespace);
             default:
-                return mContext.getString(R.string.mv_text_uuid);
+                return mFragment.getString(R.string.mv_text_uuid);
         }
     }
 
@@ -132,14 +129,14 @@ public class BeaconViewModel extends BaseObservable {
 
         switch (mManagedBeacon.getType()) {
             case DetectedBeacon.TYPE_EDDYSTONE_UID:
-                return mContext.getString(R.string.mv_text_instance);
+                return mFragment.getString(R.string.mv_text_instance);
             default:
-                return mContext.getString(R.string.mv_text_major);
+                return mFragment.getString(R.string.mv_text_major);
         }
     }
 
     public String getNameMinor() {
-        return mContext.getString(R.string.mv_text_minor);
+        return mFragment.getString(R.string.mv_text_minor);
     }
 
 
