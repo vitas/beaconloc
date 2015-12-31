@@ -46,7 +46,7 @@
     <!-- titles activities-->
     <string name="title_activity_main_navigation">Beacon Locator</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_beacon">Beacon Detail</string>
+    <string name="title_activity_beacon">Beacon Action</string>
 
     <string name="nav_drawer_open">open drawer</string>
     <string name="nav_drawer_close">close drawer</string>
