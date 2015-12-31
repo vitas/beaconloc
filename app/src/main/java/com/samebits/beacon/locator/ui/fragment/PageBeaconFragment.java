@@ -41,7 +41,6 @@ public abstract class PageBeaconFragment extends PreferenceFragmentCompat {
     protected ActionBeacon mActionBeacon;
     protected TrackedBeacon mBeacon;
     protected int mPage;
-    protected boolean isDirty;
 
     abstract public void onCreatePreferences(Bundle savedInstanceState, String rootKey);
 

@@ -40,7 +40,7 @@ public final class Constants {
     public static final int REQ_UPDATED_ACTION_BEACON = 10079;
     public static final int REQ_UPDATED_TRACKED_BEACON = 10080;
     public static final int REQ_TASKER_ACTION_NAME_REQUEST = 10081;
-
+    public static final int REQ_CODE_ALERT_RINGTONE = 10082;
 
     private Constants() {
     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="key_event">
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="bn_notification_action"
+        android:title="@string/pref_bn_notification_action" />
+
+    <EditTextPreference
+        android:title="@string/pref_bn_notification_action_message"
+        android:dependency="bn_notification_action"
+        android:key="bn_notification_action_message"
+        android:summary="@string/pref_bn_default_notification_action_message"/>
+
+    <Preference
+        android:dependency="bn_notification_action"
+        android:key="bn_notification_action_ringtone"
+        android:title="@string/pref_bn_notification_action_ringtone" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:dependency="bn_notification_action"
+        android:key="bn_notification_action_vibrate"
+        android:title="@string/pref_bn_notification_action_vibrate" />
+
+
+</PreferenceScreen>

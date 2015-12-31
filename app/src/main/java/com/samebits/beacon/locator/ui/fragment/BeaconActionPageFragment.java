@@ -21,12 +21,8 @@ package com.samebits.beacon.locator.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
 /**
@@ -47,19 +43,6 @@ public class BeaconActionPageFragment extends PageBeaconFragment {
     @Override
     protected void setData() {
 
-        SwitchPreferenceCompat switch_manage = (SwitchPreferenceCompat) findPreference("ba_switch_enable");
-        //switch_manage.setChecked(mBeacon.isTracked());
-
-        switch_manage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue instanceof Boolean) {
-                    //TODO save action for beacon
-                    isDirty = true;
-                }
-                return true;
-            }
-        });
 
     }
 

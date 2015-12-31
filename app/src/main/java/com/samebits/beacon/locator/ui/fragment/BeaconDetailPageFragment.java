@@ -53,34 +53,24 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue instanceof Boolean) {
                     mActionBeacon.setIsEnabled(((Boolean) newValue).booleanValue());
-                    isDirty = true;
-                    return updateActionBeacon();
                 }
                 return true;
             }
         });
 
+        setNameText(mActionBeacon.getName());
 
         EditTextPreference edit_name = (EditTextPreference) findPreference("bd_name_info");
         edit_name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue instanceof String) {
-                    String newName = (String) newValue;
-                    if (newName != null && !newName.isEmpty()) {
-                        mActionBeacon.setName(newName);
-                        preference.setSummary(newName);
-                        isDirty = true;
-                        //TODO optimized update
-                        return updateActionBeacon();
-                    } else {
-                        //TODO cannot be null
-                    }
+                    setNameText((String) newValue);
+                    mActionBeacon.setName(getNameText());
                 }
                 return true;
             }
         });
-        edit_name.setSummary(mActionBeacon.getName());
 
         findPreference("bd_type_info").setSummary(mBeacon.getBeaconType().getString());
         findPreference("bd_uuid_info").setSummary(mBeacon.getUUID());
@@ -92,6 +82,20 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
         findPreference("bd_major_info").setSummary(mBeacon.getMajor());
         findPreference("bd_minor_info").setSummary(mBeacon.getMinor());
 
+    }
+
+    private String getNameText() {
+        EditTextPreference name = (EditTextPreference) findPreference("bd_name_info");
+        return name.getSummary().toString();
+    }
+
+    private void setNameText(String newValue) {
+        EditTextPreference name = (EditTextPreference) findPreference("bd_name_info");
+        if (newValue != null && !newValue.isEmpty()) {
+            name.setSummary(newValue);
+        } else {
+            name.setSummary(getString(R.string.pref_bd_default_name));
+        }
     }
 
 }

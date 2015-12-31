@@ -20,7 +20,6 @@ package com.samebits.beacon.locator.ui.fragment;
 
 
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -39,7 +38,6 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.adapter.TrackedBeaconAdapter;
 import com.samebits.beacon.locator.util.Constants;
@@ -78,7 +76,12 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
             if (data != null && data.hasExtra(Constants.ARG_ACTION_BEACON)) {
                 ActionBeacon actionBeacon = data.getParcelableExtra(Constants.ARG_ACTION_BEACON);
                 if (actionBeacon != null) {
-                    mBeaconsAdapter.updateBeaconAction(actionBeacon);
+                    //TODO check if isDirty, now we store always even no changes
+                    if (mDataManager.updateBeaconAction(actionBeacon)) {
+                        mBeaconsAdapter.updateBeaconAction(actionBeacon);
+                    } else {
+                        //TODO error
+                    }
                 }
             }
         }

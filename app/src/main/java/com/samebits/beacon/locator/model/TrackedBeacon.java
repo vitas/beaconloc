@@ -285,4 +285,5 @@ public class TrackedBeacon implements IManagedBeacon, ITraceable, Parcelable {
         return (getBeaconType() == BeaconType.EDDYSTONE_UID)
                 || (getBeaconType() == BeaconType.EDDYSTONE_URL) || (getBeaconType() == BeaconType.EDDYSTONE_TLM);
     }
+
 }

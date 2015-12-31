@@ -35,6 +35,7 @@ public class ActionBeacon implements Parcelable {
     private ActionType actionType = ActionType.ACTION_EMPTY;
     private String actionParam = "";
     private boolean isEnabled;
+    private NotificationAction notification = new NotificationAction();
 
     public ActionBeacon(String beaconId, String name) {
         this.beaconId = beaconId;
@@ -55,6 +56,7 @@ public class ActionBeacon implements Parcelable {
         actionType = ActionType.fromInt(in.readInt());
         actionParam = in.readString();
         isEnabled = in.readByte() != 0;
+        notification = in.readParcelable(NotificationAction.class.getClassLoader());
     }
 
     public static final Creator<ActionBeacon> CREATOR = new Creator<ActionBeacon>() {
@@ -133,6 +135,7 @@ public class ActionBeacon implements Parcelable {
         this.isEnabled = isEnabled;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -148,6 +151,7 @@ public class ActionBeacon implements Parcelable {
         dest.writeInt(actionType.getValue());
         dest.writeString(actionParam);
         dest.writeByte((byte) (isEnabled ? 1 : 0));
+        dest.writeParcelable(this.notification, flags);
     }
 
     @Override
@@ -170,12 +174,22 @@ public class ActionBeacon implements Parcelable {
     }
 
 
+    public void setNotification(NotificationAction value) {
+        this.notification = value;
+    }
+
+    public NotificationAction getNotification() {
+        return this.notification;
+    }
+
+
     public enum ActionType {
         ACTION_EMPTY(0),
-        ACTION_INTENT_ACTION(1),
-        ACTION_URL(2),
+        ACTION_URL(1),
+        ACTION_INTENT_ACTION(2),
         ACTION_NOTIFICATION(3),
-        ACTION_SILENT_MODE(4),
+        ACTION_SET_SILENT(4),
+        ACTION_SET_ALARM(5),
         ACTION_TASKER(5);
 
         private final int value;

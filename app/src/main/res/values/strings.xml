@@ -95,11 +95,14 @@
     <string name="tab_title_beacon_info">Info</string>
     <string name="tab_title_beacon_event">Event</string>
     <string name="tab_title_beacon_action">Action</string>
+    <string name="tab_title_beacon_notification">Notification</string>
 
-    <!-- Beacon Details info dialog tab -->
+    <!-- Beacon details info dialog tab -->
     <string name="pref_bd_switch_active">Track it</string>
     <string name="pref_bd_summary_switch_active">Enables tracking for the beacon</string>
     <string name="pref_bd_name">Tracking Name</string>
+    <string name="pref_bd_default_name">Default Name (Replace with yours)</string>
+
     <string name="pref_bd_uuid">UUID</string>
     <string name="pref_bd_type">Type</string>
     <string name="pref_bd_rssi">RSSI</string>
@@ -109,23 +112,39 @@
     <string name="pref_bd_major">Major</string>
     <string name="pref_bd_minor">Minor</string>
 
-    <!-- Beacon event dialog tab -->
+    <!-- Beacon events dialog tab -->
     <string name="pref_be_event_range">Event range</string>
     <string name="pref_be_summary_event_range">Defined event for triggering actions</string>
-
     <string name="pref_be_event_enter_region">Enter region (in range)</string>
     <string name="pref_be_summary_event_enter_region">Occurs when beacon is entering region</string>
-
     <string name="pref_be_event_leave_region">Leave region (out of range)</string>
     <string name="pref_be_summary_event_leave_region">Occurs when beacon is going out of range</string>
-
     <string name="pref_be_event_near">Beacon near you</string>
     <string name="pref_be_summary_event_near">Occurs when beacon is close to you</string>
 
-    <!-- Beacon action dialog tab -->
+    <!-- Beacon actions dialog tab -->
     <string name="pref_ba_switch_enable">Enable All</string>
     <string name="pref_ba_summary_switch_enable">Enables actions defined below</string>
+    <string name="pref_ba_url_action">Open Url</string>
+    <string name="pref_ba_summary_url_action">https://</string>
+    <string name="pref_ba_intent_action">Send Intent</string>
+    <string name="pref_ba_summary_intent_action">Sends intent with action string</string>
+    <string name="pref_ba_tasker">Tasker</string>
+    <string name="pref_ba_summary_tasker">Invokes a tasker action</string>
+    <string name="pref_ba_set_alarm">Set Alarm Clock</string>
+    <string name="pref_ba_summary_set_alarm">Activates alarm clock</string>
+    <string name="pref_ba_unset_alarm">UnSet Alarm Clock</string>
+    <string name="pref_ba_summary_unset_alarm">Deactivates alarm clock</string>
+    <string name="pref_ba_silent_mode">Silent Mode</string>
+    <string name="pref_ba_summary_silent_mode">Set Silent mode profile</string>
+    <string name="pref_ba_notification">Notifications</string>
+    <string name="pref_ba_summary_notification">Enables notifications (sound, vibrate and message)</string>
 
-
-
+    <!-- Beacon notifications dialog tab -->
+    <string name="pref_bn_notification_action">Notification</string>
+    <string name="pref_bn_notification_action_message">Message</string>
+    <string name="pref_bn_default_notification_action_message">Default Message (Replace with yours)</string>
+    <string name="pref_bn_notification_action_ringtone">Ring tone</string>
+    <string name="pref_bn_none_notification_action_ringtone">None (Silent)</string>
+    <string name="pref_bn_notification_action_vibrate">Vibrate</string>
 </resources>
