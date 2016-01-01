@@ -25,10 +25,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -39,9 +43,10 @@ import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.ui.adapter.BeaconAdapter;
 import com.samebits.beacon.locator.ui.adapter.TrackedBeaconAdapter;
+import com.samebits.beacon.locator.ui.view.ContextMenuRecyclerView;
 import com.samebits.beacon.locator.util.Constants;
-import com.samebits.beacon.locator.util.PreferencesUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,11 +55,10 @@ import butterknife.ButterKnife;
 /**
  * Created by vitas on 9/11/15.
  */
-public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BeaconAdapter.OnBeaconLongClickListener {
 
-    public static final float ALPHA_FULL = 1.0f;
     @Bind(R.id.recycler_beacons)
-    RecyclerView mListBeacons;
+    ContextMenuRecyclerView mListBeacons;
     @Bind(R.id.progress_indicator)
     ProgressBar mProgressBar;
     @Bind(R.id.empty_view)
@@ -70,29 +74,13 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         return beaconsFragment;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQ_UPDATED_ACTION_BEACON) {
-            if (data != null && data.hasExtra(Constants.ARG_ACTION_BEACON)) {
-                ActionBeacon actionBeacon = data.getParcelableExtra(Constants.ARG_ACTION_BEACON);
-                if (actionBeacon != null) {
-                    //TODO check if isDirty, now we store always even no changes
-                    if (mDataManager.updateBeaconAction(actionBeacon)) {
-                        mBeaconsAdapter.updateBeaconAction(actionBeacon);
-                    } else {
-                        //TODO error
-                    }
-                }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBeaconsAdapter = new TrackedBeaconAdapter(this);
         mDataManager = BeaconLocatorApp.from(getActivity()).getComponent().dataManager();
+        mBeaconsAdapter = new TrackedBeaconAdapter(this);
+        mBeaconsAdapter.setOnBeaconLongClickListener(this);
         setRetainInstance(true);
     }
 
@@ -108,6 +96,53 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         loadBeacons();
 
         return fragmentView;
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    private void setupToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(R.string.title_fragment_tracked_beacons);
+        }
+    }
+
+    private void setupRecyclerView() {
+        View viewFromEmpty = mEmpty.inflate();
+        mEmptyView = new EmptyView(viewFromEmpty);
+        mEmptyView.text.setText(getString(R.string.text_empty_list_tracked_beacons));
+
+        mListBeacons.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mListBeacons.setHasFixedSize(true);
+        mListBeacons.setAdapter(mBeaconsAdapter);
+
+        registerForContextMenu(mListBeacons);
+
+        mProgressBar.setVisibility(View.GONE);
+
+    }
+
+    private void setupSwipe() {
+
+        ItemTouchHelper swipeToDismissTouchHelper = new ItemTouchHelper(new UndoSwipableCallback(
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT));
+        swipeToDismissTouchHelper.attachToRecyclerView(mListBeacons);
+    }
+
+    private void emptyListUpdate() {
+        if (mBeaconsAdapter.getItemCount() == 0) {
+            mEmpty.setVisibility(View.VISIBLE);
+            mEmptyView.text.setText(getString(R.string.text_empty_list_tracked_beacons));
+        } else {
+            mEmpty.setVisibility(View.GONE);
+        }
     }
 
     private void loadBeacons() {
@@ -163,7 +198,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     }
 
     public void newBeaconAction(String beaconId) {
-        ActionBeacon newAction = new ActionBeacon(beaconId, PreferencesUtil.getDefaultRegionName(getActivity()));
+        ActionBeacon newAction = new ActionBeacon(beaconId, getString(R.string.pref_bd_default_name));
         if (mDataManager.createBeaconAction(newAction)) {
             mBeaconsAdapter.addBeaconAction(newAction);
         } else {
@@ -171,48 +206,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    private void setupToolbar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle(R.string.title_fragment_tracked_beacons);
-        }
-    }
-
-    private void setupRecyclerView() {
-        View viewFromEmpty = mEmpty.inflate();
-        mEmptyView = new EmptyView(viewFromEmpty);
-        mEmptyView.text.setText(getString(R.string.text_empty_list_tracked_beacons));
-
-        mListBeacons.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mListBeacons.setHasFixedSize(true);
-        mProgressBar.setVisibility(View.GONE);
-        mListBeacons.setAdapter(mBeaconsAdapter);
-
-    }
-
-    private void setupSwipe() {
-
-        ItemTouchHelper swipeToDismissTouchHelper = new ItemTouchHelper(new UndoSwipableCallback(
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT));
-        swipeToDismissTouchHelper.attachToRecyclerView(mListBeacons);
-    }
-
-    private void emptyListUpdate() {
-        if (mBeaconsAdapter.getItemCount() == 0) {
-            mEmpty.setVisibility(View.VISIBLE);
-            mEmptyView.text.setText(getString(R.string.text_empty_list_tracked_beacons));
-        } else {
-            mEmpty.setVisibility(View.GONE);
-        }
-    }
 
     @Override
     public void onRefresh() {
@@ -231,6 +224,29 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         }
     }
 
+    @Override
+    public void onBeaconLongClick(int position) {
+        mListBeacons.openContextMenu(position);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQ_UPDATED_ACTION_BEACON) {
+            if (data != null && data.hasExtra(Constants.ARG_ACTION_BEACON)) {
+                ActionBeacon actionBeacon = data.getParcelableExtra(Constants.ARG_ACTION_BEACON);
+                if (actionBeacon != null) {
+                    //TODO check if isDirty, now we store always even no changes
+                    if (mDataManager.updateBeaconAction(actionBeacon)) {
+                        mBeaconsAdapter.updateBeaconAction(actionBeacon);
+                    } else {
+                        //TODO error
+                    }
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     class UndoSwipableCallback extends ItemTouchHelper.SimpleCallback {
 
@@ -250,5 +266,32 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
 
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo
+            menuInfo) {
+
+        super.onCreateContextMenu(menu, view, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_tracked_list, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        ContextMenuRecyclerView.RecyclerContextMenuInfo info = (ContextMenuRecyclerView
+                .RecyclerContextMenuInfo) item
+                .getMenuInfo();
+
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                newBeaconAction(mBeaconsAdapter.getBeacon(info.position).getId());
+                return true;
+            case R.id.action_delete:
+                mBeaconsAdapter.removeBeacon(info.position);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
 }

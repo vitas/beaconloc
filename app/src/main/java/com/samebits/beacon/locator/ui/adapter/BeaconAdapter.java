@@ -34,11 +34,12 @@ import java.util.Map;
  * Created by vitas on 09/12/2015.
  */
 
-public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter<VH> {
+public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>  extends RecyclerView.Adapter<VH>  {
 
     protected Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
     protected BaseFragment mFragment;
+    protected OnBeaconLongClickListener onBeaconLongClickListener;
+
 
     public void insertBeacon(IManagedBeacon beacon) {
         this.mBeacons.put(beacon.getId(), beacon);
@@ -94,5 +95,13 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>
     public void removeBeaconById(String beaconId) {
         this.mBeacons.remove(beaconId);
         notifyDataSetChanged();
+    }
+
+    public interface OnBeaconLongClickListener {
+        void onBeaconLongClick(int position);
+    }
+
+    public void setOnBeaconLongClickListener(OnBeaconLongClickListener onBeaconLongClickListener) {
+        this.onBeaconLongClickListener = onBeaconLongClickListener;
     }
 }

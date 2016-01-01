@@ -3,36 +3,19 @@
     <dimen name="activity_horizontal_margin">6dp</dimen>
     <dimen name="activity_vertical_margin">6dp</dimen>
     <dimen name="fab_margin">8dp</dimen>
+
+    <dimen name="text_headline_large">30.0sp</dimen>
     <dimen name="text_headline">24sp</dimen>
     <dimen name="text_large_title">22sp</dimen>
     <dimen name="text_title">20sp</dimen>
     <dimen name="text_large_body">18sp</dimen>
     <dimen name="text_body">16sp</dimen>
     <dimen name="text_small_body">14sp</dimen>
+    <dimen name="text_extra_small_body">12.0sp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">4dp</dimen>
     <dimen name="nav_header_height">80dp</dimen>
 
-    <dimen name="font_detail_bluetooth">14.0sp</dimen>
-    <dimen name="font_detail_graph_axis">8.0sp</dimen>
-    <dimen name="font_detail_huge">32.0sp</dimen>
-    <dimen name="font_detail_id_values">18.0sp</dimen>
-    <dimen name="font_detail_label">14.0sp</dimen>
-    <dimen name="font_detail_label_small">10.0sp</dimen>
-    <dimen name="font_detail_super_huge">42.0sp</dimen>
-    <dimen name="font_detail_unit">22.0sp</dimen>
-    <dimen name="font_detail_unit_small">18.0sp</dimen>
-    <dimen name="font_item_label">10.0sp</dimen>
-    <dimen name="font_item_rssi">30.0sp</dimen>
-    <dimen name="font_item_rssi_unit">16.0sp</dimen>
-    <dimen name="font_item_value">16.0sp</dimen>
-    <dimen name="font_item_value_unit">12.0sp</dimen>
-    <dimen name="font_large">18.0sp</dimen>
-    <dimen name="font_larger">20.0sp</dimen>
-    <dimen name="font_normal">16.0sp</dimen>
-    <dimen name="font_small">14.0sp</dimen>
-    <dimen name="font_smallest">12.0sp</dimen>
-    <dimen name="font_super_huge">28.0sp</dimen>
 
 </resources>

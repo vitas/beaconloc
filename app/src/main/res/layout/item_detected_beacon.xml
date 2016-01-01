@@ -8,15 +8,16 @@
             type="com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel" />
     </data>
 
-
-
     <FrameLayout
+        android:id="@+id/content_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/content_view"
+        android:longClickable="true"
+        android:onClick="@{viewModel.onClickBeacon}"
         android:background="@color/bg_light_grey">
 
         <LinearLayout
+            android:id="@+id/container_view"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
@@ -26,29 +27,25 @@
                 android:id="@+id/beacon_item_view_header"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:onClick="@{viewModel.onClickBeacon}"
-                android:orientation="horizontal"
-                android:paddingBottom="1.0dip"
-                android:paddingLeft="12.0dip"
-                android:paddingRight="12.0dip"
-                android:paddingTop="4.0dip">
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/beacon_item_uuid_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="4.0dip"
-                    android:paddingTop="4.0dip"
+                    android:layout_marginRight="4dp"
                     android:text="@{viewModel.nameUuid}"
-                    android:textSize="@dimen/font_item_label" />
+                    android:textSize="@dimen/text_extra_small_body" />
 
                 <TextView
                     android:id="@+id/beacon_item_uuid_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.uuid}"
-                    android:textSize="@dimen/font_detail_label" />
+                    android:textSize="@dimen/text_small_body" />
             </LinearLayout>
 
             <LinearLayout
@@ -56,12 +53,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:baselineAligned="false"
-                android:onClick="@{viewModel.onClickBeacon}"
                 android:orientation="horizontal"
-                android:paddingBottom="6.0dip"
-                android:paddingLeft="12.0dip"
-                android:paddingRight="12.0dip"
-                android:paddingTop="1.0dip">
+                android:paddingBottom="6dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="1dp">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -79,16 +75,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/mv_text_rssi"
-                            android:textSize="@dimen/font_item_label" />
+                            android:textSize="@dimen/text_extra_small_body" />
 
                         <TextView
                             android:id="@+id/beacon_item_proximity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12.0dip"
+                            android:layout_marginStart="12dp"
                             android:text="@{viewModel.proximity}"
                             android:textColor="@{viewModel.proximityColor}"
-                            android:textSize="@dimen/font_item_label" />
+                            android:textSize="@dimen/text_extra_small_body" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -100,26 +96,26 @@
                             android:id="@+id/beacon_item_rssi_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="6.0dip"
+                            android:layout_marginEnd="6dp"
                             android:text="@{viewModel.rssi}"
                             android:textColor="@{viewModel.proximityColor}"
-                            android:textSize="@dimen/font_item_rssi" />
+                            android:textSize="@dimen/text_headline_large" />
 
                         <TextView
                             android:id="@+id/beacon_item_rssi_unit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/mv_text_rssi_unit"
-                            android:textSize="@dimen/font_item_rssi_unit" />
+                            android:textSize="@dimen/text_body" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/beacon_item_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2.0dip"
+                        android:layout_marginTop="2dp"
                         android:text="@{viewModel.beaconType}"
-                        android:textSize="@dimen/font_item_value_unit" />
+                        android:textSize="@dimen/text_small_body" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -133,7 +129,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mv_text_txpower"
-                        android:textSize="@dimen/font_item_label" />
+                        android:textSize="@dimen/text_extra_small_body" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -144,15 +140,15 @@
                             android:id="@+id/beacon_item_tx_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="3.0dip"
+                            android:layout_marginEnd="3dp"
                             android:text="@{viewModel.txPower}"
-                            android:textSize="@dimen/font_item_value" />
+                            android:textSize="@dimen/text_extra_small_body" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/mv_text_rssi_unit"
-                            android:textSize="@dimen/font_item_value_unit" />
+                            android:textSize="@dimen/text_small_body" />
                     </LinearLayout>
 
                     <TextView
@@ -160,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mv_text_distance"
-                        android:textSize="@dimen/font_item_label" />
+                        android:textSize="@dimen/text_extra_small_body" />
 
                     <LinearLayout
                         android:layout_width="fill_parent"
@@ -171,15 +167,15 @@
                             android:id="@+id/beacon_item_distance_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="3.0dip"
+                            android:layout_marginEnd="3dp"
                             android:text="@{viewModel.distance}"
-                            android:textSize="@dimen/font_item_value" />
+                            android:textSize="@dimen/text_extra_small_body" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/mv_text_distance_unit"
-                            android:textSize="@dimen/font_item_value_unit" />
+                            android:textSize="@dimen/text_small_body" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -194,14 +190,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mv_text_name"
-                        android:textSize="@dimen/font_item_label" />
+                        android:textSize="@dimen/text_small_body" />
 
                     <TextView
                         android:id="@+id/beacon_item_id1_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.name}"
-                        android:textSize="@dimen/font_detail_label" />
+                        android:textSize="@dimen/text_small_body" />
 
                     <LinearLayout
                         android:id="@+id/beacon_major_minor_container"
@@ -222,15 +218,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@{viewModel.nameMajor}"
-                                android:textSize="@dimen/font_item_label" />
+                                android:textSize="@dimen/text_extra_small_body" />
 
                             <TextView
                                 android:id="@+id/beacon_item_id2_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="12.0dip"
+                                android:layout_marginEnd="12dp"
                                 android:text="@{viewModel.major}"
-                                android:textSize="@dimen/font_item_value_unit" />
+                                android:textSize="@dimen/text_small_body" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -246,15 +242,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@{viewModel.nameMinor}"
-                                android:textSize="@dimen/font_item_label" />
+                                android:textSize="@dimen/text_extra_small_body" />
 
                             <TextView
                                 android:id="@+id/beacon_item_id3_value"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="12.0dip"
+                                android:layout_marginEnd="12dp"
                                 android:text="@{viewModel.minor}"
-                                android:textSize="@dimen/font_item_value_unit" />
+                                android:textSize="@dimen/text_small_body" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

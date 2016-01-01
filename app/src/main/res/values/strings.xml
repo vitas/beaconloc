@@ -147,4 +147,14 @@
     <string name="pref_bn_notification_action_ringtone">Ring tone</string>
     <string name="pref_bn_none_notification_action_ringtone">None (Silent)</string>
     <string name="pref_bn_notification_action_vibrate">Vibrate</string>
+
+    <string name="action_add_action">ACTION</string>
+
+    <!-- Popup menu long click -->
+    <string name="action_detected_beacon_add">Manage</string>
+    <string name="action_detected_beacon_add_filter">Add To Filter</string>
+
+    <string name="action_tracked_list_delete">Delete</string>
+    <string name="action_tracked_action_add">Add Event Action</string>
+
 </resources>

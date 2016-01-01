@@ -21,6 +21,7 @@ package com.samebits.beacon.locator.ui.adapter;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.samebits.beacon.locator.R;
@@ -54,9 +55,18 @@ public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.B
     }
 
     @Override
-    public void onBindViewHolder(BindingHolder holder, int position) {
+    public void onBindViewHolder(BindingHolder holder, final int position) {
         ItemDetectedBeaconBinding beaconBinding = holder.binding;
-        beaconBinding.setViewModel(new DetectedBeaconViewModel( mFragment, (DetectedBeacon) getItem(position)));
+        holder.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (onBeaconLongClickListener != null) {
+                    onBeaconLongClickListener.onBeaconLongClick(position);
+                }
+                return false;
+            }
+        });
+        beaconBinding.setViewModel(new DetectedBeaconViewModel(mFragment, (DetectedBeacon) getItem(position)));
     }
 
 
@@ -76,6 +86,10 @@ public class DetectedBeaconAdapter extends BeaconAdapter<DetectedBeaconAdapter.B
         public BindingHolder(ItemDetectedBeaconBinding binding) {
             super(binding.contentView);
             this.binding = binding;
+        }
+
+        public void setOnLongClickListener(View.OnLongClickListener listener) {
+            binding.contentView.setOnLongClickListener(listener);
         }
     }
 

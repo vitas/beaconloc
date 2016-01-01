@@ -18,22 +18,30 @@
 
 package com.samebits.beacon.locator.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ProgressBar;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.IManagedBeacon;
+import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
+import com.samebits.beacon.locator.ui.adapter.BeaconAdapter;
 import com.samebits.beacon.locator.ui.adapter.DetectedBeaconAdapter;
+import com.samebits.beacon.locator.ui.view.ContextMenuRecyclerView;
 import com.samebits.beacon.locator.ui.view.DividerItemDecoration;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.PreferencesUtil;
@@ -49,13 +57,13 @@ import butterknife.ButterKnife;
 /**
  * Created by vitas on 9/11/15.
  */
-public class DetectedBeaconsFragment extends ScanFragment {
+public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapter.OnBeaconLongClickListener {
 
     //40 sec timeout for scanning
     static final int SCAN_TIMEOUT = 40000;
     protected CountDownTimer mTimer;
     @Bind(R.id.recycler_detected_beacons)
-    RecyclerView mListBeacons;
+    ContextMenuRecyclerView mListBeacons;
     @Bind(R.id.progress_indicator)
     ProgressBar mProgressBar;
     @Bind(R.id.empty_scan_view)
@@ -64,7 +72,6 @@ public class DetectedBeaconsFragment extends ScanFragment {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     private DetectedBeaconAdapter mBeaconsAdapter;
-
 
     public static DetectedBeaconsFragment newInstance() {
         DetectedBeaconsFragment beaconsFragment = new DetectedBeaconsFragment();
@@ -75,6 +82,7 @@ public class DetectedBeaconsFragment extends ScanFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBeaconsAdapter = new DetectedBeaconAdapter(this);
+        mBeaconsAdapter.setOnBeaconLongClickListener(this);
     }
 
     @Override
@@ -112,9 +120,13 @@ public class DetectedBeaconsFragment extends ScanFragment {
 
         mListBeacons.setLayoutManager(new LinearLayoutManager(getActivity()));
         mListBeacons.setHasFixedSize(true);
-        mProgressBar.setVisibility(View.GONE);
         mListBeacons.addItemDecoration(new DividerItemDecoration(getActivity()));
         mListBeacons.setAdapter(mBeaconsAdapter);
+
+        registerForContextMenu(mListBeacons);
+
+        mProgressBar.setVisibility(View.GONE);
+
     }
 
     private void setupTimer() {
@@ -188,5 +200,44 @@ public class DetectedBeaconsFragment extends ScanFragment {
             });
         }
     }
+
+
+    @Override
+    public void onBeaconLongClick(int position) {
+        mListBeacons.openContextMenu(position);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo
+            menuInfo) {
+
+        super.onCreateContextMenu(menu, view, menuInfo);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_detected_list, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        ContextMenuRecyclerView.RecyclerContextMenuInfo info = (ContextMenuRecyclerView
+                .RecyclerContextMenuInfo) item
+                .getMenuInfo();
+
+        switch (item.getItemId()) {
+            case R.id.action_manage_add:
+                //find better way to change fragment from scan to tracked
+                Intent intent = MainNavigationActivity.getStartIntent(getActivity());
+                intent.putExtra(Constants.ARG_BEACON, new TrackedBeacon((IManagedBeacon)mBeaconsAdapter.getItem(info.position)));
+                startActivity(intent);
+                return true;
+            case R.id.action_filter_add:
+                //TODO
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 
 }

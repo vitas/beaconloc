@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.samebits.beacon.locator.ui.activity.MainNavigationActivity">
+
+    <item
+        android:id="@+id/action_manage_add"
+        android:icon="@drawable/ic_add_black_24dp"
+        android:title="@string/action_detected_beacon_add"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter_add"
+        android:icon="@drawable/ic_sort_black_24dp"
+        android:title="@string/action_detected_beacon_add_filter"
+        app:showAsAction="never" />
+
+</menu>

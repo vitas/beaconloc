@@ -64,7 +64,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
     }
 
     @Override
-    public void onBindViewHolder(BindingHolder holder, int position) {
+    public void onBindViewHolder(BindingHolder holder, final int position) {
         ItemTrackedBeaconBinding beaconBinding = holder.binding;
 
         ActionBeaconAdapter adapter = new ActionBeaconAdapter((TrackedBeaconsFragment)mFragment);
@@ -75,6 +75,16 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         adapter.setItems(beacon.getActions());
 
         mActionAdapters.put(beacon.getId(), adapter);
+
+        holder.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (onBeaconLongClickListener != null) {
+                    onBeaconLongClickListener.onBeaconLongClick(position);
+                }
+                return false;
+            }
+        });
 
         beaconBinding.setViewModel(new TrackedBeaconViewModel(mFragment, beacon));
     }
@@ -118,6 +128,10 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         }
     }
 
+    public  IManagedBeacon getBeacon(int position) {
+        return (IManagedBeacon) getItem(position);
+    }
+
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
         private ItemTrackedBeaconBinding binding;
@@ -125,7 +139,10 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         public BindingHolder(ItemTrackedBeaconBinding binding) {
             super(binding.cardView);
             this.binding = binding;
+        }
 
+        public void setOnLongClickListener(View.OnLongClickListener listener) {
+            binding.cardView.setOnLongClickListener(listener);
         }
     }
 
