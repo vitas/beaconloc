@@ -132,6 +132,17 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         return (IManagedBeacon) getItem(position);
     }
 
+    public void enableAction(String beaconId, int id, boolean enable) {
+        ActionBeaconAdapter adapter = mActionAdapters.get(beaconId);
+        if (adapter != null) {
+            ActionBeacon action = adapter.getItemById(id);
+            if(action!= null) {
+                action.setIsEnabled(enable);
+                adapter.addItem(action);
+            }
+        }
+    }
+
 
     public static class BindingHolder extends RecyclerView.ViewHolder {
         private ItemTrackedBeaconBinding binding;

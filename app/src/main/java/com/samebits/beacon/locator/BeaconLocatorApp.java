@@ -22,26 +22,49 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.injection.component.ApplicationComponent;
 import com.samebits.beacon.locator.injection.component.DaggerApplicationComponent;
+import com.samebits.beacon.locator.injection.component.DataComponent;
 import com.samebits.beacon.locator.injection.module.ApplicationModule;
+import com.samebits.beacon.locator.model.ActionBeacon;
+import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.util.PreferencesUtil;
 
+import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
 import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
+import org.altbeacon.beacon.startup.BootstrapNotifier;
+import org.altbeacon.beacon.startup.RegionBootstrap;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
  * Created by vitas on 18/10/15.
  */
-public class BeaconLocatorApp extends Application {
+public class BeaconLocatorApp extends Application implements BootstrapNotifier, RangeNotifier {
 
     ApplicationComponent applicationComponent;
 
-    private BackgroundPowerSaver backgroundPowerSaver;
-    private BeaconManager beaconManager;
+    private BackgroundPowerSaver mBackgroundPowerSaver;
+    private BeaconManager mBeaconManager;
+    private DataManager mDataManager;
+    private RegionBootstrap mRegionBootstrap;
+    List<Region> mRegions;
+
 
     public static BeaconLocatorApp from(@NonNull Context context) {
         return (BeaconLocatorApp) context.getApplicationContext();
+    }
+
+    public ApplicationComponent getComponent() {
+        return applicationComponent;
     }
 
 
@@ -53,13 +76,53 @@ public class BeaconLocatorApp extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
 
-        backgroundPowerSaver = new BackgroundPowerSaver(this);
-        beaconManager = applicationComponent.beaconManager();
+        if (PreferencesUtil.isBackgroundScan(this)) {
+
+            mBeaconManager = BeaconLocatorApp.from(this).getComponent().beaconManager();
+            mBeaconManager.setBackgroundMode(PreferencesUtil.isBackgroundScan(this));
+            mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
+            loadRegions();
+        }
 
     }
 
-    public ApplicationComponent getComponent() {
-        return applicationComponent;
+    public void loadRegions() {
+        mRegions = mDataManager.getAllEnabledRegions();
+
+        if (mRegions.size()>0) {
+            mBeaconManager = applicationComponent.beaconManager();
+            mRegionBootstrap = new RegionBootstrap(this, mRegions);
+            mBackgroundPowerSaver = new BackgroundPowerSaver(this);
+        }
     }
 
+    @Override
+    public void didEnterRegion(Region region) {
+
+    }
+
+    @Override
+    public void didExitRegion(Region region) {
+
+    }
+
+    @Override
+    public void didDetermineStateForRegion(int i, Region region) {
+
+    }
+
+    @Override
+    public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+        if (beacons != null) {
+            if (beacons.size() > 0 && region != null ) {
+                Iterator<Beacon> iterator = beacons.iterator();
+                while (iterator.hasNext()) {
+                    DetectedBeacon dBeacon = new DetectedBeacon(iterator.next());
+                    dBeacon.setTimeLastSeen(System.currentTimeMillis());
+
+                    //this.mBeacons.put(dBeacon.getId(), dBeacon);
+                }
+            }
+        }
+    }
 }

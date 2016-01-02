@@ -22,50 +22,115 @@
             android:id="@+id/container_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:clickable="true"
-            android:onClick="@{viewModel.onClickEdit}"
-            android:minHeight="60dp">
+            android:minHeight="60dp"
+            android:onClick="@{viewModel.onClickEdit}">
 
-            <ImageView
-                android:id="@+id/image_enabled_action"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/container_action_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="2dp"
-                android:onClick="@{viewModel.onClickEnable}"
-                android:src="@drawable/ic_settings_black_24dp" />
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/text_action_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/image_enabled_action"
-                android:padding="16dp"
-                android:text="@{viewModel.name}"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_small_body" />
+                <TextView
+                    android:id="@+id/text_action_enable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:onClick="@{viewModel.onClickEnable}"
+                    android:text="@{viewModel.enableStatus}"
+                    android:textColor="@color/hn_orange"
+                    android:textSize="@dimen/text_small_body" />
+
+                <TextView
+                    android:id="@+id/text_action_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@{viewModel.name}"
+                    android:textSize="@dimen/text_small_body" />
+
+            </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/container_tools"
-                android:layout_width="wrap_content"
+                android:id="@+id/container_action_action"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/container_action_name"
                 android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:text="@string/mv_action_text_event"
+                        android:textSize="@dimen/text_extra_small_body" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.eventName}"
+                        android:textSize="@dimen/text_small_body" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:text="@string/mv_action_text_actions"
+                        android:textSize="@dimen/text_extra_small_body" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.actionNames}"
+                        android:textSize="@dimen/text_small_body" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/container_tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/container_action_action"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_action_enabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:onClick="@{viewModel.onClickEnable}"
+                    android:src="@{viewModel.isEnabled?@drawable/ic_alarm_on_black_18dp:@drawable/ic_alarm_off_black_18dp}" />
 
                 <ImageView
                     android:id="@+id/image_action_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:onClick="@{viewModel.onClickDelete}"
                     android:src="@drawable/ic_delete_black_18dp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </RelativeLayout>
 

@@ -56,4 +56,7 @@ public final class PreferencesUtil {
         getSharedPreferences(context).edit().clear().apply();
     }
 
+    public static boolean isBackgroundScan(Context context) {
+        return getSharedPreferences(context).getBoolean("scan_background_switch", true);
+    }
 }

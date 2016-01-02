@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 
 import android.view.View;
 
+import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.ui.activity.BeaconActionActivity;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
@@ -45,6 +46,30 @@ public class ActionBeaconViewModel extends BaseObservable {
     }
 
     public String getName() { return mActionBeacon.getName();}
+
+    public String getEventName() {
+        switch (mActionBeacon.getEventType()) {
+            case EVENT_LEAVES_REGION:
+                return mFragment.getString(R.string.mv_action_type_leaves_region);
+            case EVENT_ENTERS_REGION:
+                return mFragment.getString(R.string.mv_action_type_enters_region);
+            case EVENT_NEAR_YOU:
+                return mFragment.getString(R.string.mv_action_type_near_you);
+        }
+        return mFragment.getString(R.string.mv_action_type_none);
+    }
+
+    public String getActionNames() {
+        return "TODO more actions";
+    }
+
+    public boolean isEnabled() {
+        return mActionBeacon.isEnabled();
+    }
+
+    public String getEnableStatus() {
+        return mActionBeacon.isEnabled()?mFragment.getString(R.string.mv_action_status_enable):mFragment.getString(R.string.mv_action_status_disabled);
+    }
 
     public View.OnClickListener onClickEdit() {
         return new View.OnClickListener() {
@@ -75,6 +100,7 @@ public class ActionBeaconViewModel extends BaseObservable {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFragment.enableBeaconAction(mActionBeacon.getBeaconId(), mActionBeacon.getId(), !mActionBeacon.isEnabled());
             }
         };
     }

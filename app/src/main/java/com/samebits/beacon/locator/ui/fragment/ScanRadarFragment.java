@@ -83,7 +83,6 @@ public class ScanRadarFragment extends ScanFragment {
 
     @Override
     public void onPause() {
-        if (mBeaconManager.isBound(this)) mBeaconManager.setBackgroundMode(true);
         mSensorManager.unregisterListener(mRadar, accSensor);
         mSensorManager.unregisterListener(mRadar, magnetSensor);
         super.onPause();

@@ -73,7 +73,9 @@ public class ApplicationModule {
 
         manager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
+        //FIXME add to preferences
         manager.setBackgroundBetweenScanPeriod(30000L);  // default is 300000L
+
         manager.setBackgroundScanPeriod(2000L);          // default is 10000L
         manager.setForegroundBetweenScanPeriod(0L);      // default is 0L
         manager.setForegroundScanPeriod(1100L);          // Default is 1100L

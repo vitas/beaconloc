@@ -177,7 +177,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
                 }
             }
         }
-
     }
 
     public void removeBeacon(String beaconId) {
@@ -206,6 +205,13 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         }
     }
 
+    public void enableBeaconAction(String beaconId, int id, boolean enable) {
+        if (mDataManager.enableBeaconAction(id, enable)) {
+            mBeaconsAdapter.enableAction(beaconId, id, enable);
+        }else {
+            //TODO error
+        }
+    }
 
     @Override
     public void onRefresh() {
@@ -247,6 +253,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     class UndoSwipableCallback extends ItemTouchHelper.SimpleCallback {
 

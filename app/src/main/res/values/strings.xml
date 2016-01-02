@@ -27,10 +27,12 @@
     <string name="pref_title_background_scan">Enable background scan</string>
     <string name="pref_description_background_scan">Enables to run scanning in background and trigger actions.</string>
 
+    <string name="pref_title_background_scan_timeout">Background scan interval (only Android 4.X)</string>
+
     <string name="pref_title_region_name">Region name</string>
     <string name="pref_default_region_name">Default</string>
 
-    <string name="pref_title_manual_scan_timeout">Manual scan timeout</string>
+    <string name="pref_title_manual_scan_timeout">Manual scan interval</string>
     <string name="pref_title_scan_sorting">Sorting mode</string>
 
     <!-- settings for actions -->
@@ -56,6 +58,14 @@
     <string name="action_settings">Settings</string>
     <string name="action_view_on_github">GitHub</string>
     <string name="action_donate">Donate</string>
+
+
+    <!-- Popup menu long click -->
+    <string name="action_detected_beacon_add">Manage</string>
+    <string name="action_detected_beacon_add_filter">Add To Filter</string>
+
+    <string name="action_tracked_list_delete">Delete</string>
+    <string name="action_tracked_action_add">Add Event Action</string>
 
     <!-- left drawer menu actions -->
     <string name="title_action_group_beacon_manage">Beacons</string>
@@ -100,8 +110,8 @@
     <!-- Beacon details info dialog tab -->
     <string name="pref_bd_switch_active">Track it</string>
     <string name="pref_bd_summary_switch_active">Enables tracking for the beacon</string>
-    <string name="pref_bd_name">Tracking Name</string>
-    <string name="pref_bd_default_name">Default Name (Replace with yours)</string>
+    <string name="pref_bd_name">Region Name</string>
+    <string name="pref_bd_default_name">Default Name (Replace with yours unique)</string>
 
     <string name="pref_bd_uuid">UUID</string>
     <string name="pref_bd_type">Type</string>
@@ -148,13 +158,18 @@
     <string name="pref_bn_none_notification_action_ringtone">None (Silent)</string>
     <string name="pref_bn_notification_action_vibrate">Vibrate</string>
 
+    <!-- item action mvv -->
     <string name="action_add_action">ACTION</string>
+    <string name="mv_action_text_name">Name</string>
+    <string name="mv_action_text_event">Event</string>
 
-    <!-- Popup menu long click -->
-    <string name="action_detected_beacon_add">Manage</string>
-    <string name="action_detected_beacon_add_filter">Add To Filter</string>
+    <string name="mv_action_type_leaves_region">Leaves region</string>
+    <string name="mv_action_type_enters_region">Enters region</string>
+    <string name="mv_action_type_near_you">Near you</string>
+    <string name="mv_action_type_none">Not set (none)</string>
+    <string name="mv_action_text_actions">Actions</string>
+    <string name="mv_action_status_enable">Enabled</string>
+    <string name="mv_action_status_disabled">Disabled</string>
 
-    <string name="action_tracked_list_delete">Delete</string>
-    <string name="action_tracked_action_add">Add Event Action</string>
 
 </resources>

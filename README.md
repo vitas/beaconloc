@@ -2,15 +2,23 @@ Beacon Locator
 =======================
 
 An Android application to interact with beacons.  
-Implemented in nice material design and could be used as a reference application for
+Implemented in nice material design using Mvvv pattern + data binding and could be used as a reference application for
 Altbeacon android library 
-[github library](http://altbeacon.github.io/android-beacon-library/).
+[github altbeacon library](http://altbeacon.github.io/android-beacon-library/).
 
 ## What does this application can do?
 
-App can scan and locate beacons (Eddystone, iBeacons or AltBeacons) and present detailed information about beacons properties.
+The application can scan and locate beacons (Eddystone, iBeacons or AltBeacons) and present and stire detailed information 
+about beacons properties.
+The application allows you to define actions that will be triggered when a specified event occurs. 
+Currently a beacon may open an application, a website url, send a simple intent action, execute tasker action and 
+send device notification on one of the 3 events: the beacon region has been entered or left, a beacon is near you.
+
 More features are coming soon in next release. 
 Please, do hesitate to contact us if you have some ideas about new features or want to contribute.
+
+## Limitations
+Android 4.3 with Bluetooth 4.0 LE or newer is required.
 
 ## License
 

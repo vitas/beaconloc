@@ -83,12 +83,12 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
     @Override
     public void onResume() {
         super.onResume();
-        if (mBeaconManager.isBound(this)) mBeaconManager.setBackgroundMode(false);
+        //if (mBeaconManager.isBound(this)) mBeaconManager.setBackgroundMode(false);
     }
 
     @Override
     public void onPause() {
-        if (mBeaconManager.isBound(this)) mBeaconManager.setBackgroundMode(true);
+        //if (mBeaconManager.isBound(this)) mBeaconManager.setBackgroundMode(PreferencesUtil.isBackgroundScan(getActivity()));
         super.onPause();
     }
 

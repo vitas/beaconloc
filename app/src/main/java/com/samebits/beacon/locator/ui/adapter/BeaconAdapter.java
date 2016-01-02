@@ -73,10 +73,9 @@ public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder>  extends
 
     public Object getItem(int idx) {
         int i = 0;
-        for (Object o : this.mBeacons.entrySet()) {
-            Map.Entry localEntry = (Map.Entry) o;
+        for (Map.Entry<String, IManagedBeacon> entry : this.mBeacons.entrySet()) {
             if (i == idx) {
-                return localEntry.getValue();
+                return entry.getValue();
             }
             i += 1;
         }

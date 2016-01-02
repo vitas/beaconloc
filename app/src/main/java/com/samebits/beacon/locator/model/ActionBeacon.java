@@ -190,7 +190,7 @@ public class ActionBeacon implements Parcelable {
         ACTION_NOTIFICATION(3),
         ACTION_SET_SILENT(4),
         ACTION_SET_ALARM(5),
-        ACTION_TASKER(5);
+        ACTION_TASKER(6);
 
         private final int value;
         ActionType(int value) {

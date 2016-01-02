@@ -26,7 +26,11 @@ import com.samebits.beacon.locator.injection.module.DataModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
+import org.altbeacon.beacon.Region;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -84,5 +88,18 @@ public class DataManager {
 
     public boolean deleteBeacon(String beaconId) {
         return mStoreService.deleteBeacon(beaconId);
+    }
+
+    public List<Region> getAllEnabledRegions() {
+        List<Region> regions = new ArrayList<>();
+        List<ActionBeacon> actions = mStoreService.getAllEnabledBeaconActions();
+        for(ActionBeacon action: actions){
+            regions.add(new Region(action.getName(), null, null, null));
+        }
+        return regions;
+    }
+
+    public boolean enableBeaconAction(int id, boolean enable) {
+        return mStoreService.updateBeaconActionEnable(id, enable);
     }
 }

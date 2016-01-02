@@ -92,6 +92,15 @@ public class ActionBeaconAdapter extends RecyclerView.Adapter<ActionBeaconAdapte
         }
     }
 
+    public ActionBeacon getItemById(int id) {
+        for(ActionBeacon action: mItemsList) {
+            if (action.getId()==id) {
+                return action;
+            }
+        }
+        return null;
+    }
+
     public static class BindingHolder extends RecyclerView.ViewHolder {
         private ItemActionBeaconBinding binding;
 

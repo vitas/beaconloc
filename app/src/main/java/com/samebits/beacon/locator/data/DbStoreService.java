@@ -336,6 +336,47 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
+    public List<ActionBeacon> getAllEnabledBeaconActions() {
+        List<ActionBeacon> actions = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ActionColumns.TABLE_NAME+ " WHERE "
+                +ActionColumns.COLUMN_IS_ENABLED+ "=?", new String[]{String.valueOf(true)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                ActionBeacon beacon = new ActionBeacon();
+
+                beacon.setId(cursor.getInt(0));
+                beacon.setBeaconId(cursor.getString(1));
+                beacon.setName(cursor.getString(2));
+                beacon.setEventType(ActionBeacon.EventType.fromInt(cursor.getInt(3)));
+                beacon.setActionType(ActionBeacon.ActionType.fromInt(cursor.getInt(4)));
+                beacon.setActionParam(cursor.getString(5));
+                beacon.setIsEnabled(cursor.getInt(6)==1?true:false);
+
+                actions.add(beacon);
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return actions;    }
+
+    @Override
+    public boolean updateBeaconActionEnable(int id, boolean enable) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        final ContentValues values = new ContentValues();
+        values.put(ActionColumns.COLUMN_IS_ENABLED, enable);
+
+        int numUpdated = db.update(ActionColumns.TABLE_NAME, values, ActionColumns.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
+
+        db.close();
+        return (numUpdated == 0) ? false : true;
+    }
+
+    @Override
     public boolean deleteBeacon(String id) {
         SQLiteDatabase db = getWritableDatabase();
         int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(id)});
