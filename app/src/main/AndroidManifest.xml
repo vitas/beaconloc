@@ -18,7 +18,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.MainNavigationActivity"
-            android:launchMode="singleInstance"
             android:label="@string/title_activity_main_navigation"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -35,5 +34,12 @@
             android:label="@string/title_activity_beacon"
             />
     </application>
+
+    <receiver android:name=".receiver.BeaconRegionReceiver">
+        <intent-filter>
+            <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_ENTERS_REGION" />
+            <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_LEAVES_REGION" />
+        </intent-filter>
+    </receiver>
 
 </manifest>

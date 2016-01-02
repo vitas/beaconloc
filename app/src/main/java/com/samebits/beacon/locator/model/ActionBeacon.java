@@ -21,7 +21,11 @@ package com.samebits.beacon.locator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.altbeacon.beacon.Identifier;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by vitas on 28/12/15.
@@ -31,8 +35,8 @@ public class ActionBeacon implements Parcelable {
     private String beaconId;
     private long time;
     private String name;
-    private EventType eventType = EventType.EVENT_EMPTY;
-    private ActionType actionType = ActionType.ACTION_EMPTY;
+    private EventType eventType = EventType.EVENT_ENTERS_REGION;
+    private ActionType actionType = ActionType.ACTION_NOTIFICATION;
     private String actionParam = "";
     private boolean isEnabled;
     private NotificationAction notification = new NotificationAction();
@@ -70,6 +74,15 @@ public class ActionBeacon implements Parcelable {
             return new ActionBeacon[size];
         }
     };
+
+    public List<Identifier> getIdentifiers() {
+        List<Identifier> identifiers = new ArrayList<>();
+        String[] idents =  getBeaconId().split("::");
+        for (int i=0; i < 3; i++) {
+            identifiers.add(Identifier.parse(idents[i]));
+        }
+        return identifiers;
+    }
 
     public int getId() {
         return id;
@@ -184,13 +197,12 @@ public class ActionBeacon implements Parcelable {
 
 
     public enum ActionType {
-        ACTION_EMPTY(0),
-        ACTION_URL(1),
-        ACTION_INTENT_ACTION(2),
-        ACTION_NOTIFICATION(3),
-        ACTION_SET_SILENT(4),
-        ACTION_SET_ALARM(5),
-        ACTION_TASKER(6);
+        ACTION_URL(0),
+        ACTION_INTENT_ACTION(1),
+        ACTION_NOTIFICATION(2),
+        ACTION_SET_SILENT(3),
+        ACTION_SET_ALARM(4),
+        ACTION_TASKER(5);
 
         private final int value;
         ActionType(int value) {
@@ -204,7 +216,7 @@ public class ActionBeacon implements Parcelable {
                     }
                 }
 
-            return ACTION_EMPTY;
+            return ACTION_URL;
         }
 
         public int getValue() {
@@ -213,10 +225,9 @@ public class ActionBeacon implements Parcelable {
     }
 
     public enum EventType {
-        EVENT_EMPTY(0),
-        EVENT_ENTERS_REGION(1),
-        EVENT_LEAVES_REGION(2),
-        EVENT_NEAR_YOU(3);
+        EVENT_ENTERS_REGION(0),
+        EVENT_LEAVES_REGION(1),
+        EVENT_NEAR_YOU(2);
 
         private final int value;
 
@@ -230,7 +241,7 @@ public class ActionBeacon implements Parcelable {
                     return type;
                 }
             }
-            return EVENT_EMPTY;
+            return EVENT_ENTERS_REGION;
         }
 
         public int getValue() {

@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.samebits.beacon.locator.BeaconLocatorApp;
+
 
 /**
  * Created by vitas on 21/10/15.
@@ -58,5 +60,17 @@ public final class PreferencesUtil {
 
     public static boolean isBackgroundScan(Context context) {
         return getSharedPreferences(context).getBoolean("scan_background_switch", true);
+    }
+
+    public static int getBackgroundScanInterval(Context context) {
+        return Integer.parseInt(getSharedPreferences(context).getString("scan_background_timeout_list", "60000"));
+    }
+
+    public static boolean isEddystoneLayoutUID(Context context) {
+        return getSharedPreferences(context).getBoolean("scan_parser_layout_eddystone_uid", true);
+    }
+
+    public static boolean isEddystoneLayoutURL(Context context) {
+        return getSharedPreferences(context).getBoolean("scan_parser_layout_eddystone_url", true);
     }
 }

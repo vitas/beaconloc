@@ -46,5 +46,26 @@
         android:title="@string/pref_title_region_name" />
 
 
+    <PreferenceCategory android:title="@string/pref_title_scan_layout_category">
+
+        <CheckBoxPreference
+            android:title="@string/pref_scan_parser_layout_eddystone_uid"
+            android:key="scan_parser_layout_eddystone_uid"
+            android:defaultValue="true"
+            android:checked="true"/>
+
+        <CheckBoxPreference
+            android:title="@string/pref_scan_parser_layout_eddystone_url"
+            android:key="scan_parser_layout_eddystone_url"
+            android:defaultValue="true"
+            android:checked="true"/>
+
+        <CheckBoxPreference
+            android:title="@string/pref_scan_parser_layout_eddystone_tlm"
+            android:key="scan_parser_layout_eddystone_tlm"
+            android:enabled="false"
+            android:checked="false"/>
+
+    </PreferenceCategory>
 </PreferenceScreen>
 

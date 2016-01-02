@@ -42,8 +42,13 @@ public final class Constants {
     public static final int REQ_TASKER_ACTION_NAME_REQUEST = 10081;
     public static final int REQ_CODE_ALERT_RINGTONE = 10082;
 
+    //action
+    public static final String NOTIFY_BEACON_ENTERS_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_ENTERS_REGION";
+    public static final String NOTIFY_BEACON_LEAVES_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_LEAVES_REGION";
+
     private Constants() {
     }
+
 
 
 }

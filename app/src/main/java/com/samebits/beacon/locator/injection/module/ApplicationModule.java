@@ -63,24 +63,7 @@ public class ApplicationModule {
     @Singleton
     public BeaconManager provideBeaconManager() {
         BeaconManager manager = BeaconManager.getInstanceForApplication(application);
-        manager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.EDDYSTONE_UID_LAYOUT));
-        manager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.EDDYSTONE_URL_LAYOUT));
-        manager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.ALTBEACON_LAYOUT));
 
-        //konkakt?
-        manager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-        manager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
-
-        manager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
-
-        //FIXME add to preferences
-        manager.setBackgroundBetweenScanPeriod(30000L);  // default is 300000L
-
-        manager.setBackgroundScanPeriod(2000L);          // default is 10000L
-        manager.setForegroundBetweenScanPeriod(0L);      // default is 0L
-        manager.setForegroundScanPeriod(1100L);          // Default is 1100L
-
-        //manager.updateScanPeriods();
 
         //manager.setDebug(true);
         return manager;

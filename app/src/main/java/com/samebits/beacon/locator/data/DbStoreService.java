@@ -341,7 +341,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + ActionColumns.TABLE_NAME+ " WHERE "
-                +ActionColumns.COLUMN_IS_ENABLED+ "=?", new String[]{String.valueOf(true)});
+                +ActionColumns.COLUMN_IS_ENABLED+ "=?", new String[]{String.valueOf(1)});
 
         if (cursor.moveToFirst()) {
             do {
@@ -361,7 +361,8 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         }
         cursor.close();
         db.close();
-        return actions;    }
+        return actions;
+    }
 
     @Override
     public boolean updateBeaconActionEnable(int id, boolean enable) {

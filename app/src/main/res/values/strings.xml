@@ -26,14 +26,16 @@
     <!-- Scan settings -->
     <string name="pref_title_background_scan">Enable background scan</string>
     <string name="pref_description_background_scan">Enables to run scanning in background and trigger actions.</string>
-
     <string name="pref_title_background_scan_timeout">Background scan interval (only Android 4.X)</string>
-
     <string name="pref_title_region_name">Region name</string>
     <string name="pref_default_region_name">Default</string>
-
     <string name="pref_title_manual_scan_timeout">Manual scan interval</string>
     <string name="pref_title_scan_sorting">Sorting mode</string>
+    <string name="pref_title_scan_layout_category">Scan Layouts</string>
+    <string name="pref_scan_parser_layout_eddystone_uid">Eddystone UID</string>
+    <string name="pref_scan_parser_layout_eddystone_url">Eddystone URL</string>
+    <string name="pref_scan_parser_layout_eddystone_tlm">Eddystone TLM</string>
+
 
     <!-- settings for actions -->
     <string name="pref_header_notifications">Notifications</string>

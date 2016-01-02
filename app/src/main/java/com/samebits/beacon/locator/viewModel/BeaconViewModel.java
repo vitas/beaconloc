@@ -102,6 +102,9 @@ public class BeaconViewModel extends BaseObservable {
     }
 
     public String getUuid() {
+        if(mManagedBeacon.getType() == DetectedBeacon.TYPE_EDDYSTONE_URL) {
+            return mManagedBeacon.getEddystoneURL();
+        }
         return mManagedBeacon.getUUID();
     }
 
