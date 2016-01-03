@@ -24,6 +24,7 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.injection.component.DaggerDataComponent;
 import com.samebits.beacon.locator.injection.module.DataModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
+import com.samebits.beacon.locator.model.ActionRegion;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import org.altbeacon.beacon.Identifier;
@@ -91,13 +92,16 @@ public class DataManager {
         List<Region> regions = new ArrayList<>();
         List<ActionBeacon> actions = mStoreService.getAllEnabledBeaconActions();
         for(ActionBeacon action: actions){
-            //TODO mac address?
-            regions.add(new Region(action.getName(), action.getIdentifiers()));
+            regions.add(ActionRegion.parseRegion(action));
         }
         return regions;
     }
 
     public boolean enableBeaconAction(int id, boolean enable) {
         return mStoreService.updateBeaconActionEnable(id, enable);
+    }
+
+    public List<ActionBeacon> getActionBeacons(ActionBeacon.EventType eventType, String actionName) {
+        return mStoreService.getActionBeacons(eventType.getValue(), actionName);
     }
 }

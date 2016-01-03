@@ -42,7 +42,6 @@ public class TrackedBeacon implements IManagedBeacon, ITraceable, Parcelable {
     private String bleAddress;
     private int type = -1;
     private String urlEddystone;
-    private boolean tracked;
     private List<ActionBeacon> actions = new ArrayList<>();
 
     public TrackedBeacon(IManagedBeacon detectedBeacon) {
@@ -77,7 +76,6 @@ public class TrackedBeacon implements IManagedBeacon, ITraceable, Parcelable {
         bleAddress = in.readString();
         type = in.readInt();
         urlEddystone = in.readString();
-        tracked = in.readByte() != 0;
         this.actions = new ArrayList<>();
         in.readList(actions, getClass().getClassLoader());
     }
@@ -213,16 +211,6 @@ public class TrackedBeacon implements IManagedBeacon, ITraceable, Parcelable {
     }
 
     @Override
-    public boolean isTracked() {
-        return tracked;
-    }
-
-    @Override
-    public void setTracked(boolean tracked) {
-        this.tracked = tracked;
-    }
-
-    @Override
     public void addAction(ActionBeacon action) {
         if (!this.actions.contains(action)) {
             action.setBeaconId(getId());
@@ -261,7 +249,6 @@ public class TrackedBeacon implements IManagedBeacon, ITraceable, Parcelable {
         dest.writeString(bleAddress);
         dest.writeInt(type);
         dest.writeString(urlEddystone);
-        dest.writeByte((byte) (tracked ? 1 : 0));
         dest.writeList(actions);
     }
 

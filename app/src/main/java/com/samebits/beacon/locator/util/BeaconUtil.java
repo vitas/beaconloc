@@ -20,6 +20,7 @@ package com.samebits.beacon.locator.util;
 
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
@@ -48,6 +49,13 @@ public final class BeaconUtil {
         return R.string.proximity_far;
     }
 
+    public static boolean isProximityNear(double paramDouble) {
+        if ((paramDouble > 0.5D) && (paramDouble <= 2.0D)) {
+            return true;
+        }
+        return false;
+    }
+
     public static double getRoundedDistance(double distance) {
         return Math.ceil(distance * 100.0D) / 100.0D;
     }
@@ -60,7 +68,6 @@ public final class BeaconUtil {
     public static TrackedBeacon convertToTracked(DetectedBeacon detectedBeacon) {
         return new TrackedBeacon(detectedBeacon);
     }
-
 
     public static Map<String, IManagedBeacon> sortBecons(Map<String, IManagedBeacon> beacons, final int sortMode) {
         Object localObject = new ArrayList(beacons.entrySet());

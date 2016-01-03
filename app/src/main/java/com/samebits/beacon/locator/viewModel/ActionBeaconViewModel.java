@@ -50,17 +50,29 @@ public class ActionBeaconViewModel extends BaseObservable {
     public String getEventName() {
         switch (mActionBeacon.getEventType()) {
             case EVENT_LEAVES_REGION:
-                return mFragment.getString(R.string.mv_action_type_leaves_region);
+                return mFragment.getString(R.string.mv_event_type_leaves_region);
             case EVENT_ENTERS_REGION:
-                return mFragment.getString(R.string.mv_action_type_enters_region);
+                return mFragment.getString(R.string.mv_event_type_enters_region);
             case EVENT_NEAR_YOU:
-                return mFragment.getString(R.string.mv_action_type_near_you);
+                return mFragment.getString(R.string.mv_event_type_near_you);
         }
-        return mFragment.getString(R.string.mv_action_type_none);
+        return mFragment.getString(R.string.mv_event_type_enters_region);
     }
 
     public String getActionNames() {
-        return "TODO more actions";
+        switch (mActionBeacon.getActionType()) {
+            case ACTION_URL:
+                return mFragment.getString(R.string.mv_action_type_open_url);
+            case ACTION_INTENT_ACTION:
+                return mFragment.getString(R.string.mv_action_type_broadcast_intent);
+            case ACTION_SET_ALARM:
+                return mFragment.getString(R.string.mv_action_type_set_alarm);
+            case ACTION_SET_SILENT:
+                return mFragment.getString(R.string.mv_action_type_set_silent);
+            case ACTION_TASKER:
+                return mFragment.getString(R.string.mv_action_type_tasker);
+        }
+        return mFragment.getString(R.string.mv_action_type_none);
     }
 
     public boolean isEnabled() {

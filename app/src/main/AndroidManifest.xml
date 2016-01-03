@@ -33,13 +33,21 @@
             android:name=".ui.activity.BeaconActionActivity"
             android:label="@string/title_activity_beacon"
             />
+        <receiver android:name=".receiver.BeaconRegionReceiver">
+            <intent-filter>
+                <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_ENTERS_REGION" />
+                <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_LEAVES_REGION" />
+                <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_NEAR_YOU_REGION" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.SimpleActionReceiver">
+            <intent-filter>
+                <action android:name="com.samebits.beacon.locator.BEACON_ACTION_OPEN_URL"/>
+                <action android:name="com.samebits.beacon.locator.BEACON_ACTION_SEND_INTENT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
-    <receiver android:name=".receiver.BeaconRegionReceiver">
-        <intent-filter>
-            <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_ENTERS_REGION" />
-            <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_LEAVES_REGION" />
-        </intent-filter>
-    </receiver>
+
 
 </manifest>

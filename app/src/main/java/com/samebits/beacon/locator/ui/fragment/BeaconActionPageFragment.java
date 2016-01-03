@@ -21,8 +21,12 @@ package com.samebits.beacon.locator.ui.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.preference.EditTextPreference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
 /**
@@ -43,7 +47,66 @@ public class BeaconActionPageFragment extends PageBeaconFragment {
     @Override
     protected void setData() {
 
+        setActionParam1(mActionBeacon.getActionParam());
 
+        EditTextPreference param_name = (EditTextPreference) findPreference("ba_action_param1");
+        param_name.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof String) {
+                    setActionParam1((String) newValue);
+                    mActionBeacon.setActionParam(getActionParam1());
+                }
+                return true;
+            }
+        });
+
+        setActionType(Integer.toString(mActionBeacon.getActionType().getValue()));
+
+        final ListPreference action_list = (ListPreference) findPreference("ba_action_list");
+        action_list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof String) {
+                    setActionType((String) newValue);
+                    mActionBeacon.setActionType(getActionType());
+                }
+                return true;
+            }
+        });
+
+    }
+
+    private ActionBeacon.ActionType getActionType() {
+        final ListPreference action_list = (ListPreference) findPreference("ba_action_list");
+        return ActionBeacon.ActionType.fromInt(Integer.parseInt(action_list.getValue()));
+    }
+
+    private String getActionParam1() {
+        EditTextPreference param_name = (EditTextPreference) findPreference("ba_action_param1");
+        return param_name.getSummary().toString();
+    }
+
+    private void setActionParam1(String newValue) {
+        EditTextPreference param_name = (EditTextPreference) findPreference("ba_action_param1");
+        if (newValue != null && !newValue.isEmpty()) {
+            param_name.setSummary(newValue);
+        } else {
+            param_name.setSummary("");
+        }
+    }
+
+    private void setActionType(String newValue) {
+        final ListPreference action_list = (ListPreference) findPreference("ba_action_list");
+        if (newValue != null && !newValue.isEmpty()) {
+            int index = action_list.findIndexOfValue(newValue);
+            action_list.setSummary(index >= 0
+                    ? action_list.getEntries()[index]
+                    : null);
+
+        } else {
+            action_list.setSummary(action_list.getEntries()[0]);
+        }
     }
 
     @Override

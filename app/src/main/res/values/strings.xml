@@ -120,6 +120,7 @@
     <string name="pref_bd_rssi">RSSI</string>
     <string name="pref_bd_txpower">Tx Power</string>
     <string name="pref_bd_bluetooth_name">Bluetooth Name</string>
+    <string name="pref_bd_bluetooth_address">Bluetooth Address</string>
     <string name="pref_bd_distance">Distance</string>
     <string name="pref_bd_major">Major</string>
     <string name="pref_bd_minor">Minor</string>
@@ -135,22 +136,8 @@
     <string name="pref_be_summary_event_near">Occurs when beacon is close to you</string>
 
     <!-- Beacon actions dialog tab -->
-    <string name="pref_ba_switch_enable">Enable All</string>
-    <string name="pref_ba_summary_switch_enable">Enables actions defined below</string>
-    <string name="pref_ba_url_action">Open Url</string>
-    <string name="pref_ba_summary_url_action">https://</string>
-    <string name="pref_ba_intent_action">Send Intent</string>
-    <string name="pref_ba_summary_intent_action">Sends intent with action string</string>
-    <string name="pref_ba_tasker">Tasker</string>
-    <string name="pref_ba_summary_tasker">Invokes a tasker action</string>
-    <string name="pref_ba_set_alarm">Set Alarm Clock</string>
-    <string name="pref_ba_summary_set_alarm">Activates alarm clock</string>
-    <string name="pref_ba_unset_alarm">UnSet Alarm Clock</string>
-    <string name="pref_ba_summary_unset_alarm">Deactivates alarm clock</string>
-    <string name="pref_ba_silent_mode">Silent Mode</string>
-    <string name="pref_ba_summary_silent_mode">Set Silent mode profile</string>
-    <string name="pref_ba_notification">Notifications</string>
-    <string name="pref_ba_summary_notification">Enables notifications (sound, vibrate and message)</string>
+    <string name="pref_ba_action_param1">Action parameter to invoke</string>
+    <string name="pref_ba_action_selection">Action Type</string>
 
     <!-- Beacon notifications dialog tab -->
     <string name="pref_bn_notification_action">Notification</string>
@@ -165,13 +152,21 @@
     <string name="mv_action_text_name">Name</string>
     <string name="mv_action_text_event">Event</string>
 
-    <string name="mv_action_type_leaves_region">Leaves region</string>
-    <string name="mv_action_type_enters_region">Enters region</string>
-    <string name="mv_action_type_near_you">Near you</string>
-    <string name="mv_action_type_none">Not set (none)</string>
+    <string name="mv_event_type_leaves_region">Leaves region</string>
+    <string name="mv_event_type_enters_region">Enters region</string>
+    <string name="mv_event_type_near_you">Near you</string>
+
     <string name="mv_action_text_actions">Actions</string>
     <string name="mv_action_status_enable">Enabled</string>
     <string name="mv_action_status_disabled">Disabled</string>
+
+    <!-- action types  -->
+    <string name="mv_action_type_none">None</string>
+    <string name="mv_action_type_tasker">Tasker</string>
+    <string name="mv_action_type_set_silent">Silent profile</string>
+    <string name="mv_action_type_set_alarm">Alarm ON</string>
+    <string name="mv_action_type_broadcast_intent">Broadcast intent</string>
+    <string name="mv_action_type_open_url">Open Url</string>
 
 
 </resources>

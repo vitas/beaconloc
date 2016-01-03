@@ -10,12 +10,8 @@
         android:title="@string/pref_bd_name"
         android:key="bd_name_info"/>
     <Preference
-        android:title="@string/pref_bd_type"
-        android:key="bd_type_info"
-        android:enabled="false"/>
-    <Preference
-        android:title="@string/pref_bd_bluetooth_name"
-        android:key="bd_bluetooth_name_info"/>
+        android:title="@string/pref_bd_bluetooth_address"
+        android:key="bd_bluetooth_address_info"/>
     <Preference
         android:title="@string/pref_bd_uuid"
         android:key="bd_uuid_info"/>

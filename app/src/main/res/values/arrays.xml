@@ -54,5 +54,22 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="pref_ba_action_range_array">
+        <item>@string/mv_action_type_none</item>
+        <item>@string/mv_action_type_open_url</item>
+        <item>@string/mv_action_type_broadcast_intent</item>
+        <item>@string/mv_action_type_set_silent</item>
+        <item>@string/mv_action_type_set_alarm</item>
+        <item>@string/mv_action_type_tasker</item>
+    </string-array>
+
+    <string-array name="pref_ba_action_range_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 
 </resources>

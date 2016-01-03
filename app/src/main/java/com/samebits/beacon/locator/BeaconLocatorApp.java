@@ -28,10 +28,11 @@ import android.util.Log;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.injection.component.ApplicationComponent;
 import com.samebits.beacon.locator.injection.component.DaggerApplicationComponent;
-import com.samebits.beacon.locator.injection.component.DataComponent;
 import com.samebits.beacon.locator.injection.module.ApplicationModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.RegionName;
+import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.PreferencesUtil;
 
@@ -45,7 +46,6 @@ import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
 import org.altbeacon.beacon.startup.BootstrapNotifier;
 import org.altbeacon.beacon.startup.RegionBootstrap;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -57,13 +57,11 @@ import java.util.List;
 public class BeaconLocatorApp extends Application implements BootstrapNotifier, RangeNotifier, BeaconConsumer {
 
     ApplicationComponent applicationComponent;
-
+    List<Region> mRegions;
     private BackgroundPowerSaver mBackgroundPowerSaver;
     private BeaconManager mBeaconManager;
     private DataManager mDataManager;
     private RegionBootstrap mRegionBootstrap;
-    List<Region> mRegions;
-
 
     public static BeaconLocatorApp from(@NonNull Context context) {
         return (BeaconLocatorApp) context.getApplicationContext();
@@ -85,7 +83,10 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager = BeaconLocatorApp.from(this).getComponent().beaconManager();
         mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
 
-        loadRegions();
+        //enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
+
+        //FIXME
+        enableBackgroundScan(false);
 
         mBeaconManager.bind(this);
 
@@ -118,19 +119,28 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         try {
             mBeaconManager.updateScanPeriods();
         } catch (RemoteException e) {
-            Log.e(Constants.TAG,"update error", e);
+            Log.e(Constants.TAG, "update error", e);
+        }
+    }
+
+    public void enableBackgroundScan(boolean enable) {
+        if (enable) {
+           loadRegions();
+        } else {
+            if(mRegionBootstrap != null) {
+                mRegionBootstrap.disable();
+            }
         }
     }
 
     private void loadRegions() {
         mRegions = mDataManager.getAllEnabledRegions();
 
-        if (mRegions.size()>0) {
+        if (mRegions.size() > 0) {
             mRegionBootstrap = new RegionBootstrap(this, mRegions);
         }
 
         //mBeaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId", null, null, null));
-
     }
 
     @Override
@@ -142,43 +152,59 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     public void didEnterRegion(Region region) {
         Log.d(Constants.TAG, "Region Enter " + region);
 
-        Intent intent = new Intent();
-        intent.setAction(Constants.NOTIFY_BEACON_ENTERS_REGION);
-        intent.putExtra("REGION", region);
-        getApplicationContext().sendOrderedBroadcast(intent, null);
+        RegionName regName = RegionName.parseString(region.getUniqueId());
+        if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_ENTERS_REGION) {
+            Intent intent = new Intent();
+            intent.setAction(Constants.NOTIFY_BEACON_ENTERS_REGION);
+            intent.putExtra("REGION", region);
+            getApplicationContext().sendOrderedBroadcast(intent, null);
+        }
     }
 
     @Override
     public void didExitRegion(Region region) {
         Log.d(Constants.TAG, "Region Exit " + region);
 
-        Intent intent = new Intent();
-        intent.setAction(Constants.NOTIFY_BEACON_LEAVES_REGION);
-        intent.putExtra("REGION", region);
-        getApplicationContext().sendOrderedBroadcast(intent, null);
+        RegionName regName = RegionName.parseString(region.getUniqueId());
+        if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_LEAVES_REGION) {
+            Intent intent = new Intent();
+            intent.setAction(Constants.NOTIFY_BEACON_LEAVES_REGION);
+            intent.putExtra("REGION", region);
+            getApplicationContext().sendOrderedBroadcast(intent, null);
+        }
     }
 
     @Override
     public void didDetermineStateForRegion(int i, Region region) {
-        Log.d(Constants.TAG, "Region State  " + i+ " region " +region);
+        Log.d(Constants.TAG, "Region State  " + i + " region " + region);
 
     }
 
     @Override
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-        if (beacons != null) {
-            if (beacons.size() > 0 && region != null ) {
+        if (beacons != null && beacons.size() > 0 && region != null) {
+            RegionName regName = RegionName.parseString(region.getUniqueId());
+            if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_LEAVES_REGION) {
                 Iterator<Beacon> iterator = beacons.iterator();
                 while (iterator.hasNext()) {
                     DetectedBeacon dBeacon = new DetectedBeacon(iterator.next());
                     dBeacon.setTimeLastSeen(System.currentTimeMillis());
-
-                    //this.mBeacons.put(dBeacon.getId(), dBeacon);
+                    if (BeaconUtil.isProximityNear(dBeacon.getDistance())) {
+                        Intent intent = new Intent();
+                        intent.setAction(Constants.NOTIFY_BEACON_NEAR_YOU_REGION);
+                        intent.putExtra("REGION", region);
+                        getApplicationContext().sendOrderedBroadcast(intent, null);
+                    }
                 }
             }
         }
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        enableBackgroundScan(false);
+    }
 
     @Override
     public void onTerminate() {

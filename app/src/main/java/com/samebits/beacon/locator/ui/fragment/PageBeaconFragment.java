@@ -20,7 +20,6 @@ package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +27,6 @@ import android.view.ViewGroup;
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
 /**
@@ -39,7 +36,6 @@ public abstract class PageBeaconFragment extends PreferenceFragmentCompat {
 
     protected DataManager mDataManager;
     protected ActionBeacon mActionBeacon;
-    protected TrackedBeacon mBeacon;
     protected int mPage;
 
     abstract public void onCreatePreferences(Bundle savedInstanceState, String rootKey);
@@ -66,7 +62,6 @@ public abstract class PageBeaconFragment extends PreferenceFragmentCompat {
         if (getArguments() != null) {
             mPage = getArguments().getInt(Constants.ARG_PAGE);
             mActionBeacon = getArguments().getParcelable(Constants.ARG_ACTION_BEACON);
-            mBeacon = mDataManager.getBeacon(mActionBeacon.getBeaconId());
         }
     }
 

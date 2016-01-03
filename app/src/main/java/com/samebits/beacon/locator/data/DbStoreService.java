@@ -82,9 +82,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
             + ScanColumns.COLUMN_NAME_MINOR
             + " TEXT"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_IS_TRACKED
-            + " INTEGER NOT NULL DEFAULT(1)"
-            + SEPARATOR
             + " PRIMARY KEY ("
             + ScanColumns.COLUMN_NAME_LAST_SEEN_TIME + SEPARATOR
             + ScanColumns.COLUMN_NAME_ID + "))";
@@ -155,7 +152,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         values.put(ScanColumns.COLUMN_NAME_URL, beacon.getEddystoneURL());
         values.put(ScanColumns.COLUMN_NAME_MAJOR, beacon.getMajor());
         values.put(ScanColumns.COLUMN_NAME_MINOR, beacon.getMinor());
-        values.put(ScanColumns.COLUMN_NAME_IS_TRACKED, beacon.isTracked()?1:0);
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -192,8 +188,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                         ScanColumns.COLUMN_NAME_TYPE,
                         ScanColumns.COLUMN_NAME_URL,
                         ScanColumns.COLUMN_NAME_MAJOR,
-                        ScanColumns.COLUMN_NAME_MINOR,
-                        ScanColumns.COLUMN_NAME_IS_TRACKED
+                        ScanColumns.COLUMN_NAME_MINOR
                 },
                 ScanColumns.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
 
@@ -212,7 +207,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                 beacon.setUrl(cursor.getString(9));
                 beacon.setMajor(cursor.getString(10));
                 beacon.setMinor(cursor.getString(11));
-                beacon.setTracked(cursor.getInt(12)==1?true:false);
 
                 List<ActionBeacon> actions = getBeaconActions(beacon.getId());
                 beacon.addActions(actions);
@@ -247,7 +241,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                 beacon.setUrl(cursor.getString(9));
                 beacon.setMajor(cursor.getString(10));
                 beacon.setMinor(cursor.getString(11));
-                beacon.setTracked(cursor.getInt(12) == 1 ? true : false);
 
                 List<ActionBeacon> actions = getBeaconActions(beacon.getId());
                 beacon.addActions(actions);
@@ -378,6 +371,37 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
+    public List<ActionBeacon> getActionBeacons(int eventType, String actionName) {
+        List<ActionBeacon> actions = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ActionColumns.TABLE_NAME+ " WHERE "
+                +ActionColumns.COLUMN_IS_ENABLED+ "=? AND "
+                +ActionColumns.COLUMN_NAME+"=? AND "
+                +ActionColumns.COLUMN_EVENT_TYPE+"=? ",
+                new String[]{String.valueOf(1), String.valueOf(eventType), actionName});
+
+        if (cursor.moveToFirst()) {
+            do {
+                ActionBeacon beacon = new ActionBeacon();
+
+                beacon.setId(cursor.getInt(0));
+                beacon.setBeaconId(cursor.getString(1));
+                beacon.setName(cursor.getString(2));
+                beacon.setEventType(ActionBeacon.EventType.fromInt(cursor.getInt(3)));
+                beacon.setActionType(ActionBeacon.ActionType.fromInt(cursor.getInt(4)));
+                beacon.setActionParam(cursor.getString(5));
+                beacon.setIsEnabled(cursor.getInt(6)==1?true:false);
+
+                actions.add(beacon);
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return actions;    }
+
+    @Override
     public boolean deleteBeacon(String id) {
         SQLiteDatabase db = getWritableDatabase();
         int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(id)});
@@ -400,7 +424,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         public static final String COLUMN_NAME_DISTANCE = "distance";
         public static final String COLUMN_NAME_MAJOR = "major";
         public static final String COLUMN_NAME_MINOR = "minor";
-        public static final String COLUMN_NAME_IS_TRACKED = "is_tracked";
     }
 
     protected static abstract class ActionColumns implements BaseColumns {

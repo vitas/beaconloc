@@ -23,20 +23,53 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.samebits.beacon.locator.BeaconLocatorApp;
+import com.samebits.beacon.locator.action.ActionExecutor;
+
+import com.samebits.beacon.locator.action.IAction;
+import com.samebits.beacon.locator.data.DataManager;
+import com.samebits.beacon.locator.model.ActionBeacon;
+import com.samebits.beacon.locator.model.RegionName;
+import com.samebits.beacon.locator.util.Constants;
+
 import org.altbeacon.beacon.Region;
+
+import java.util.List;
+
 
 /**
  * Created by vitas on 02/01/16.
  */
 public class BeaconRegionReceiver extends BroadcastReceiver {
+
+    ActionExecutor mActionExecutor;
+    DataManager mDataManager;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         //TODO
         if(intent.hasExtra("REGION")) {
             Region region = intent.getParcelableExtra("REGION");
             if (region != null) {
-                Log.d("TAG", region.toString());
+                RegionName regionName = RegionName.parseString(region.getUniqueId());
+                Log.d("TAG", "onReceive: " + regionName);
+
+                mDataManager = BeaconLocatorApp.from(context).getComponent().dataManager();
+                List<ActionBeacon> actions = mDataManager.getActionBeacons(regionName.getEventType(), regionName.getActionName());
+                if(actions.size()>0) {
+                    mActionExecutor = new ActionExecutor(context);
+                    for (ActionBeacon actionBeacon : actions) {
+                        // load action from db
+                        IAction action = ActionExecutor.actionBuilder(actionBeacon.getActionType(), actionBeacon.getActionParam());
+                        if (action != null) {
+                            mActionExecutor.storeAndExecute(action);
+                        } else {
+                            Log.w(Constants.TAG, "Action not found for " +actionBeacon);
+                        }
+                    }
+                }
             }
         }
     }
+
 }

@@ -27,10 +27,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.Constants;
+import com.samebits.beacon.locator.util.PreferencesUtil;
 
 
 /**
@@ -38,7 +40,6 @@ import com.samebits.beacon.locator.util.Constants;
  */
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,4 +117,5 @@ public class BaseActivity extends AppCompatActivity {
         }
         return null;
     }
+
 }

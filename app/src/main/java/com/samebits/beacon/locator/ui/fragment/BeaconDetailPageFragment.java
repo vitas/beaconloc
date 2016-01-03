@@ -24,6 +24,12 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.SwitchPreferenceCompat;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.ActionRegion;
+
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.Region;
+
+import java.util.List;
 
 
 /**
@@ -72,15 +78,12 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
             }
         });
 
-        findPreference("bd_type_info").setSummary(mBeacon.getBeaconType().getString());
-        findPreference("bd_uuid_info").setSummary(mBeacon.getUUID());
-        //findPreference("bd_txpower_info").setSummary(String.format("%d dB", mBeacon.getTxPower()));
-        //findPreference("bd_rssi_info").setSummary(String.format("%d dB", mBeacon.getRssi()));
-        findPreference("bd_bluetooth_name_info").setSummary((mBeacon.getBluetoothName() == null
-                || mBeacon.getBluetoothName().equals("")) ? mBeacon.getBluetoothAddress() : mBeacon.getBluetoothName());
-        //findPreference("bd_distance_info").setSummary(BeaconUtil.getRoundedDistanceString(mBeacon.getDistance()) + " m");
-        findPreference("bd_major_info").setSummary(mBeacon.getMajor());
-        findPreference("bd_minor_info").setSummary(mBeacon.getMinor());
+        Region aRegion = ActionRegion.parseRegion(mActionBeacon);
+
+        findPreference("bd_uuid_info").setSummary(aRegion.getId1().toString());
+        findPreference("bd_major_info").setSummary(aRegion.getId2().toString());
+        findPreference("bd_minor_info").setSummary(aRegion.getId3().toString());
+        findPreference("bd_bluetooth_address_info").setSummary(aRegion.getBluetoothAddress());
 
     }
 

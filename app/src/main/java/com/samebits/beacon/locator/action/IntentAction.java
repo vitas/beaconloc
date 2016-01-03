@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2015 SameBits UG. All rights reserved.
+ *  Copyright (c) 2016 SameBits UG. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,15 +16,28 @@
  *
  */
 
-package com.samebits.beacon.locator.model;
+package com.samebits.beacon.locator.action;
 
-import java.util.List;
+import android.content.Context;
+import android.content.Intent;
 
 /**
- * Created by vitas on 29/12/15.
+ * Created by vitas on 03/01/16.
  */
-public interface ITraceable {
-    List<ActionBeacon> getActions();
-    void addAction(ActionBeacon action);
-    void addActions(List<ActionBeacon> actions);
+public class IntentAction extends Action {
+
+    public IntentAction(String param) {
+        super(param);
+    }
+
+    @Override
+    public void execute(Context context) {
+        Intent newIntent = new Intent(param);
+        context.sendBroadcast(newIntent);
+    }
+
+    @Override
+    public String toString() {
+        return "IntentAction, action: "+param;
+    }
 }

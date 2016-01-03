@@ -33,10 +33,9 @@ import java.util.List;
 public class ActionBeacon implements Parcelable {
     private int id;
     private String beaconId;
-    private long time;
     private String name;
     private EventType eventType = EventType.EVENT_ENTERS_REGION;
-    private ActionType actionType = ActionType.ACTION_NOTIFICATION;
+    private ActionType actionType = ActionType.ACTION_NONE;
     private String actionParam = "";
     private boolean isEnabled;
     private NotificationAction notification = new NotificationAction();
@@ -44,17 +43,15 @@ public class ActionBeacon implements Parcelable {
     public ActionBeacon(String beaconId, String name) {
         this.beaconId = beaconId;
         this.name = name;
-        this.time = new Date().getTime();
     }
 
     public ActionBeacon() {
-        this.time = new Date().getTime();
+
     }
 
     protected ActionBeacon(Parcel in) {
         id = in.readInt();
         beaconId = in.readString();
-        time = in.readLong();
         name = in.readString();
         eventType = EventType.fromInt(in.readInt());
         actionType = ActionType.fromInt(in.readInt());
@@ -75,15 +72,6 @@ public class ActionBeacon implements Parcelable {
         }
     };
 
-    public List<Identifier> getIdentifiers() {
-        List<Identifier> identifiers = new ArrayList<>();
-        String[] idents =  getBeaconId().split("::");
-        for (int i=0; i < 3; i++) {
-            identifiers.add(Identifier.parse(idents[i]));
-        }
-        return identifiers;
-    }
-
     public int getId() {
         return id;
     }
@@ -98,14 +86,6 @@ public class ActionBeacon implements Parcelable {
 
     public void setBeaconId(String beaconId) {
         this.beaconId = beaconId;
-    }
-
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
     }
 
     public String getName() {
@@ -158,7 +138,6 @@ public class ActionBeacon implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(beaconId);
-        dest.writeLong(time);
         dest.writeString(name);
         dest.writeInt(eventType.getValue());
         dest.writeInt(actionType.getValue());
@@ -186,7 +165,6 @@ public class ActionBeacon implements Parcelable {
         return result;
     }
 
-
     public void setNotification(NotificationAction value) {
         this.notification = value;
     }
@@ -197,9 +175,9 @@ public class ActionBeacon implements Parcelable {
 
 
     public enum ActionType {
-        ACTION_URL(0),
-        ACTION_INTENT_ACTION(1),
-        ACTION_NOTIFICATION(2),
+        ACTION_NONE(0),
+        ACTION_URL(1),
+        ACTION_INTENT_ACTION(2),
         ACTION_SET_SILENT(3),
         ACTION_SET_ALARM(4),
         ACTION_TASKER(5);

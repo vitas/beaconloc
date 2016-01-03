@@ -24,6 +24,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.CheckBoxPreference;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -48,23 +49,36 @@ public class BeaconEventPageFragment extends PageBeaconFragment {
 
         String key = preference.getKey();
         if (key.equals("be_event_enter_region")) {
-            //Reset other items
-            ((CheckBoxPreference) findPreference("be_event_leaves_region")).setChecked(false);
-            ((CheckBoxPreference) findPreference("be_event_near_you")).setChecked(false);
+            mActionBeacon.setEventType(ActionBeacon.EventType.EVENT_ENTERS_REGION);
         } else if (key.equals("be_event_leaves_region")) {
-            ((CheckBoxPreference) findPreference("be_event_enter_region")).setChecked(false);
-            ((CheckBoxPreference) findPreference("be_event_near_you")).setChecked(false);
+            mActionBeacon.setEventType(ActionBeacon.EventType.EVENT_LEAVES_REGION);
         } else {
-            ((CheckBoxPreference) findPreference("be_event_leaves_region")).setChecked(false);
-            ((CheckBoxPreference) findPreference("be_event_enter_region")).setChecked(false);
+            mActionBeacon.setEventType(ActionBeacon.EventType.EVENT_NEAR_YOU);
         }
 
+        setData();
+        
         return super.onPreferenceTreeClick(preference);
     }
 
     @Override
     protected void setData() {
-
+        switch(mActionBeacon.getEventType()) {
+            case EVENT_ENTERS_REGION:
+                ((CheckBoxPreference) findPreference("be_event_enter_region")).setChecked(true);
+                ((CheckBoxPreference) findPreference("be_event_leaves_region")).setChecked(false);
+                ((CheckBoxPreference) findPreference("be_event_near_you")).setChecked(false);
+                break;
+            case EVENT_LEAVES_REGION:
+                ((CheckBoxPreference) findPreference("be_event_leaves_region")).setChecked(true);
+                ((CheckBoxPreference) findPreference("be_event_enter_region")).setChecked(false);
+                ((CheckBoxPreference) findPreference("be_event_near_you")).setChecked(false);
+                break;
+            default:
+                ((CheckBoxPreference) findPreference("be_event_near_you")).setChecked(true);
+                ((CheckBoxPreference) findPreference("be_event_leaves_region")).setChecked(false);
+                ((CheckBoxPreference) findPreference("be_event_enter_region")).setChecked(false);
+        }
     }
 
 }
