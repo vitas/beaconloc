@@ -58,7 +58,9 @@
         <item>@string/mv_action_type_none</item>
         <item>@string/mv_action_type_open_url</item>
         <item>@string/mv_action_type_broadcast_intent</item>
-        <item>@string/mv_action_type_set_silent</item>
+        <item>@string/mv_action_type_start_app</item>
+        <item>@string/mv_action_type_set_silent_on</item>
+        <item>@string/mv_action_type_set_silent_off</item>
         <item>@string/mv_action_type_set_alarm</item>
         <item>@string/mv_action_type_tasker</item>
     </string-array>
@@ -70,6 +72,8 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
+        <item>7</item>
     </string-array>
 
 </resources>

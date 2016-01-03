@@ -178,9 +178,11 @@ public class ActionBeacon implements Parcelable {
         ACTION_NONE(0),
         ACTION_URL(1),
         ACTION_INTENT_ACTION(2),
-        ACTION_SET_SILENT(3),
-        ACTION_SET_ALARM(4),
-        ACTION_TASKER(5);
+        ACTION_START_APP(3),
+        ACTION_SET_SILENT_ON(4),
+        ACTION_SET_SILENT_OFF(5),
+        ACTION_SET_ALARM(6),
+        ACTION_TASKER(7);
 
         private final int value;
         ActionType(int value) {

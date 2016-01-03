@@ -43,6 +43,7 @@ public class DataManager {
 
     @Inject
     protected StoreService mStoreService;
+    private List<ActionBeacon> mActionBeaconCache = new ArrayList<>();
 
     public DataManager(Context context) {
         injectDependencies(context);
@@ -91,6 +92,8 @@ public class DataManager {
     public List<Region> getAllEnabledRegions() {
         List<Region> regions = new ArrayList<>();
         List<ActionBeacon> actions = mStoreService.getAllEnabledBeaconActions();
+        mActionBeaconCache.clear();
+        mActionBeaconCache.addAll(actions);
         for(ActionBeacon action: actions){
             regions.add(ActionRegion.parseRegion(action));
         }
@@ -102,6 +105,18 @@ public class DataManager {
     }
 
     public List<ActionBeacon> getActionBeacons(ActionBeacon.EventType eventType, String actionName) {
+        if(!mActionBeaconCache.isEmpty()) {
+            List<ActionBeacon> actionBeacons = new ArrayList<>();
+            for(ActionBeacon action: mActionBeaconCache) {
+                if(action.getName().equalsIgnoreCase(actionName) && action.getEventType() == eventType) {
+                    actionBeacons.add(action);
+                }
+            }
+            if (actionBeacons.size()>0) {
+                return actionBeacons;
+            }
+        }
         return mStoreService.getActionBeacons(eventType.getValue(), actionName);
     }
+
 }

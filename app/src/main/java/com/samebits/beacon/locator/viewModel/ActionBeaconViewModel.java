@@ -65,10 +65,14 @@ public class ActionBeaconViewModel extends BaseObservable {
                 return mFragment.getString(R.string.mv_action_type_open_url);
             case ACTION_INTENT_ACTION:
                 return mFragment.getString(R.string.mv_action_type_broadcast_intent);
+            case ACTION_START_APP:
+                return mFragment.getString(R.string.mv_action_type_start_app);
             case ACTION_SET_ALARM:
                 return mFragment.getString(R.string.mv_action_type_set_alarm);
-            case ACTION_SET_SILENT:
-                return mFragment.getString(R.string.mv_action_type_set_silent);
+            case ACTION_SET_SILENT_ON:
+                return mFragment.getString(R.string.mv_action_type_set_silent_on);
+            case ACTION_SET_SILENT_OFF:
+                return mFragment.getString(R.string.mv_action_type_set_silent_off);
             case ACTION_TASKER:
                 return mFragment.getString(R.string.mv_action_type_tasker);
         }

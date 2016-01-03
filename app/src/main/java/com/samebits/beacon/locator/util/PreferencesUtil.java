@@ -73,4 +73,13 @@ public final class PreferencesUtil {
     public static boolean isEddystoneLayoutURL(Context context) {
         return getSharedPreferences(context).getBoolean("scan_parser_layout_eddystone_url", true);
     }
+
+    public static int getSilentModeProfile(Context context) {
+        return getSharedPreferences(context).getInt("silent_profile_mode", 2);
+    }
+
+    public static void setSilentModeProfile(Context context, int mode) {
+        getSharedPreferences(context).edit().putInt("silent_profile_mode", mode).apply();
+    }
+
 }

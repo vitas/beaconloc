@@ -163,7 +163,9 @@
     <!-- action types  -->
     <string name="mv_action_type_none">None</string>
     <string name="mv_action_type_tasker">Tasker</string>
-    <string name="mv_action_type_set_silent">Silent profile</string>
+    <string name="mv_action_type_set_silent_on">Silent sound profile</string>
+    <string name="mv_action_type_set_silent_off">Normal sound profile</string>
+    <string name="mv_action_type_start_app">Start application</string>
     <string name="mv_action_type_set_alarm">Alarm ON</string>
     <string name="mv_action_type_broadcast_intent">Broadcast intent</string>
     <string name="mv_action_type_open_url">Open Url</string>

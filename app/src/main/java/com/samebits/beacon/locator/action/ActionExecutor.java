@@ -54,6 +54,14 @@ public class ActionExecutor {
                 return new UrlAction(param);
             case ACTION_INTENT_ACTION:
                 return new IntentAction(param);
+            case ACTION_START_APP:
+                return new StartAppAction(param);
+            case ACTION_SET_ALARM:
+                return new AlarmOnAction(param);
+            case ACTION_SET_SILENT_ON:
+                return new SilentOnAction(param);
+            case ACTION_SET_SILENT_OFF:
+                return new SilentOffAction(param);
         }
         return null;
     }

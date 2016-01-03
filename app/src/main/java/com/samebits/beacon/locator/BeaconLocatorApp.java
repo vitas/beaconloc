@@ -83,10 +83,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager = BeaconLocatorApp.from(this).getComponent().beaconManager();
         mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
 
-        //enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
-
-        //FIXME
-        enableBackgroundScan(false);
+        enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
 
         mBeaconManager.bind(this);
 
