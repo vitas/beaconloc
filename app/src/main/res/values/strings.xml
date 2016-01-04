@@ -138,6 +138,9 @@
     <!-- Beacon actions dialog tab -->
     <string name="pref_ba_action_param1">Action parameter</string>
     <string name="pref_ba_action_selection">Action Type</string>
+    <string name="pref_ba_action_test_category">Test your action</string>
+    <string name="pref_ba_action_test_button">Execute</string>
+
 
     <!-- Beacon notifications dialog tab -->
     <string name="pref_bn_notification_action">Notification</string>

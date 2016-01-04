@@ -45,6 +45,7 @@ public class BeaconRegionReceiver extends BroadcastReceiver {
     ActionExecutor mActionExecutor;
     DataManager mDataManager;
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         //TODO
@@ -56,7 +57,8 @@ public class BeaconRegionReceiver extends BroadcastReceiver {
                 mDataManager = BeaconLocatorApp.from(context).getComponent().dataManager();
                 List<ActionBeacon> actions = mDataManager.getEnabledBeaconActionsByEvent(regionName.getEventType(), regionName.getBeaconId());
                 if(actions.size()>0) {
-                    mActionExecutor = new ActionExecutor(context);
+
+                    mActionExecutor = BeaconLocatorApp.from(context).getComponent().actionExecutor();
                     for (ActionBeacon actionBeacon : actions) {
                         // load action from db
                         IAction action = ActionExecutor.actionBuilder(actionBeacon.getActionType(), actionBeacon.getActionParam(), actionBeacon.getNotification());

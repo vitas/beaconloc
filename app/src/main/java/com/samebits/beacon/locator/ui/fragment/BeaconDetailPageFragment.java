@@ -72,7 +72,6 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue instanceof String) {
                     setNameText((String) newValue);
-                    mActionBeacon.setName(getNameText());
                 }
                 return true;
             }
@@ -87,17 +86,14 @@ public class BeaconDetailPageFragment extends PageBeaconFragment {
 
     }
 
-    private String getNameText() {
-        EditTextPreference name = (EditTextPreference) findPreference("bd_name_info");
-        return name.getSummary().toString();
-    }
-
     private void setNameText(String newValue) {
         EditTextPreference name = (EditTextPreference) findPreference("bd_name_info");
         if (newValue != null && !newValue.isEmpty()) {
             name.setSummary(newValue);
+            mActionBeacon.setName(newValue);
         } else {
             name.setSummary(getString(R.string.pref_bd_default_name));
+            mActionBeacon.setName(getString(R.string.pref_bd_default_name));
         }
     }
 

@@ -17,4 +17,13 @@
         android:title="@string/pref_ba_action_param1"
         android:key="ba_action_param1" />
 
+    <PreferenceCategory
+        android:title="@string/pref_ba_action_test_category">
+        <Preference
+            android:dependency="ba_action_param1"
+            android:title="@string/pref_ba_action_test_button"
+            android:key="ba_action_test"/>
+    </PreferenceCategory>
+
+
 </PreferenceScreen>

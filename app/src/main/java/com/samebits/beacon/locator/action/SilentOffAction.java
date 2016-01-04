@@ -27,7 +27,7 @@ import com.samebits.beacon.locator.util.PreferencesUtil;
 /**
  * Created by vitas on 03/01/16.
  */
-public class SilentOffAction extends SilentOnAction {
+public class SilentOffAction extends NoneAction {
 
 
     public SilentOffAction(String param, NotificationAction notification) {

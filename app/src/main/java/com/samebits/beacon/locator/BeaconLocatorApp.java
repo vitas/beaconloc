@@ -86,8 +86,6 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager = BeaconLocatorApp.from(this).getComponent().beaconManager();
         mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
 
-        enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
-
         mBeaconManager.bind(this);
 
     }
@@ -124,6 +122,9 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     }
 
     public void enableBackgroundScan(boolean enable) {
+        if (!mBeaconManager.isBound(this)) {
+            return;
+        }
         if (enable) {
            loadRegions();
         } else {
@@ -154,6 +155,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     @Override
     public void onBeaconServiceConnect() {
         initBeaconManager();
+        enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
     }
 
     @Override

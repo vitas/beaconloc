@@ -35,6 +35,7 @@ public class ActionExecutor {
 
     private final Context mContext;
     private List<IAction> mHistory = new ArrayList<>();
+    private List<IAction> mFailed = new ArrayList<>();
 
     public ActionExecutor(Context context) {
         this.mContext = context;
@@ -45,6 +46,7 @@ public class ActionExecutor {
         try {
             action.execute(mContext);
         } catch (Exception e) {
+            mFailed.add(action);
             Log.d(Constants.TAG, "Error executing action: " + action, e);
         }
     }

@@ -21,6 +21,7 @@ package com.samebits.beacon.locator.injection.component;
 
 import android.app.Application;
 
+import com.samebits.beacon.locator.action.ActionExecutor;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.injection.module.ApplicationModule;
 
@@ -43,5 +44,7 @@ public interface ApplicationComponent {
     DataManager dataManager();
 
     BeaconManager beaconManager();
+
+    ActionExecutor actionExecutor();
 
 }

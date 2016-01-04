@@ -75,7 +75,6 @@ public class BeaconNotificationPageFragment extends PageBeaconFragment {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue instanceof String) {
                     setMessageText((String) newValue);
-                    mActionBeacon.getNotification().setMessage(getMessageText());
                 }
                 return true;
             }
@@ -95,17 +94,14 @@ public class BeaconNotificationPageFragment extends PageBeaconFragment {
         });
     }
 
-    private String getMessageText() {
-        EditTextPreference msg_name = (EditTextPreference) findPreference("bn_notification_action_message");
-        return msg_name.getSummary().toString();
-    }
-
     private void setMessageText(String newValue) {
         EditTextPreference msg_name = (EditTextPreference) findPreference("bn_notification_action_message");
         if (newValue != null && !newValue.isEmpty()) {
             msg_name.setSummary(newValue);
+            mActionBeacon.getNotification().setMessage(newValue);
         } else {
             msg_name.setSummary(getString(R.string.pref_bn_default_notification_action_message));
+            mActionBeacon.getNotification().setMessage(getString(R.string.pref_bn_default_notification_action_message));
         }
     }
 
