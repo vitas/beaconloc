@@ -52,15 +52,14 @@ public class BeaconRegionReceiver extends BroadcastReceiver {
             Region region = intent.getParcelableExtra("REGION");
             if (region != null) {
                 RegionName regionName = RegionName.parseString(region.getUniqueId());
-                Log.d("TAG", "onReceive: " + regionName);
 
                 mDataManager = BeaconLocatorApp.from(context).getComponent().dataManager();
-                List<ActionBeacon> actions = mDataManager.getActionBeacons(regionName.getEventType(), regionName.getActionName());
+                List<ActionBeacon> actions = mDataManager.getEnabledBeaconActionsByEvent(regionName.getEventType(), regionName.getBeaconId());
                 if(actions.size()>0) {
                     mActionExecutor = new ActionExecutor(context);
                     for (ActionBeacon actionBeacon : actions) {
                         // load action from db
-                        IAction action = ActionExecutor.actionBuilder(actionBeacon.getActionType(), actionBeacon.getActionParam());
+                        IAction action = ActionExecutor.actionBuilder(actionBeacon.getActionType(), actionBeacon.getActionParam(), actionBeacon.getNotification());
                         if (action != null) {
                             mActionExecutor.storeAndExecute(action);
                         } else {

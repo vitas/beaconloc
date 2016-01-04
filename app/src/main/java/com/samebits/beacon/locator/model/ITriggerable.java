@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2016 SameBits UG. All rights reserved.
+ *  Copyright (c) 2015 SameBits UG. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@
  *
  */
 
-package com.samebits.beacon.locator.action;
+package com.samebits.beacon.locator.model;
 
-import android.content.Context;
-
-import com.samebits.beacon.locator.model.NotificationAction;
+import java.util.List;
 
 /**
- * Created by vitas on 03/01/16.
+ * Created by vitas on 29/12/15.
  */
-abstract class Action implements IAction {
-    @Override
-    abstract public void execute(Context context);
+public interface ITriggerable {
+    List<ActionBeacon> getActions();
+    void addAction(ActionBeacon action);
+    void addActions(List<ActionBeacon> actions);
 }

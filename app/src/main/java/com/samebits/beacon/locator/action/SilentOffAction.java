@@ -21,6 +21,7 @@ package com.samebits.beacon.locator.action;
 import android.content.Context;
 import android.media.AudioManager;
 
+import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.util.PreferencesUtil;
 
 /**
@@ -29,8 +30,8 @@ import com.samebits.beacon.locator.util.PreferencesUtil;
 public class SilentOffAction extends SilentOnAction {
 
 
-    public SilentOffAction(String param) {
-        super(param);
+    public SilentOffAction(String param, NotificationAction notification) {
+        super(param, notification);
     }
 
     @Override
@@ -41,6 +42,7 @@ public class SilentOffAction extends SilentOnAction {
         if (ringerMode != AudioManager.RINGER_MODE_VIBRATE) {
             audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
         }
+        super.execute(context);
     }
 
     @Override

@@ -21,17 +21,18 @@ package com.samebits.beacon.locator.action;
 import android.content.Context;
 import android.media.AudioManager;
 
+import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.util.PreferencesUtil;
 
 /**
  * Created by vitas on 03/01/16.
  */
-public class SilentOnAction extends Action {
+public class SilentOnAction extends NoneAction {
 
     protected int mRingerMode;
 
-    public SilentOnAction(String param) {
-        super(param);
+    public SilentOnAction(String param, NotificationAction notification) {
+        super(param, notification);
     }
 
     @Override
@@ -50,6 +51,7 @@ public class SilentOnAction extends Action {
         }
         PreferencesUtil.setSilentModeProfile(context, mRingerMode);
         audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+        super.execute(context);
     }
 
     @Override

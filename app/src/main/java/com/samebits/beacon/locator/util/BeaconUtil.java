@@ -18,12 +18,8 @@
 
 package com.samebits.beacon.locator.util;
 
-
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.model.TrackedBeacon;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -39,21 +35,28 @@ import java.util.Map;
  */
 public final class BeaconUtil {
 
-    public static int getProximityResourceId(double paramDouble) {
+    public static IManagedBeacon.ProximityType getProximity(double paramDouble) {
         if (paramDouble <= 0.5D) {
-            return R.string.proximity_immediate;
+            return IManagedBeacon.ProximityType.IMMEDIATE;
         }
         if ((paramDouble > 0.5D) && (paramDouble <= 2.0D)) {
+            return IManagedBeacon.ProximityType.NEAR;
+        }
+        return IManagedBeacon.ProximityType.FAR;
+    }
+
+    public static int getProximityResourceId(IManagedBeacon.ProximityType proximityType) {
+        if (proximityType == IManagedBeacon.ProximityType.IMMEDIATE) {
+            return R.string.proximity_immediate;
+        }
+        if (proximityType == IManagedBeacon.ProximityType.NEAR) {
             return R.string.proximity_near;
         }
         return R.string.proximity_far;
     }
 
-    public static boolean isProximityNear(double paramDouble) {
-        if ((paramDouble > 0.5D) && (paramDouble <= 2.0D)) {
-            return true;
-        }
-        return false;
+    public static boolean isInProximity(IManagedBeacon.ProximityType proximityType, double paramDouble) {
+        return(getProximity(paramDouble) == proximityType)?true:false;
     }
 
     public static double getRoundedDistance(double distance) {
@@ -61,13 +64,9 @@ public final class BeaconUtil {
     }
 
     public static String getRoundedDistanceString(double distance) {
-        double d = Math.ceil(distance * 100.0D) / 100.0D;
-        return new DecimalFormat("##0.00").format(d);
+        return new DecimalFormat("##0.00").format(getRoundedDistance(distance));
     }
 
-    public static TrackedBeacon convertToTracked(DetectedBeacon detectedBeacon) {
-        return new TrackedBeacon(detectedBeacon);
-    }
 
     public static Map<String, IManagedBeacon> sortBecons(Map<String, IManagedBeacon> beacons, final int sortMode) {
         Object localObject = new ArrayList(beacons.entrySet());

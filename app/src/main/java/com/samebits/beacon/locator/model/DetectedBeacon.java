@@ -140,7 +140,7 @@ public class DetectedBeacon extends Beacon implements IManagedBeacon {
 
     @Override
     public String getId() {
-        return getUUID() + "::" + getMajor() + "::" + getMinor() + "::" + getBluetoothAddress();
+        return getUUID() + ";" + getMajor() + ";" + getMinor() + ";" + getBluetoothAddress();
     }
 
     @Override

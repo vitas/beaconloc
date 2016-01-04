@@ -24,15 +24,12 @@ import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.injection.component.DaggerDataComponent;
 import com.samebits.beacon.locator.injection.module.DataModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.ActionRegion;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
-import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.Region;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -65,10 +62,6 @@ public class DataManager {
         return mStoreService.updateBeacon(beacon);
     }
 
-    public TrackedBeacon getBeacon(String id) {
-        return mStoreService.getBeacon(id);
-    }
-
     public List<TrackedBeacon> getAllBeacons() {
         return mStoreService.getBeacons();
     }
@@ -81,34 +74,30 @@ public class DataManager {
         return mStoreService.updateBeaconAction(beacon);
     }
 
-    public boolean deleteActionBeacon(int id) {
+    public boolean deleteBeaconAction(int id) {
         return mStoreService.deleteBeaconAction(id);
     }
 
-    public boolean deleteBeacon(String beaconId) {
-        return mStoreService.deleteBeacon(beaconId);
+    public boolean deleteBeacon(String beaconId, boolean cascade) {
+        return mStoreService.deleteBeacon(beaconId, cascade);
     }
 
-    public List<Region> getAllEnabledRegions() {
-        List<Region> regions = new ArrayList<>();
+    public  List<ActionBeacon> getAllEnabledBeaconActions() {
         List<ActionBeacon> actions = mStoreService.getAllEnabledBeaconActions();
         mActionBeaconCache.clear();
         mActionBeaconCache.addAll(actions);
-        for(ActionBeacon action: actions){
-            regions.add(ActionRegion.parseRegion(action));
-        }
-        return regions;
+        return actions;
     }
 
-    public boolean enableBeaconAction(int id, boolean enable) {
+    public boolean enableBeaconAction(int id,  boolean enable) {
         return mStoreService.updateBeaconActionEnable(id, enable);
     }
 
-    public List<ActionBeacon> getActionBeacons(ActionBeacon.EventType eventType, String actionName) {
+    public List<ActionBeacon> getEnabledBeaconActionsByEvent(ActionBeacon.EventType eventType, String beaconId) {
         if(!mActionBeaconCache.isEmpty()) {
             List<ActionBeacon> actionBeacons = new ArrayList<>();
             for(ActionBeacon action: mActionBeaconCache) {
-                if(action.getName().equalsIgnoreCase(actionName) && action.getEventType() == eventType) {
+                if(action.getBeaconId().equals(beaconId) && action.getEventType() == eventType) {
                     actionBeacons.add(action);
                 }
             }
@@ -116,7 +105,7 @@ public class DataManager {
                 return actionBeacons;
             }
         }
-        return mStoreService.getActionBeacons(eventType.getValue(), actionName);
+        return mStoreService.getEnabledBeaconActionsByEvent(eventType.getValue(), beaconId);
     }
 
 }

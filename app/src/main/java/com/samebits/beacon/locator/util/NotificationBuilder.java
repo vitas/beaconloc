@@ -55,7 +55,9 @@ public class NotificationBuilder {
     public NotificationBuilder createNotification(int smallIcon, String title, PendingIntent notifyIntent) {
         mBuilder = new NotificationCompat.Builder(mContext).setSmallIcon(smallIcon).setContentTitle(title)
                 .setAutoCancel(true).setColor(ContextCompat.getColor(mContext, R.color.hn_orange));
-        mBuilder.setContentIntent(notifyIntent);
+        if (notifyIntent != null) {
+            mBuilder.setContentIntent(notifyIntent);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // setLargeIcon(R.drawable.logo_notification_lollipop);
             //FIXME

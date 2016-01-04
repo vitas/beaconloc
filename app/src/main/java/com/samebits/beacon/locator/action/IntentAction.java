@@ -21,19 +21,23 @@ package com.samebits.beacon.locator.action;
 import android.content.Context;
 import android.content.Intent;
 
+import com.samebits.beacon.locator.model.NotificationAction;
+
 /**
  * Created by vitas on 03/01/16.
  */
-public class IntentAction extends Action {
+public class IntentAction extends NoneAction {
 
-    public IntentAction(String param) {
-        super(param);
+
+    public IntentAction(String param, NotificationAction notification) {
+        super(param, notification);
     }
 
     @Override
     public void execute(Context context) {
         Intent newIntent = new Intent(param);
         context.sendBroadcast(newIntent);
+        super.execute(context);
     }
 
     @Override

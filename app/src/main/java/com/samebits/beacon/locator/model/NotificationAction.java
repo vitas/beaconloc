@@ -27,7 +27,7 @@ import android.os.Parcelable;
 public class NotificationAction implements Parcelable {
     private boolean isEnabled;
     private String message = "";
-    private String ringtone;
+    private String ringtone = "";
     private boolean isVibrate;
 
     public NotificationAction() {

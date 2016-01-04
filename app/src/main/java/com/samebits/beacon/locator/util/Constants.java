@@ -43,13 +43,12 @@ public final class Constants {
     public static final int REQ_CODE_ALERT_RINGTONE = 10082;
 
     public static final String REGION_NAME_PREFIX = "com.samebits.beacon.locator";
-    //action
+    //actions
     public static final String NOTIFY_BEACON_ENTERS_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_ENTERS_REGION";
     public static final String NOTIFY_BEACON_LEAVES_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_LEAVES_REGION";
     public static final String NOTIFY_BEACON_NEAR_YOU_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_NEAR_YOU_REGION";
 
-    public static final String BEACON_ACTION_OPEN_URL = "com.samebits.beacon.locator.BEACON_ACTION_OPEN_URL";
-    public static final String BEACON_ACTION_SEND_INTENT = "com.samebits.beacon.locator.BEACON_ACTION_SEND_INTENT";
+    public static final String ALARM_NOTIFICATION_SHOW = "com.samebits.beacon.locator.ALARM_NOTIFICATION_SHOW";
 
 
     private Constants() {

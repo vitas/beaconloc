@@ -21,20 +21,29 @@ package com.samebits.beacon.locator.action;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.AlarmClock;
+
+import com.samebits.beacon.locator.model.NotificationAction;
 
 /**
  * Created by vitas on 03/01/16.
  */
-public class AlarmOnAction extends Action {
+public class AlarmOnAction extends NoneAction {
 
 
-    public AlarmOnAction(String param) {
-        super(param);
+    public AlarmOnAction(String param, NotificationAction notification) {
+        super(param, notification);
     }
 
     @Override
     public void execute(Context context) {
 
+        Intent newIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
+        if (!isParamEmpty()) {
+            newIntent.putExtra(AlarmClock.EXTRA_MESSAGE, this.param);
+        }
+        context.startActivity(newIntent);
+        super.execute(context);
     }
 
     @Override

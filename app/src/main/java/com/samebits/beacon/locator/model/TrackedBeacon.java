@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by vitas on 20/12/15.
  */
-public class TrackedBeacon implements IManagedBeacon, ITraceable, Parcelable {
+public class TrackedBeacon implements IManagedBeacon, ITriggerable, Parcelable {
 
     private String id;
     private String uuid = "";

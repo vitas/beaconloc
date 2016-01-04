@@ -33,10 +33,10 @@ public class ActionRegion {
 
     public static Region parseRegion(ActionBeacon actionBeacon) {
         if (actionBeacon == null) {
-            throw new IllegalArgumentException("ActionBeacon is null");
+            throw new IllegalArgumentException("ActionBeacon object is null");
         }
-        String[] idents =  actionBeacon.getBeaconId().split("::");
-        if( idents == null || idents.length<3) {
+        String[] idents =  actionBeacon.getBeaconId().split(";");
+        if( idents == null || idents.length < 3) {
             throw new IllegalArgumentException("ActionBeacon has invalid id");
         }
         List<Identifier> identifiers = new ArrayList<>();
@@ -44,7 +44,7 @@ public class ActionRegion {
         for (int i=0; i < 3; i++) {
             identifiers.add(Identifier.parse(idents[i]));
         }
-        return new Region(Constants.REGION_NAME_PREFIX + "::"+ actionBeacon.getEventType().getValue() + "::" + actionBeacon.getName(), identifiers, idents[3]);
+        return new Region(RegionName.buildRegionNameId(actionBeacon), identifiers, idents[3]);
     }
 
 }

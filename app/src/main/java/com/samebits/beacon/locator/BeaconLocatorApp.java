@@ -30,7 +30,9 @@ import com.samebits.beacon.locator.injection.component.ApplicationComponent;
 import com.samebits.beacon.locator.injection.component.DaggerApplicationComponent;
 import com.samebits.beacon.locator.injection.module.ApplicationModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
+import com.samebits.beacon.locator.model.ActionRegion;
 import com.samebits.beacon.locator.model.DetectedBeacon;
+import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.RegionName;
 import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
@@ -46,6 +48,7 @@ import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
 import org.altbeacon.beacon.startup.BootstrapNotifier;
 import org.altbeacon.beacon.startup.RegionBootstrap;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -131,13 +134,21 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     }
 
     private void loadRegions() {
-        mRegions = mDataManager.getAllEnabledRegions();
 
+        mRegions = getAllEnabledRegions();
         if (mRegions.size() > 0) {
             mRegionBootstrap = new RegionBootstrap(this, mRegions);
         }
-
         //mBeaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId", null, null, null));
+    }
+
+    public List<Region> getAllEnabledRegions() {
+        List<Region> regions = new ArrayList<>();
+        List<ActionBeacon> actions = mDataManager.getAllEnabledBeaconActions();
+        for(ActionBeacon action: actions){
+            regions.add(ActionRegion.parseRegion(action));
+        }
+        return regions;
     }
 
     @Override
@@ -181,15 +192,16 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         if (beacons != null && beacons.size() > 0 && region != null) {
             RegionName regName = RegionName.parseString(region.getUniqueId());
-            if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_LEAVES_REGION) {
+            if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
                 Iterator<Beacon> iterator = beacons.iterator();
                 while (iterator.hasNext()) {
                     DetectedBeacon dBeacon = new DetectedBeacon(iterator.next());
                     dBeacon.setTimeLastSeen(System.currentTimeMillis());
-                    if (BeaconUtil.isProximityNear(dBeacon.getDistance())) {
+                    if (BeaconUtil.isInProximity(IManagedBeacon.ProximityType.NEAR, dBeacon.getDistance())) {
                         Intent intent = new Intent();
                         intent.setAction(Constants.NOTIFY_BEACON_NEAR_YOU_REGION);
                         intent.putExtra("REGION", region);
+                        intent.putExtra("BEACON", dBeacon);
                         getApplicationContext().sendOrderedBroadcast(intent, null);
                     }
                 }

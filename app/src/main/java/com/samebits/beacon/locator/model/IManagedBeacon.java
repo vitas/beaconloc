@@ -19,50 +19,47 @@
 package com.samebits.beacon.locator.model;
 
 
-import java.util.List;
-
 /**
  * Created by vitas on 23/12/15.
  */
 public interface IManagedBeacon  {
-    public String getId();
+    String getId();
 
-    public int getType();
+    int getType();
 
-    public String getUUID();
+    String getUUID();
 
-    public String getMinor();
+    String getMinor();
 
-    public String getMajor();
+    String getMajor();
 
-    public double getDistance();
+    double getDistance();
 
-    public String getEddystoneURL();
+    String getEddystoneURL();
 
-    public long getTimeLastSeen();
+    long getTimeLastSeen();
 
-    public String getBluetoothName();
+    String getBluetoothName();
 
-    public String getBluetoothAddress();
+    String getBluetoothAddress();
 
-    public int getTxPower();
+    int getTxPower();
 
-    public int getRssi();
+    int getRssi();
 
-    public boolean equalTo(IManagedBeacon target);
+    boolean equalTo(IManagedBeacon target);
 
-    public BeaconType getBeaconType();
+    BeaconType getBeaconType();
 
-    public boolean isEddyStoneTLM();
+    boolean isEddyStoneTLM();
 
-    public boolean isEddyStoneUID();
+    boolean isEddyStoneUID();
 
-    public boolean isEddyStoneURL();
+    boolean isEddyStoneURL();
 
-    public boolean isEddystone();
+    boolean isEddystone();
 
-
-    public enum BeaconType {
+    enum BeaconType {
         UNSPECIFIED("Unspecified"),
         EDDYSTONE("Eddystone"),
         EDDYSTONE_URL("Eddystone-URL"),
@@ -101,6 +98,31 @@ public interface IManagedBeacon  {
             return string;
         }
 
+    }
+
+    enum ProximityType {
+        FAR(0),
+        NEAR(1),
+        IMMEDIATE(2);
+
+        private final int value;
+
+        ProximityType(int value) {
+            this.value = value;
+        }
+
+        public static ProximityType fromInt(int value) {
+            for (ProximityType type : ProximityType.values()) {
+                if (type.getValue() == value) {
+                    return type;
+                }
+            }
+            return FAR;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
 }

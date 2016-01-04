@@ -22,6 +22,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.samebits.beacon.locator.model.ActionBeacon;
+import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.util.Constants;
 
 import java.util.ArrayList;
@@ -48,20 +49,24 @@ public class ActionExecutor {
         }
     }
 
-    public static IAction actionBuilder(ActionBeacon.ActionType type, String param) {
+    public static IAction actionBuilder(ActionBeacon.ActionType type, String param, NotificationAction notification) {
         switch (type) {
+            case ACTION_NONE:
+                return new NoneAction(param, notification);
             case ACTION_URL:
-                return new UrlAction(param);
+                return new UrlAction(param, notification);
             case ACTION_INTENT_ACTION:
-                return new IntentAction(param);
+                return new IntentAction(param, notification);
             case ACTION_START_APP:
-                return new StartAppAction(param);
+                return new StartAppAction(param, notification);
             case ACTION_SET_ALARM:
-                return new AlarmOnAction(param);
+                return new AlarmOnAction(param, notification);
             case ACTION_SET_SILENT_ON:
-                return new SilentOnAction(param);
+                return new SilentOnAction(param, notification);
             case ACTION_SET_SILENT_OFF:
-                return new SilentOffAction(param);
+                return new SilentOffAction(param, notification);
+            case ACTION_TASKER:
+                return new TaskerAction(param, notification);
         }
         return null;
     }

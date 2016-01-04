@@ -45,7 +45,7 @@
     <string name="pref_title_vibrate">Vibrate</string>
 
     <string name="pref_header_scanner">Scan</string>
-    <string name="pref_header_actions">Actions</string>
+    <string name="pref_header_actions">Action</string>
 
     <!-- titles activities-->
     <string name="title_activity_main_navigation">Beacon Locator</string>
@@ -110,10 +110,10 @@
     <string name="tab_title_beacon_notification">Notification</string>
 
     <!-- Beacon details info dialog tab -->
-    <string name="pref_bd_switch_active">Track it</string>
-    <string name="pref_bd_summary_switch_active">Enables tracking for the beacon</string>
+    <string name="pref_bd_switch_active">Enable it</string>
+    <string name="pref_bd_summary_switch_active">Enables action for the beacon</string>
     <string name="pref_bd_name">Region Name</string>
-    <string name="pref_bd_default_name">Default Name (Replace with yours unique)</string>
+    <string name="pref_bd_default_name">Default action name</string>
 
     <string name="pref_bd_uuid">UUID</string>
     <string name="pref_bd_type">Type</string>
@@ -136,7 +136,7 @@
     <string name="pref_be_summary_event_near">Occurs when beacon is close to you</string>
 
     <!-- Beacon actions dialog tab -->
-    <string name="pref_ba_action_param1">Action parameter to invoke</string>
+    <string name="pref_ba_action_param1">Action parameter</string>
     <string name="pref_ba_action_selection">Action Type</string>
 
     <!-- Beacon notifications dialog tab -->
@@ -156,7 +156,6 @@
     <string name="mv_event_type_enters_region">Enters region</string>
     <string name="mv_event_type_near_you">Near you</string>
 
-    <string name="mv_action_text_actions">Actions</string>
     <string name="mv_action_status_enable">Enabled</string>
     <string name="mv_action_status_disabled">Disabled</string>
 
@@ -169,6 +168,20 @@
     <string name="mv_action_type_set_alarm">Alarm ON</string>
     <string name="mv_action_type_broadcast_intent">Broadcast intent</string>
     <string name="mv_action_type_open_url">Open Url</string>
+
+    <!-- tasker -->
+    <string name="action_tasker_default">Select task</string>
+    <string name="action_tasker_download">Buy/try Tasker</string>
+    <string name="action_tasker_message">Tasker is an application for Android which performs tasks (sets of actions) based on contexts (application, time, date, location, event, gesture) in user-defined profiles or in clickable or timer home screen widgets.
+\n\nnBeacon Locator may use Beacons to trigger the task you specify.</string>
+    <string name="tasker_download">Google Play</string>
+    <string name="tasker_website">Download trial</string>
+    <string name="tasker_not_installed">Tasker application was uninstalled.</string>
+    <string name="tasker_error">An error occurred when launching the task.</string>
+    <string name="tasker_success">The task has been executed.</string>
+    <string name="tasker_disabled">Tasker is disabled.</string>
+    <string name="tasker_external_access_denided">External access to Tasker is disabled. See Preferences -> MISC -> Allow External Access in the Tasker.</string>
+    <string name="action_alarm_text_title">Beacon Event"</string>
 
 
 </resources>

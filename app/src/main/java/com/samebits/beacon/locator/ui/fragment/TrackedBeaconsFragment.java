@@ -19,6 +19,7 @@
 package com.samebits.beacon.locator.ui.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -168,7 +169,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
                         //TODO
                     }
                 } else {
-                    //FIXME make selected somehow!
+                    //TODO make selection of updated
                     if (mDataManager.updateBeacon(beacon)) {
                         mBeaconsAdapter.insertBeacon(beacon);
                     } else {
@@ -180,28 +181,35 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     }
 
     public void removeBeacon(String beaconId) {
-        if (mDataManager.deleteBeacon(beaconId)) {
+        if (mDataManager.deleteBeacon(beaconId, true)) {
             mBeaconsAdapter.removeBeaconById(beaconId);
-            emptyListUpdate();
         } else {
             //TODO error
         }
+        emptyListUpdate();
     }
 
     public void removeBeaconAction(String beaconId, int id) {
-        if (mDataManager.deleteActionBeacon(id)) {
+        if (mDataManager.deleteBeaconAction(id)) {
             mBeaconsAdapter.removeBeaconAction(beaconId, id);
-        } else {
+        }else {
             //TODO error
         }
     }
 
     public void newBeaconAction(String beaconId) {
-        ActionBeacon newAction = new ActionBeacon(beaconId, getString(R.string.pref_bd_default_name));
+        String defName = getString(R.string.pref_bd_default_name);
+        int actionCount = mBeaconsAdapter.getActionCount(beaconId);
+
+        if (actionCount > 0) {
+            defName += " (" + actionCount + ")";
+        }
+
+        ActionBeacon newAction = new ActionBeacon(beaconId, defName );
         if (mDataManager.createBeaconAction(newAction)) {
             mBeaconsAdapter.addBeaconAction(newAction);
         } else {
-            //TODO error
+            //FIXME error
         }
     }
 
@@ -238,7 +246,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQ_UPDATED_ACTION_BEACON) {
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQ_UPDATED_ACTION_BEACON) {
             if (data != null && data.hasExtra(Constants.ARG_ACTION_BEACON)) {
                 ActionBeacon actionBeacon = data.getParcelableExtra(Constants.ARG_ACTION_BEACON);
                 if (actionBeacon != null) {
@@ -293,7 +301,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
                 newBeaconAction(mBeaconsAdapter.getBeacon(info.position).getId());
                 return true;
             case R.id.action_delete:
-                mBeaconsAdapter.removeBeacon(info.position);
+                removeBeacon(mBeaconsAdapter.getBeacon(info.position).getId());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

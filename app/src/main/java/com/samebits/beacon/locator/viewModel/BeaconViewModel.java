@@ -82,7 +82,7 @@ public class BeaconViewModel extends BaseObservable {
         if (isLostBeacon()) {
             return getSeenSince();
         }
-        return mFragment.getString(BeaconUtil.getProximityResourceId(mManagedBeacon.getDistance()));
+        return mFragment.getString(BeaconUtil.getProximityResourceId(BeaconUtil.getProximity(mManagedBeacon.getDistance())));
     }
 
     public int getProximityColor() {

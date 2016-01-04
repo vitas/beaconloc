@@ -24,20 +24,28 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
+import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.NotificationBuilder;
 
 
-public class AlertReceiver extends BroadcastReceiver {
+public class BeaconAlertReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //TODO
-        // get event, action params
+
+        if (intent.getAction().equalsIgnoreCase(Constants.ALARM_NOTIFICATION_SHOW)) {
+            NotificationAction notificationAction = intent.getParcelableExtra("NOTIFICATION");
+            createNotification(context, context.getString(R.string.action_alarm_text_title),
+                    notificationAction.getMessage(), notificationAction.getMessage(),
+                    notificationAction.getRingtone(), notificationAction.isVibrate());
+
+        }
         //createNotification(context, "Beacon Event", "What to do", "Beacons are ready!");
     }
 
-    private void createNotification(Context context, String title, String msgText, String msgAlert) {
+    private void createNotification(Context context, String title, String msgText, String msgAlert, String ringtone, boolean isVibrate) {
 
         PendingIntent notificationIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainNavigationActivity.class), 0);
 
@@ -47,9 +55,13 @@ public class AlertReceiver extends BroadcastReceiver {
         notificationBuilder.setMessage(msgText);
         notificationBuilder.setTicker(msgAlert);
 
-       // builder.setDefaults(NotificationCompat.DEFAULT_LIGHTS);
-       // builder.setDefaults(NotificationCompat.DEFAULT_SOUND);
-       // builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE);
+        if (isVibrate) {
+            notificationBuilder.setVibration();
+        }
+
+        if (ringtone!= null && ringtone.length()>0) {
+            notificationBuilder.setRingtone(ringtone);
+        }
 
         notificationBuilder.show(1);
 

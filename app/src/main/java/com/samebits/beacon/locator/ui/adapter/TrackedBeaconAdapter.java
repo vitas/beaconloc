@@ -107,6 +107,14 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
 
     }
 
+    public int getActionCount(String beaconId) {
+        ActionBeaconAdapter adapter = mActionAdapters.get(beaconId);
+        if (adapter != null) {
+            return adapter.getItemCount();
+        }
+        return 0;
+    }
+
     public void removeBeaconAction(String beaconId, int id) {
         ActionBeaconAdapter adapter = mActionAdapters.get(beaconId);
         if (adapter != null) {

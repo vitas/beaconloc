@@ -29,6 +29,7 @@ import android.provider.BaseColumns;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.util.BeaconUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,45 +47,44 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     private static final String BEACON_SQL_CREATE_DATA = "CREATE TABLE IF NOT EXISTS "
             + ScanColumns.TABLE_NAME
             + "("
-            + ScanColumns.COLUMN_NAME_ID
+            + ScanColumns.COLUMN_ID
             + " TEXT NOT NULL"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_LAST_SEEN_TIME
+            + ScanColumns.COLUMN_LAST_SEEN_TIME
             + " INTEGER NOT NULL"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_BLUETOOTH_NAME
+            + ScanColumns.COLUMN_BLUETOOTH_NAME
             + " TEXT"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_BLUETOOTH_ADDRESS
+            + ScanColumns.COLUMN_BLUETOOTH_ADDRESS
             + " TEXT NOT NULL"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_UUID
+            + ScanColumns.COLUMN_UUID
             + " TEXT NOT NULL"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_DISTANCE
+            + ScanColumns.COLUMN_DISTANCE
             + " REAL"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_RSSI
+            + ScanColumns.COLUMN_RSSI
             + " INTEGER"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_TXPOWER
+            + ScanColumns.COLUMN_TXPOWER
             + " INTEGER"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_TYPE
+            + ScanColumns.COLUMN_TYPE
             + " INTEGER"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_URL
+            + ScanColumns.COLUMN_URL
             + " TEXT"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_MAJOR
+            + ScanColumns.COLUMN_MAJOR
             + " TEXT"
             + SEPARATOR
-            + ScanColumns.COLUMN_NAME_MINOR
+            + ScanColumns.COLUMN_MINOR
             + " TEXT"
             + SEPARATOR
             + " PRIMARY KEY ("
-            + ScanColumns.COLUMN_NAME_LAST_SEEN_TIME + SEPARATOR
-            + ScanColumns.COLUMN_NAME_ID + "))";
+            + ScanColumns.COLUMN_ID + "))";
 
     private static final String BEACON_ACTION_SQL_CREATE_DATA = "CREATE TABLE IF NOT EXISTS "
             + ActionColumns.TABLE_NAME
@@ -92,7 +92,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
             + ActionColumns.COLUMN_ID
             + " INTEGER PRIMARY KEY"
             + SEPARATOR
-            + ActionColumns.COLUMN_NAME_BEACON_ID
+            + ActionColumns.COLUMN_BEACON_ID
             + " TEXT NOT NULL"
             + SEPARATOR
             + ActionColumns.COLUMN_NAME
@@ -108,7 +108,20 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
             + " TEXT"
             + SEPARATOR
             + ActionColumns.COLUMN_IS_ENABLED
-            + " INTEGER NOT NULL DEFAULT(1));";
+            + " INTEGER NOT NULL DEFAULT(1)"
+            + SEPARATOR
+            + ActionColumns.COLUMN_NOTIF_IS_ENABLED
+            + " INTEGER NOT NULL DEFAULT(0)"
+            + SEPARATOR
+            + ActionColumns.COLUMN_NOTIF_VIBRATE_IS_ENABLED
+            + " INTEGER NOT NULL DEFAULT(0)"
+            + SEPARATOR
+            + ActionColumns.COLUMN_NOTIF_RINGTONE
+            + " TEXT"
+            + SEPARATOR
+            + ActionColumns.COLUMN_NOTIF_MSG
+            + " TEXT"
+            + ");";
 
     private static final String BEACON_SQL_DELETE_DATA = "DROP TABLE IF EXISTS "
             + ScanColumns.TABLE_NAME;
@@ -140,18 +153,18 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     public boolean createBeacon(TrackedBeacon beacon) {
         ContentValues values = new ContentValues();
 
-        values.put(ScanColumns.COLUMN_NAME_ID, beacon.getId());
-        values.put(ScanColumns.COLUMN_NAME_LAST_SEEN_TIME, beacon.getTimeLastSeen());
-        values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_NAME, beacon.getBluetoothName());
-        values.put(ScanColumns.COLUMN_NAME_BLUETOOTH_ADDRESS, beacon.getBluetoothAddress());
-        values.put(ScanColumns.COLUMN_NAME_UUID, beacon.getUUID());
-        values.put(ScanColumns.COLUMN_NAME_DISTANCE, beacon.getDistance());
-        values.put(ScanColumns.COLUMN_NAME_RSSI, beacon.getRssi());
-        values.put(ScanColumns.COLUMN_NAME_TXPOWER, beacon.getTxPower());
-        values.put(ScanColumns.COLUMN_NAME_TYPE, beacon.getBeaconType().ordinal());
-        values.put(ScanColumns.COLUMN_NAME_URL, beacon.getEddystoneURL());
-        values.put(ScanColumns.COLUMN_NAME_MAJOR, beacon.getMajor());
-        values.put(ScanColumns.COLUMN_NAME_MINOR, beacon.getMinor());
+        values.put(ScanColumns.COLUMN_ID, beacon.getId());
+        values.put(ScanColumns.COLUMN_LAST_SEEN_TIME, beacon.getTimeLastSeen());
+        values.put(ScanColumns.COLUMN_BLUETOOTH_NAME, beacon.getBluetoothName());
+        values.put(ScanColumns.COLUMN_BLUETOOTH_ADDRESS, beacon.getBluetoothAddress());
+        values.put(ScanColumns.COLUMN_UUID, beacon.getUUID());
+        values.put(ScanColumns.COLUMN_DISTANCE, beacon.getDistance());
+        values.put(ScanColumns.COLUMN_RSSI, beacon.getRssi());
+        values.put(ScanColumns.COLUMN_TXPOWER, beacon.getTxPower());
+        values.put(ScanColumns.COLUMN_TYPE, beacon.getBeaconType().ordinal());
+        values.put(ScanColumns.COLUMN_URL, beacon.getEddystoneURL());
+        values.put(ScanColumns.COLUMN_MAJOR, beacon.getMajor());
+        values.put(ScanColumns.COLUMN_MINOR, beacon.getMinor());
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -167,8 +180,23 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
     @Override
     public boolean updateBeacon(TrackedBeacon beacon) {
-        deleteBeacon(beacon.getId());
-        return createBeacon(beacon);
+        final ContentValues values = new ContentValues();
+        values.put(ScanColumns.COLUMN_LAST_SEEN_TIME, new Date().getTime());
+        values.put(ScanColumns.COLUMN_BLUETOOTH_NAME, beacon.getBluetoothName());
+        values.put(ScanColumns.COLUMN_BLUETOOTH_ADDRESS, beacon.getBluetoothAddress());
+        values.put(ScanColumns.COLUMN_UUID, beacon.getUUID());
+        values.put(ScanColumns.COLUMN_DISTANCE, beacon.getDistance());
+        values.put(ScanColumns.COLUMN_RSSI, beacon.getRssi());
+        values.put(ScanColumns.COLUMN_TXPOWER, beacon.getTxPower());
+        values.put(ScanColumns.COLUMN_TYPE, beacon.getBeaconType().ordinal());
+        values.put(ScanColumns.COLUMN_URL, beacon.getEddystoneURL());
+        values.put(ScanColumns.COLUMN_MAJOR, beacon.getMajor());
+        values.put(ScanColumns.COLUMN_MINOR, beacon.getMinor());
+
+        SQLiteDatabase db = getWritableDatabase();
+        int numUpdated = db.update(ScanColumns.TABLE_NAME, values, ScanColumns.COLUMN_ID + "=?", new String[]{beacon.getId()});
+        db.close();
+        return (numUpdated == 0) ? false : true;
     }
 
     @Override
@@ -177,20 +205,20 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(ScanColumns.TABLE_NAME,
                 new String[]{
-                        ScanColumns.COLUMN_NAME_ID,
-                        ScanColumns.COLUMN_NAME_LAST_SEEN_TIME,
-                        ScanColumns.COLUMN_NAME_BLUETOOTH_NAME,
-                        ScanColumns.COLUMN_NAME_BLUETOOTH_ADDRESS,
-                        ScanColumns.COLUMN_NAME_UUID,
-                        ScanColumns.COLUMN_NAME_DISTANCE,
-                        ScanColumns.COLUMN_NAME_RSSI,
-                        ScanColumns.COLUMN_NAME_TXPOWER,
-                        ScanColumns.COLUMN_NAME_TYPE,
-                        ScanColumns.COLUMN_NAME_URL,
-                        ScanColumns.COLUMN_NAME_MAJOR,
-                        ScanColumns.COLUMN_NAME_MINOR
+                        ScanColumns.COLUMN_ID,
+                        ScanColumns.COLUMN_LAST_SEEN_TIME,
+                        ScanColumns.COLUMN_BLUETOOTH_NAME,
+                        ScanColumns.COLUMN_BLUETOOTH_ADDRESS,
+                        ScanColumns.COLUMN_UUID,
+                        ScanColumns.COLUMN_DISTANCE,
+                        ScanColumns.COLUMN_RSSI,
+                        ScanColumns.COLUMN_TXPOWER,
+                        ScanColumns.COLUMN_TYPE,
+                        ScanColumns.COLUMN_URL,
+                        ScanColumns.COLUMN_MAJOR,
+                        ScanColumns.COLUMN_MINOR
                 },
-                ScanColumns.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
+                ScanColumns.COLUMN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -217,6 +245,19 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         db.close();
         return beacon;
     }
+
+    @Override
+    public boolean updateBeaconDistance(String id, double distance) {
+        final ContentValues values = new ContentValues();
+        values.put(ScanColumns.COLUMN_DISTANCE, distance);
+        values.put(ScanColumns.COLUMN_LAST_SEEN_TIME, new Date().getTime());
+
+        SQLiteDatabase db = getWritableDatabase();
+        int numUpdated = db.update(ScanColumns.TABLE_NAME, values, ScanColumns.COLUMN_ID + "=?", new String[]{id});
+        db.close();
+        return (numUpdated == 0) ? false : true;
+    }
+
 
     @Override
     public List<TrackedBeacon> getBeacons() {
@@ -260,12 +301,16 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     public boolean createBeaconAction(ActionBeacon beacon) {
         ContentValues values = new ContentValues();
 
-        values.put(ActionColumns.COLUMN_NAME_BEACON_ID, beacon.getBeaconId());
+        values.put(ActionColumns.COLUMN_BEACON_ID, beacon.getBeaconId());
         values.put(ActionColumns.COLUMN_NAME, beacon.getName());
         values.put(ActionColumns.COLUMN_EVENT_TYPE, beacon.getEventType().getValue());
         values.put(ActionColumns.COLUMN_ACTION_TYPE, beacon.getActionType().getValue());
         values.put(ActionColumns.COLUMN_ACTION_PARAMS, beacon.getActionParam());
         values.put(ActionColumns.COLUMN_IS_ENABLED, beacon.isEnabled()?1:0);
+        values.put(ActionColumns.COLUMN_NOTIF_IS_ENABLED, beacon.getNotification().isEnabled() ? 1 : 0);
+        values.put(ActionColumns.COLUMN_NOTIF_VIBRATE_IS_ENABLED, beacon.getNotification().isVibrate() ? 1 : 0);
+        values.put(ActionColumns.COLUMN_NOTIF_RINGTONE, beacon.getNotification().getRingtone());
+        values.put(ActionColumns.COLUMN_NOTIF_MSG, beacon.getNotification().getMessage());
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -274,13 +319,29 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         if (res != -1) {
             beacon.setId((int)res);
         }
+
         return (res == -1) ? false : true;
     }
 
     @Override
     public boolean updateBeaconAction(ActionBeacon beacon) {
-        deleteBeaconAction(beacon.getId());
-        return createBeaconAction(beacon);
+        final ContentValues values = new ContentValues();
+        values.put(ActionColumns.COLUMN_NAME, beacon.getName());
+        values.put(ActionColumns.COLUMN_BEACON_ID, beacon.getBeaconId());
+        values.put(ActionColumns.COLUMN_EVENT_TYPE, beacon.getEventType().getValue());
+        values.put(ActionColumns.COLUMN_ACTION_TYPE, beacon.getActionType().getValue());
+        values.put(ActionColumns.COLUMN_ACTION_PARAMS, beacon.getActionParam());
+        values.put(ActionColumns.COLUMN_IS_ENABLED, beacon.isEnabled()?1:0);
+        values.put(ActionColumns.COLUMN_NOTIF_IS_ENABLED, beacon.getNotification().isEnabled() ? 1 : 0);
+        values.put(ActionColumns.COLUMN_NOTIF_VIBRATE_IS_ENABLED, beacon.getNotification().isVibrate() ? 1 : 0);
+        values.put(ActionColumns.COLUMN_NOTIF_RINGTONE, beacon.getNotification().getRingtone());
+        values.put(ActionColumns.COLUMN_NOTIF_MSG, beacon.getNotification().getMessage());
+
+        SQLiteDatabase db = getWritableDatabase();
+        int numUpdated = db.update(ActionColumns.TABLE_NAME, values, ActionColumns.COLUMN_ID + "=?"
+                , new String[]{String.valueOf(beacon.getId())});
+        db.close();
+        return (numUpdated == 0) ? false : true;
     }
 
     @Override
@@ -289,7 +350,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + ActionColumns.TABLE_NAME+ " WHERE "
-                +ActionColumns.COLUMN_NAME_BEACON_ID+ "=?", new String[]{String.valueOf(beaconId)});
+                +ActionColumns.COLUMN_BEACON_ID+ "=?", new String[]{String.valueOf(beaconId)});
 
         if (cursor.moveToFirst()) {
             do {
@@ -301,7 +362,11 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                 beacon.setEventType(ActionBeacon.EventType.fromInt(cursor.getInt(3)));
                 beacon.setActionType(ActionBeacon.ActionType.fromInt(cursor.getInt(4)));
                 beacon.setActionParam(cursor.getString(5));
-                beacon.setIsEnabled(cursor.getInt(6)==1?true:false);
+                beacon.setIsEnabled(cursor.getInt(6) == 1 ? true : false);
+                beacon.getNotification().setIsEnabled(cursor.getInt(7) == 1 ? true : false);
+                beacon.getNotification().setIsVibrate(cursor.getInt(8) == 1 ? true : false);
+                beacon.getNotification().setRingtone(cursor.getString(9));
+                beacon.getNotification().setMessage(cursor.getString(10));
 
                 actions.add(beacon);
             }
@@ -323,7 +388,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     @Override
     public boolean deleteBeaconActions(String beaconId) {
         SQLiteDatabase db = getWritableDatabase();
-        int numDeleted = db.delete(ActionColumns.TABLE_NAME, ActionColumns.COLUMN_NAME_BEACON_ID + "=?", new String[]{String.valueOf(beaconId)});
+        int numDeleted = db.delete(ActionColumns.TABLE_NAME, ActionColumns.COLUMN_BEACON_ID + "=?", new String[]{String.valueOf(beaconId)});
         db.close();
         return (numDeleted == 0) ? false : true;
     }
@@ -346,7 +411,11 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                 beacon.setEventType(ActionBeacon.EventType.fromInt(cursor.getInt(3)));
                 beacon.setActionType(ActionBeacon.ActionType.fromInt(cursor.getInt(4)));
                 beacon.setActionParam(cursor.getString(5));
-                beacon.setIsEnabled(cursor.getInt(6)==1?true:false);
+                beacon.setIsEnabled(cursor.getInt(6) == 1 ? true : false);
+                beacon.getNotification().setIsEnabled(cursor.getInt(7) == 1 ? true : false);
+                beacon.getNotification().setIsVibrate(cursor.getInt(8) == 1 ? true : false);
+                beacon.getNotification().setRingtone(cursor.getString(9));
+                beacon.getNotification().setMessage(cursor.getString(10));
 
                 actions.add(beacon);
             }
@@ -363,7 +432,6 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
 
         final ContentValues values = new ContentValues();
         values.put(ActionColumns.COLUMN_IS_ENABLED, enable);
-
         int numUpdated = db.update(ActionColumns.TABLE_NAME, values, ActionColumns.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
 
         db.close();
@@ -371,15 +439,14 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
-    public List<ActionBeacon> getActionBeacons(int eventType, String actionName) {
+    public List<ActionBeacon> getEnabledBeaconActionsByEvent(int eventType, String beaconId) {
         List<ActionBeacon> actions = new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + ActionColumns.TABLE_NAME+ " WHERE "
-                +ActionColumns.COLUMN_IS_ENABLED+ "=? AND "
-                +ActionColumns.COLUMN_NAME+"=? AND "
-                +ActionColumns.COLUMN_EVENT_TYPE+"=? ",
-                new String[]{String.valueOf(1), String.valueOf(eventType), actionName});
+                +ActionColumns.COLUMN_IS_ENABLED + "=? AND "
+                        +ActionColumns.COLUMN_BEACON_ID + "=? ",
+                new String[]{String.valueOf(1), String.valueOf(eventType), beaconId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -391,7 +458,11 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                 beacon.setEventType(ActionBeacon.EventType.fromInt(cursor.getInt(3)));
                 beacon.setActionType(ActionBeacon.ActionType.fromInt(cursor.getInt(4)));
                 beacon.setActionParam(cursor.getString(5));
-                beacon.setIsEnabled(cursor.getInt(6)==1?true:false);
+                beacon.setIsEnabled(cursor.getInt(6) == 1 ? true : false);
+                beacon.getNotification().setIsEnabled(cursor.getInt(7) == 1 ? true : false);
+                beacon.getNotification().setIsVibrate(cursor.getInt(8) == 1 ? true : false);
+                beacon.getNotification().setRingtone(cursor.getString(9));
+                beacon.getNotification().setMessage(cursor.getString(10));
 
                 actions.add(beacon);
             }
@@ -402,38 +473,45 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         return actions;    }
 
     @Override
-    public boolean deleteBeacon(String id) {
+    public boolean deleteBeacon(String id, boolean cascade) {
         SQLiteDatabase db = getWritableDatabase();
-        int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(id)});
+        int numDeleted = db.delete(ScanColumns.TABLE_NAME, ScanColumns.COLUMN_ID + "=?", new String[]{String.valueOf(id)});
         db.close();
-        deleteBeaconActions(id);
+        if (cascade) {
+            deleteBeaconActions(id);
+        }
         return (numDeleted == 0) ? false : true;
     }
 
     protected static abstract class ScanColumns implements BaseColumns {
         public static final String TABLE_NAME = "TrackedBeacon";
-        public static final String COLUMN_NAME_ID = "id";
-        public static final String COLUMN_NAME_BLUETOOTH_NAME = "bl_name";
-        public static final String COLUMN_NAME_BLUETOOTH_ADDRESS = "bl_address";
-        public static final String COLUMN_NAME_LAST_SEEN_TIME = "last_seen_time";
-        public static final String COLUMN_NAME_UUID = "uuid";
-        public static final String COLUMN_NAME_RSSI = "rssi";
-        public static final String COLUMN_NAME_TXPOWER = "tx";
-        public static final String COLUMN_NAME_TYPE = "type";
-        public static final String COLUMN_NAME_URL = "url";
-        public static final String COLUMN_NAME_DISTANCE = "distance";
-        public static final String COLUMN_NAME_MAJOR = "major";
-        public static final String COLUMN_NAME_MINOR = "minor";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_BLUETOOTH_NAME = "bl_name";
+        public static final String COLUMN_BLUETOOTH_ADDRESS = "bl_address";
+        public static final String COLUMN_LAST_SEEN_TIME = "last_seen_time";
+        public static final String COLUMN_UUID = "uuid";
+        public static final String COLUMN_RSSI = "rssi";
+        public static final String COLUMN_TXPOWER = "tx";
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_URL = "url";
+        public static final String COLUMN_DISTANCE = "distance";
+        public static final String COLUMN_MAJOR = "major";
+        public static final String COLUMN_MINOR = "minor";
     }
 
     protected static abstract class ActionColumns implements BaseColumns {
         public static final String TABLE_NAME = "ActionBeacon";
         public static final String COLUMN_ID = "id";
-        public static final String COLUMN_NAME_BEACON_ID = "beacon_id";
+        public static final String COLUMN_BEACON_ID = "beacon_id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_EVENT_TYPE = "event_type";
         public static final String COLUMN_ACTION_TYPE = "action_type";
         public static final String COLUMN_ACTION_PARAMS = "action_param";
         public static final String COLUMN_IS_ENABLED = "is_enabled";
+        public static final String COLUMN_NOTIF_IS_ENABLED = "notif_enabled";
+        public static final String COLUMN_NOTIF_VIBRATE_IS_ENABLED = "notif_vibrate";
+        public static final String COLUMN_NOTIF_RINGTONE = "notif_ringtone";
+        public static final String COLUMN_NOTIF_MSG = "notif_msg";
+
     }
 }

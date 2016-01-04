@@ -23,16 +23,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 03/01/16.
  */
-public class StartAppAction extends Action {
+public class StartAppAction extends NoneAction {
 
 
-    public StartAppAction(String param) {
-        super(param);
+    public StartAppAction(String param, NotificationAction notification) {
+        super(param, notification);
     }
 
     @Override
@@ -41,6 +42,7 @@ public class StartAppAction extends Action {
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         newIntent.setPackage(param);
         context.startActivity(newIntent);
+        super.execute(context);
     }
 
     @Override

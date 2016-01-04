@@ -1,6 +1,6 @@
 /*
  *
- *  Copyright (c) 2015 SameBits UG. All rights reserved.
+ *  Copyright (c) 2016 SameBits UG. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,15 +16,22 @@
  *
  */
 
-package com.samebits.beacon.locator.model;
+package com.samebits.beacon.locator.action;
 
-import java.util.List;
+import com.samebits.beacon.locator.model.NotificationAction;
+
 
 /**
- * Created by vitas on 29/12/15.
+ * Created by vitas on 04/01/16.
  */
-public interface ITraceable {
-    List<ActionBeacon> getActions();
-    void addAction(ActionBeacon action);
-    void addActions(List<ActionBeacon> actions);
+public class AlarmNotificationAction extends NoneAction {
+
+    public AlarmNotificationAction(String param, NotificationAction notification) {
+        super(param, notification);
+    }
+
+    @Override
+    public String toString() {
+        return "AlarmOnAction, param: "+param;
+    }
 }

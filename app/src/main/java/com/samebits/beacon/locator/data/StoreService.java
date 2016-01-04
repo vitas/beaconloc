@@ -34,11 +34,13 @@ public interface StoreService {
 
     boolean updateBeacon(final TrackedBeacon beacon);
 
-    boolean deleteBeacon(final String id);
+    boolean deleteBeacon(final String id, boolean cascade);
 
-    TrackedBeacon getBeacon(String id);
+    TrackedBeacon getBeacon(final String id);
 
     List<TrackedBeacon> getBeacons();
+
+    boolean updateBeaconDistance(final String id, double distance);
 
     boolean updateBeaconAction(ActionBeacon beacon);
 
@@ -52,7 +54,7 @@ public interface StoreService {
 
     List<ActionBeacon> getAllEnabledBeaconActions();
 
-    boolean updateBeaconActionEnable(int id, boolean enable);
+    boolean updateBeaconActionEnable(final int id, boolean enable);
 
-    List<ActionBeacon> getActionBeacons(int eventType, String actionName);
+    List<ActionBeacon> getEnabledBeaconActionsByEvent(final int eventType, final String beaconId);
 }

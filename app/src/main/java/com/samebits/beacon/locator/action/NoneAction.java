@@ -20,30 +20,46 @@ package com.samebits.beacon.locator.action;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 
 import com.samebits.beacon.locator.model.NotificationAction;
+import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 03/01/16.
  */
-public class UrlAction extends NoneAction {
+public class NoneAction extends Action {
 
-    public UrlAction(String param, NotificationAction notification) {
-        super(param, notification);
+    protected final String param;
+    protected final NotificationAction notification;
+
+    public NoneAction(String param, NotificationAction notification) {
+        this.param = param;
+        this.notification = notification;
     }
 
     @Override
     public void execute(Context context) {
-        Uri uri = Uri.parse(param);
-        Intent newIntent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(newIntent);
-        super.execute(context);
+        //empty
+        sendAlarm(context);
+    }
+
+    protected void sendAlarm(Context context) {
+        if (isNotificationRequired()) {
+            Intent newIntent = new Intent(Constants.ALARM_NOTIFICATION_SHOW);
+            newIntent.putExtra("NOTIFICATION", notification);
+            context.sendBroadcast(newIntent);
+        }
+    }
+
+    protected boolean isParamEmpty() {
+        return param != null || param.isEmpty();
+    }
+    protected boolean isNotificationRequired() {
+        return notification != null && notification.isEnabled();
     }
 
     @Override
     public String toString() {
-        return "UrlAction, url: "+param;
+        return "NoneAction, action: "+param;
     }
 }

@@ -87,14 +87,14 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
+                    android:layout_weight="0.5"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="2dp"
-                        android:text="@string/mv_action_text_actions"
+                        android:text="@string/tab_title_beacon_action"
                         android:textSize="@dimen/text_extra_small_body" />
 
                     <TextView
@@ -126,10 +126,11 @@
                     android:id="@+id/image_action_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
                     android:layout_alignParentRight="true"
                     android:onClick="@{viewModel.onClickDelete}"
                     android:src="@drawable/ic_delete_black_18dp" />
-
             </RelativeLayout>
 
         </RelativeLayout>
