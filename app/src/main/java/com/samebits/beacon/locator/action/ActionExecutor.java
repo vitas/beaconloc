@@ -41,16 +41,6 @@ public class ActionExecutor {
         this.mContext = context;
     }
 
-    public void storeAndExecute(IAction action) {
-        this.mHistory.add(action); // optional
-        try {
-            action.execute(mContext);
-        } catch (Exception e) {
-            mFailed.add(action);
-            Log.d(Constants.TAG, "Error executing action: " + action, e);
-        }
-    }
-
     public static IAction actionBuilder(ActionBeacon.ActionType type, String param, NotificationAction notification) {
         switch (type) {
             case ACTION_NONE:
@@ -61,14 +51,25 @@ public class ActionExecutor {
                 return new IntentAction(param, notification);
             case ACTION_START_APP:
                 return new StartAppAction(param, notification);
-            case ACTION_SET_ALARM:
-                return new AlarmOnAction(param, notification);
+            case ACTION_GET_LOCATION:
+                return new LocationAction(param, notification);
             case ACTION_SET_SILENT_ON:
                 return new SilentOnAction(param, notification);
             case ACTION_SET_SILENT_OFF:
                 return new SilentOffAction(param, notification);
             case ACTION_TASKER:
                 return new TaskerAction(param, notification);
+        }
+        return null;
+    }
+
+    public String storeAndExecute(IAction action) {
+        this.mHistory.add(action); // optional
+        try {
+            return action.execute(mContext);
+        } catch (Exception e) {
+            mFailed.add(action);
+            Log.d(Constants.TAG, "Error executing action: " + action, e);
         }
         return null;
     }

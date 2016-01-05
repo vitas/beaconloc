@@ -227,7 +227,7 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
             case R.id.action_manage_add:
                 //find better way to change fragment from scan to tracked
                 Intent intent = MainNavigationActivity.getStartIntent(getActivity());
-                intent.putExtra(Constants.ARG_BEACON, new TrackedBeacon((IManagedBeacon)mBeaconsAdapter.getItem(info.position)));
+                intent.putExtra(Constants.ARG_BEACON, new TrackedBeacon((IManagedBeacon) mBeaconsAdapter.getItem(info.position)));
                 startActivity(intent);
                 return true;
             case R.id.action_filter_add:

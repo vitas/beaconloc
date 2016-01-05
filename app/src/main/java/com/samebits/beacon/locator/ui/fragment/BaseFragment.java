@@ -36,10 +36,11 @@ import butterknife.ButterKnife;
  */
 public class BaseFragment extends Fragment {
 
+    protected boolean mNeedFab;
+
     protected boolean isDebug() {
         return BuildConfig.DEBUG;
     }
-    protected boolean mNeedFab;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

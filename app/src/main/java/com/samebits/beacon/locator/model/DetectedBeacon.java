@@ -21,15 +21,11 @@ package com.samebits.beacon.locator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.repacked.kotlin.EmptyList;
 import com.samebits.beacon.locator.util.BeaconUtil;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.utils.UrlBeaconUrlCompressor;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by vitas on 09/12/2015.

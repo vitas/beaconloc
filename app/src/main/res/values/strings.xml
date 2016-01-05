@@ -73,7 +73,7 @@
     <string name="title_action_group_beacon_manage">Beacons</string>
     <string name="action_scan_around">Scan</string>
     <string name="action_scan_managed">Radar</string>
-    <string name="action_tracked_list">Manage</string>
+    <string name="action_tracked_list">Actions</string>
 
     <!-- detected beacon properties -->
     <string name="mv_text_rssi">RSSI</string>
@@ -110,6 +110,9 @@
     <string name="tab_title_beacon_notification">Notification</string>
 
     <!-- Beacon details info dialog tab -->
+
+    <string name="pref_bd_name_category">Name and Enable watched beacon</string>
+
     <string name="pref_bd_switch_active">Enable it</string>
     <string name="pref_bd_summary_switch_active">Enables action for the beacon</string>
     <string name="pref_bd_name">Region Name</string>
@@ -126,6 +129,7 @@
     <string name="pref_bd_minor">Minor</string>
 
     <!-- Beacon events dialog tab -->
+    <string name="pref_be_event_category">Select type of event</string>
     <string name="pref_be_event_range">Event range</string>
     <string name="pref_be_summary_event_range">Defined event for triggering actions</string>
     <string name="pref_be_event_enter_region">Enter region (in range)</string>
@@ -136,6 +140,7 @@
     <string name="pref_be_summary_event_near">Occurs when beacon is close to you</string>
 
     <!-- Beacon actions dialog tab -->
+    <string name="pref_ba_action_category">Select action and set param</string>
     <string name="pref_ba_action_param1">Action parameter</string>
     <string name="pref_ba_action_selection">Action Type</string>
     <string name="pref_ba_action_test_category">Test your action</string>
@@ -143,6 +148,7 @@
 
 
     <!-- Beacon notifications dialog tab -->
+    <string name="pref_bn_notification_category">Enable alarm notification</string>
     <string name="pref_bn_notification_action">Notification</string>
     <string name="pref_bn_notification_action_message">Message</string>
     <string name="pref_bn_default_notification_action_message">Default Message (Replace with yours)</string>
@@ -168,7 +174,7 @@
     <string name="mv_action_type_set_silent_on">Silent sound profile</string>
     <string name="mv_action_type_set_silent_off">Normal sound profile</string>
     <string name="mv_action_type_start_app">Start application</string>
-    <string name="mv_action_type_set_alarm">Alarm ON</string>
+    <string name="mv_action_type_get_location">Get Location</string>
     <string name="mv_action_type_broadcast_intent">Broadcast intent</string>
     <string name="mv_action_type_open_url">Open Url</string>
 
@@ -179,12 +185,18 @@
 \n\nnBeacon Locator may use Beacons to trigger the task you specify.</string>
     <string name="tasker_download">Google Play</string>
     <string name="tasker_website">Download trial</string>
-    <string name="tasker_not_installed">Tasker application was uninstalled.</string>
+    <string name="tasker_not_installed">Tasker application is not installed.</string>
     <string name="tasker_error">An error occurred when launching the task.</string>
     <string name="tasker_success">The task has been executed.</string>
     <string name="tasker_disabled">Tasker is disabled.</string>
     <string name="tasker_external_access_denided">External access to Tasker is disabled. See Preferences -> MISC -> Allow External Access in the Tasker.</string>
+
     <string name="action_alarm_text_title">Beacon Event"</string>
+
+    <string name="action_location_no_location">Current GPS Location is unknown</string>
+    <string name="action_urlaction_error">Cannot open url, url is invalid or malformed</string>
+    <string name="action_start_application_error">Can not start application, not exists</string>
+    <string name="action_action_param_is_required">You have to provide a parameter for the action</string>
 
 
 </resources>

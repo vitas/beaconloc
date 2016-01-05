@@ -126,9 +126,9 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
             return;
         }
         if (enable) {
-           loadRegions();
+            loadRegions();
         } else {
-            if(mRegionBootstrap != null) {
+            if (mRegionBootstrap != null) {
                 mRegionBootstrap.disable();
             }
         }
@@ -146,7 +146,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     public List<Region> getAllEnabledRegions() {
         List<Region> regions = new ArrayList<>();
         List<ActionBeacon> actions = mDataManager.getAllEnabledBeaconActions();
-        for(ActionBeacon action: actions){
+        for (ActionBeacon action : actions) {
             regions.add(ActionRegion.parseRegion(action));
         }
         return regions;

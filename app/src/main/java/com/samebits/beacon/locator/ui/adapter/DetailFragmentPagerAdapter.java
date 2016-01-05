@@ -20,12 +20,10 @@ package com.samebits.beacon.locator.ui.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.fragment.BeaconActionPageFragment;
 import com.samebits.beacon.locator.ui.fragment.BeaconDetailPageFragment;
 import com.samebits.beacon.locator.ui.fragment.BeaconEventPageFragment;
@@ -38,7 +36,7 @@ import com.samebits.beacon.locator.util.Constants;
  */
 public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
     private int tabTitleResources[] = new int[]{R.string.tab_title_beacon_info, R.string.tab_title_beacon_event, R.string.tab_title_beacon_action,
-        R.string.tab_title_beacon_notification};
+            R.string.tab_title_beacon_notification};
     private Context mContext;
     private ActionBeacon mActionBeacon;
 
@@ -75,7 +73,7 @@ public class DetailFragmentPagerAdapter extends android.support.v4.app.FragmentP
         }
 
         if (mActionBeacon != null) {
-            args.putParcelable(Constants.ARG_ACTION_BEACON,  mActionBeacon);
+            args.putParcelable(Constants.ARG_ACTION_BEACON, mActionBeacon);
             frg.setArguments(args);
         }
         return frg;

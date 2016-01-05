@@ -37,6 +37,7 @@ import com.samebits.beacon.locator.util.Constants;
 public class BeaconNotificationPageFragment extends PageBeaconFragment {
 
     private String mNoneRintoneValue = "";
+
     public static BeaconNotificationPageFragment newInstance(int page) {
         BeaconNotificationPageFragment detailFragment = new BeaconNotificationPageFragment();
         return detailFragment;

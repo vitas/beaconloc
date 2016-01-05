@@ -37,10 +37,10 @@ public class RegionName {
     }
 
     public static RegionName parseString(String value) {
-        if (value == null || value.length()==0) {
+        if (value == null || value.length() == 0) {
             throw new IllegalArgumentException("value is null");
         }
-        String[] strings =  value.split("::");
+        String[] strings = value.split("::");
         if (strings != null && strings.length == 4) {
             return new RegionName(strings[0], strings[1], ActionBeacon.EventType.fromInt(Integer.parseInt(strings[2])), strings[3]);
         }
@@ -48,8 +48,8 @@ public class RegionName {
     }
 
     public static String buildRegionNameId(ActionBeacon actionBeacon) {
-        return Constants.REGION_NAME_PREFIX + "::"+ actionBeacon.getBeaconId()+ "::"
-            + actionBeacon.getEventType().getValue() + "::" + actionBeacon.getName();
+        return Constants.REGION_NAME_PREFIX + "::" + actionBeacon.getBeaconId() + "::"
+                + actionBeacon.getEventType().getValue() + "::" + actionBeacon.getName();
     }
 
 

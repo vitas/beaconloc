@@ -19,6 +19,7 @@
 package com.samebits.beacon.locator.util;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 
 import java.text.DecimalFormat;
@@ -55,8 +56,20 @@ public final class BeaconUtil {
         return R.string.proximity_far;
     }
 
+    public static int getEventTypeResourceId(ActionBeacon.EventType eventType) {
+        switch (eventType) {
+            case EVENT_LEAVES_REGION:
+                return R.string.mv_event_type_leaves_region;
+            case EVENT_ENTERS_REGION:
+                return R.string.mv_event_type_enters_region;
+            case EVENT_NEAR_YOU:
+                return R.string.mv_event_type_near_you;
+        }
+        return R.string.action_alarm_text_title;
+    }
+
     public static boolean isInProximity(IManagedBeacon.ProximityType proximityType, double paramDouble) {
-        return(getProximity(paramDouble) == proximityType)?true:false;
+        return (getProximity(paramDouble) == proximityType) ? true : false;
     }
 
     public static double getRoundedDistance(double distance) {

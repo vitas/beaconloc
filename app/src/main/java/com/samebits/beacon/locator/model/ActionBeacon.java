@@ -21,16 +21,21 @@ package com.samebits.beacon.locator.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.altbeacon.beacon.Identifier;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 /**
  * Created by vitas on 28/12/15.
  */
 public class ActionBeacon implements Parcelable {
+    public static final Creator<ActionBeacon> CREATOR = new Creator<ActionBeacon>() {
+        @Override
+        public ActionBeacon createFromParcel(Parcel in) {
+            return new ActionBeacon(in);
+        }
+
+        @Override
+        public ActionBeacon[] newArray(int size) {
+            return new ActionBeacon[size];
+        }
+    };
     private int id;
     private String beaconId;
     private String name;
@@ -59,18 +64,6 @@ public class ActionBeacon implements Parcelable {
         isEnabled = in.readByte() != 0;
         notification = in.readParcelable(NotificationAction.class.getClassLoader());
     }
-
-    public static final Creator<ActionBeacon> CREATOR = new Creator<ActionBeacon>() {
-        @Override
-        public ActionBeacon createFromParcel(Parcel in) {
-            return new ActionBeacon(in);
-        }
-
-        @Override
-        public ActionBeacon[] newArray(int size) {
-            return new ActionBeacon[size];
-        }
-    };
 
     public int getId() {
         return id;
@@ -165,12 +158,12 @@ public class ActionBeacon implements Parcelable {
         return result;
     }
 
-    public void setNotification(NotificationAction value) {
-        this.notification = value;
-    }
-
     public NotificationAction getNotification() {
         return this.notification;
+    }
+
+    public void setNotification(NotificationAction value) {
+        this.notification = value;
     }
 
 
@@ -181,20 +174,21 @@ public class ActionBeacon implements Parcelable {
         ACTION_START_APP(3),
         ACTION_SET_SILENT_ON(4),
         ACTION_SET_SILENT_OFF(5),
-        ACTION_SET_ALARM(6),
+        ACTION_GET_LOCATION(6),
         ACTION_TASKER(7);
 
         private final int value;
+
         ActionType(int value) {
             this.value = value;
         }
 
         public static ActionType fromInt(int value) {
-                for (ActionType type : ActionType.values()) {
-                    if (type.getValue() == value) {
-                        return type;
-                    }
+            for (ActionType type : ActionType.values()) {
+                if (type.getValue() == value) {
+                    return type;
                 }
+            }
 
             return ACTION_URL;
         }

@@ -18,13 +18,11 @@
 
 package com.samebits.beacon.locator.action;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
+import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.NotificationAction;
-import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 03/01/16.
@@ -37,16 +35,25 @@ public class StartAppAction extends NoneAction {
     }
 
     @Override
-    public void execute(Context context) {
-        Intent newIntent = new Intent(Intent.ACTION_MAIN);
-        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        newIntent.setPackage(param);
-        context.startActivity(newIntent);
-        super.execute(context);
+    public String execute(Context context) {
+        try {
+            Intent newIntent = new Intent(Intent.ACTION_MAIN);
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            newIntent.setPackage(param);
+            context.startActivity(newIntent);
+        } catch (Exception e) {
+            return context.getString(R.string.action_start_application_error);
+        }
+        return super.execute(context);
+    }
+
+    @Override
+    public boolean isParamRequired() {
+        return true;
     }
 
     @Override
     public String toString() {
-        return "StartAppAction, app_package: "+param;
+        return "StartAppAction, app_package: " + param;
     }
 }

@@ -20,12 +20,11 @@ package com.samebits.beacon.locator.action;
 
 import android.content.Context;
 
-import com.samebits.beacon.locator.model.NotificationAction;
-
 /**
  * Created by vitas on 03/01/16.
  */
 abstract class Action implements IAction {
     @Override
-    abstract public void execute(Context context);
+    abstract public String execute(Context context);
+
 }

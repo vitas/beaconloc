@@ -2,6 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="key_event">
 
+    <PreferenceCategory
+        android:title="@string/pref_bn_notification_category">
+
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="bn_notification_action"
@@ -24,5 +27,6 @@
         android:key="bn_notification_action_vibrate"
         android:title="@string/pref_bn_notification_action_vibrate" />
 
+    </PreferenceCategory>
 
 </PreferenceScreen>

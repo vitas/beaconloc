@@ -21,6 +21,7 @@ package com.samebits.beacon.locator.action;
 import android.content.Context;
 import android.content.Intent;
 
+import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -37,10 +38,20 @@ public class NoneAction extends Action {
         this.notification = notification;
     }
 
+
     @Override
-    public void execute(Context context) {
+    public String execute(Context context) {
+        if (isParamRequired() && isParamEmpty()) {
+            return context.getString(R.string.action_action_param_is_required);
+        }
         //empty
         sendAlarm(context);
+        return null;
+    }
+
+    @Override
+    public boolean isParamRequired() {
+        return false;
     }
 
     protected void sendAlarm(Context context) {
@@ -52,14 +63,15 @@ public class NoneAction extends Action {
     }
 
     protected boolean isParamEmpty() {
-        return param != null || param.isEmpty();
+        return param == null || param.isEmpty();
     }
+
     protected boolean isNotificationRequired() {
         return notification != null && notification.isEnabled();
     }
 
     @Override
     public String toString() {
-        return "NoneAction, action: "+param;
+        return "NoneAction, action: " + param;
     }
 }

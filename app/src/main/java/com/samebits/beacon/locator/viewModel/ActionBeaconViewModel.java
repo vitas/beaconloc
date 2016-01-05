@@ -18,18 +18,16 @@
 
 package com.samebits.beacon.locator.viewModel;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
-
 import android.view.View;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.ui.activity.BeaconActionActivity;
-import com.samebits.beacon.locator.ui.fragment.BaseFragment;
 import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
+import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
 
 /**
@@ -45,18 +43,12 @@ public class ActionBeaconViewModel extends BaseObservable {
         this.mFragment = fragment;
     }
 
-    public String getName() { return mActionBeacon.getName();}
+    public String getName() {
+        return mActionBeacon.getName();
+    }
 
     public String getEventName() {
-        switch (mActionBeacon.getEventType()) {
-            case EVENT_LEAVES_REGION:
-                return mFragment.getString(R.string.mv_event_type_leaves_region);
-            case EVENT_ENTERS_REGION:
-                return mFragment.getString(R.string.mv_event_type_enters_region);
-            case EVENT_NEAR_YOU:
-                return mFragment.getString(R.string.mv_event_type_near_you);
-        }
-        return mFragment.getString(R.string.mv_event_type_enters_region);
+        return mFragment.getString(BeaconUtil.getEventTypeResourceId(mActionBeacon.getEventType()));
     }
 
     public String getActionNames() {
@@ -67,8 +59,8 @@ public class ActionBeaconViewModel extends BaseObservable {
                 return mFragment.getString(R.string.mv_action_type_broadcast_intent);
             case ACTION_START_APP:
                 return mFragment.getString(R.string.mv_action_type_start_app);
-            case ACTION_SET_ALARM:
-                return mFragment.getString(R.string.mv_action_type_set_alarm);
+            case ACTION_GET_LOCATION:
+                return mFragment.getString(R.string.mv_action_type_get_location);
             case ACTION_SET_SILENT_ON:
                 return mFragment.getString(R.string.mv_action_type_set_silent_on);
             case ACTION_SET_SILENT_OFF:
@@ -84,7 +76,7 @@ public class ActionBeaconViewModel extends BaseObservable {
     }
 
     public String getEnableStatus() {
-        return mActionBeacon.isEnabled()?mFragment.getString(R.string.mv_action_status_enable):mFragment.getString(R.string.mv_action_status_disabled);
+        return mActionBeacon.isEnabled() ? mFragment.getString(R.string.mv_action_status_enable) : mFragment.getString(R.string.mv_action_status_disabled);
     }
 
     public View.OnClickListener onClickEdit() {

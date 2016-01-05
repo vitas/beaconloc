@@ -26,7 +26,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -192,7 +191,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     public void removeBeaconAction(String beaconId, int id) {
         if (mDataManager.deleteBeaconAction(id)) {
             mBeaconsAdapter.removeBeaconAction(beaconId, id);
-        }else {
+        } else {
             //TODO error
         }
     }
@@ -205,7 +204,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
             defName += " (" + actionCount + ")";
         }
 
-        ActionBeacon newAction = new ActionBeacon(beaconId, defName );
+        ActionBeacon newAction = new ActionBeacon(beaconId, defName);
         if (mDataManager.createBeaconAction(newAction)) {
             mBeaconsAdapter.addBeaconAction(newAction);
         } else {
@@ -216,7 +215,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     public void enableBeaconAction(String beaconId, int id, boolean enable) {
         if (mDataManager.enableBeaconAction(id, enable)) {
             mBeaconsAdapter.enableAction(beaconId, id, enable);
-        }else {
+        } else {
             //TODO error
         }
     }
@@ -262,25 +261,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    class UndoSwipableCallback extends ItemTouchHelper.SimpleCallback {
-
-        public UndoSwipableCallback(int dragDirs, int swipeDirs) {
-            super(dragDirs, swipeDirs);
-        }
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            mBeaconsAdapter.removeBeacon(viewHolder.getAdapterPosition());
-        }
-
-    }
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo
             menuInfo) {
@@ -305,6 +285,24 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    class UndoSwipableCallback extends ItemTouchHelper.SimpleCallback {
+
+        public UndoSwipableCallback(int dragDirs, int swipeDirs) {
+            super(dragDirs, swipeDirs);
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            mBeaconsAdapter.removeBeacon(viewHolder.getAdapterPosition());
         }
 
     }

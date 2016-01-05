@@ -26,8 +26,6 @@ import com.samebits.beacon.locator.injection.module.DataModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 
-import org.altbeacon.beacon.Region;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,26 +80,26 @@ public class DataManager {
         return mStoreService.deleteBeacon(beaconId, cascade);
     }
 
-    public  List<ActionBeacon> getAllEnabledBeaconActions() {
+    public List<ActionBeacon> getAllEnabledBeaconActions() {
         List<ActionBeacon> actions = mStoreService.getAllEnabledBeaconActions();
         mActionBeaconCache.clear();
         mActionBeaconCache.addAll(actions);
         return actions;
     }
 
-    public boolean enableBeaconAction(int id,  boolean enable) {
+    public boolean enableBeaconAction(int id, boolean enable) {
         return mStoreService.updateBeaconActionEnable(id, enable);
     }
 
     public List<ActionBeacon> getEnabledBeaconActionsByEvent(ActionBeacon.EventType eventType, String beaconId) {
-        if(!mActionBeaconCache.isEmpty()) {
+        if (!mActionBeaconCache.isEmpty()) {
             List<ActionBeacon> actionBeacons = new ArrayList<>();
-            for(ActionBeacon action: mActionBeaconCache) {
-                if(action.getBeaconId().equals(beaconId) && action.getEventType() == eventType) {
+            for (ActionBeacon action : mActionBeaconCache) {
+                if (action.getBeaconId().equals(beaconId) && action.getEventType() == eventType) {
                     actionBeacons.add(action);
                 }
             }
-            if (actionBeacons.size()>0) {
+            if (actionBeacons.size() > 0) {
                 return actionBeacons;
             }
         }

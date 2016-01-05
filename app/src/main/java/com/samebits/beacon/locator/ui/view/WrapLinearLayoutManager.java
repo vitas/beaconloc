@@ -37,7 +37,7 @@ import java.lang.reflect.Field;
 /**
  * {@link android.support.v7.widget.LinearLayoutManager} which wraps its content. Note that this class will always
  * wrap the content regardless of {@link android.support.v7.widget.RecyclerView} layout parameters.
- * <p/>
+ * <p>
  * Now it's impossible to run add/remove animations with child views which have arbitrary dimensions (height for
  * VERTICAL orientation and width for HORIZONTAL). However if child views have fixed dimensions
  * {@link #setChildSize(int)} method might be used to let the layout manager know how big they are going to be.
@@ -46,20 +46,17 @@ import java.lang.reflect.Field;
  */
 public class WrapLinearLayoutManager extends android.support.v7.widget.LinearLayoutManager {
 
-    private static boolean canMakeInsetsDirty = true;
-    private static Field insetsDirtyField = null;
-
     private static final int CHILD_WIDTH = 0;
     private static final int CHILD_HEIGHT = 1;
     private static final int DEFAULT_CHILD_SIZE = 100;
-
+    private static boolean canMakeInsetsDirty = true;
+    private static Field insetsDirtyField = null;
     private final int[] childDimensions = new int[2];
     private final RecyclerView view;
-
+    private final Rect tmpRect = new Rect();
     private int childSize = DEFAULT_CHILD_SIZE;
     private boolean hasChildSize;
     private int overScrollMode = ViewCompat.OVER_SCROLL_ALWAYS;
-    private final Rect tmpRect = new Rect();
 
     @SuppressWarnings("UnusedDeclaration")
     public WrapLinearLayoutManager(Context context) {
@@ -87,16 +84,40 @@ public class WrapLinearLayoutManager extends android.support.v7.widget.LinearLay
         this.overScrollMode = ViewCompat.getOverScrollMode(view);
     }
 
+    public static int makeUnspecifiedSpec() {
+        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+    }
+
+    private static void makeInsetsDirty(RecyclerView.LayoutParams p) {
+        if (!canMakeInsetsDirty) {
+            return;
+        }
+        try {
+            if (insetsDirtyField == null) {
+                insetsDirtyField = RecyclerView.LayoutParams.class.getDeclaredField("mInsetsDirty");
+                insetsDirtyField.setAccessible(true);
+            }
+            insetsDirtyField.set(p, true);
+        } catch (NoSuchFieldException e) {
+            onMakeInsertDirtyFailed();
+        } catch (IllegalAccessException e) {
+            onMakeInsertDirtyFailed();
+        }
+    }
+
+    private static void onMakeInsertDirtyFailed() {
+        canMakeInsetsDirty = false;
+        if (BuildConfig.DEBUG) {
+            Log.w("LinearLayoutManager", "Can't make LayoutParams insets dirty, decorations measurements might be incorrect");
+        }
+    }
+
     public void setOverScrollMode(int overScrollMode) {
         if (overScrollMode < ViewCompat.OVER_SCROLL_ALWAYS || overScrollMode > ViewCompat.OVER_SCROLL_NEVER)
             throw new IllegalArgumentException("Unknown overscroll mode: " + overScrollMode);
         if (this.view == null) throw new IllegalStateException("view == null");
         this.overScrollMode = overScrollMode;
         ViewCompat.setOverScrollMode(view, overScrollMode);
-    }
-
-    public static int makeUnspecifiedSpec() {
-        return View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
     }
 
     @Override
@@ -290,29 +311,5 @@ public class WrapLinearLayoutManager extends android.support.v7.widget.LinearLay
         // as view is recycled let's not keep old measured values
         makeInsetsDirty(p);
         recycler.recycleView(child);
-    }
-
-    private static void makeInsetsDirty(RecyclerView.LayoutParams p) {
-        if (!canMakeInsetsDirty) {
-            return;
-        }
-        try {
-            if (insetsDirtyField == null) {
-                insetsDirtyField = RecyclerView.LayoutParams.class.getDeclaredField("mInsetsDirty");
-                insetsDirtyField.setAccessible(true);
-            }
-            insetsDirtyField.set(p, true);
-        } catch (NoSuchFieldException e) {
-            onMakeInsertDirtyFailed();
-        } catch (IllegalAccessException e) {
-            onMakeInsertDirtyFailed();
-        }
-    }
-
-    private static void onMakeInsertDirtyFailed() {
-        canMakeInsetsDirty = false;
-        if (BuildConfig.DEBUG) {
-            Log.w("LinearLayoutManager", "Can't make LayoutParams insets dirty, decorations measurements might be incorrect");
-        }
     }
 }

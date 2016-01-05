@@ -19,7 +19,6 @@
 package com.samebits.beacon.locator.viewModel;
 
 import android.support.annotation.NonNull;
-
 import android.view.View;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
@@ -38,9 +37,8 @@ public class TrackedBeaconViewModel extends BeaconViewModel {
     public View.OnClickListener onClickBeaconDelete() {
         return new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                ((TrackedBeaconsFragment)mFragment).removeBeacon(mManagedBeacon.getId());
+            public void onClick(View v) {
+                ((TrackedBeaconsFragment) mFragment).removeBeacon(mManagedBeacon.getId());
             }
         };
     }
@@ -49,7 +47,7 @@ public class TrackedBeaconViewModel extends BeaconViewModel {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               ((TrackedBeaconsFragment)mFragment).newBeaconAction(mManagedBeacon.getId());
+                ((TrackedBeaconsFragment) mFragment).newBeaconAction(mManagedBeacon.getId());
             }
         };
     }

@@ -18,7 +18,6 @@
 
 package com.samebits.beacon.locator.viewModel;
 
-import android.content.Context;
 import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -29,7 +28,6 @@ import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.ui.fragment.BaseFragment;
-import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 import com.samebits.beacon.locator.util.BeaconUtil;
 
 /**
@@ -102,7 +100,7 @@ public class BeaconViewModel extends BaseObservable {
     }
 
     public String getUuid() {
-        if(mManagedBeacon.getType() == DetectedBeacon.TYPE_EDDYSTONE_URL) {
+        if (mManagedBeacon.getType() == DetectedBeacon.TYPE_EDDYSTONE_URL) {
             return mManagedBeacon.getEddystoneURL();
         }
         return mManagedBeacon.getUUID();

@@ -22,8 +22,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -48,6 +46,7 @@ public class BeaconActionActivity extends BaseActivity implements ViewPager.OnPa
     TabLayout slidingTabs;
 
     private ActionBeacon mActionBeacon;
+
     public static Intent getStartIntent(Context context) {
         return new Intent(context, BeaconActionActivity.class);
     }

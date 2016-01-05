@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -47,7 +46,6 @@ import android.view.animation.AnimationUtils;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.fragment.DetectedBeaconsFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanFragment;
@@ -301,7 +299,7 @@ public class MainNavigationActivity extends BaseActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager != null) {
             Fragment frg = checkFragmentInstance(R.id.content_frame, TrackedBeaconsFragment.class);
-            if ( frg == null) {
+            if (frg == null) {
                 TrackedBeaconsFragment tFrg = TrackedBeaconsFragment.newInstance();
                 if (mBeacon != null) {
                     Bundle bundles = new Bundle();

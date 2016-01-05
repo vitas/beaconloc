@@ -59,7 +59,7 @@ public class BeaconAlertReceiver extends BroadcastReceiver {
             notificationBuilder.setVibration();
         }
 
-        if (ringtone!= null && ringtone.length()>0) {
+        if (ringtone != null && ringtone.length() > 0) {
             notificationBuilder.setRingtone(ringtone);
         }
 

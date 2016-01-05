@@ -34,14 +34,19 @@ public class IntentAction extends NoneAction {
     }
 
     @Override
-    public void execute(Context context) {
+    public String execute(Context context) {
         Intent newIntent = new Intent(param);
         context.sendBroadcast(newIntent);
-        super.execute(context);
+        return super.execute(context);
+    }
+
+    @Override
+    public boolean isParamRequired() {
+        return true;
     }
 
     @Override
     public String toString() {
-        return "IntentAction, action: "+param;
+        return "IntentAction, action: " + param;
     }
 }

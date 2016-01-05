@@ -39,7 +39,6 @@ import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.viewModel.TrackedBeaconViewModel;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -48,6 +47,7 @@ import java.util.Map;
 public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.BindingHolder> {
 
     private Map<String, ActionBeaconAdapter> mActionAdapters = new HashMap<>();
+
     public TrackedBeaconAdapter(BaseFragment fragment) {
         mFragment = fragment;
     }
@@ -67,7 +67,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
     public void onBindViewHolder(BindingHolder holder, final int position) {
         ItemTrackedBeaconBinding beaconBinding = holder.binding;
 
-        ActionBeaconAdapter adapter = new ActionBeaconAdapter((TrackedBeaconsFragment)mFragment);
+        ActionBeaconAdapter adapter = new ActionBeaconAdapter((TrackedBeaconsFragment) mFragment);
         beaconBinding.recyclerActions.setLayoutManager(new WrapLinearLayoutManager(mFragment.getActivity()));
         beaconBinding.recyclerActions.setAdapter(adapter);
 
@@ -136,7 +136,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         }
     }
 
-    public  IManagedBeacon getBeacon(int position) {
+    public IManagedBeacon getBeacon(int position) {
         return (IManagedBeacon) getItem(position);
     }
 
@@ -144,7 +144,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
         ActionBeaconAdapter adapter = mActionAdapters.get(beaconId);
         if (adapter != null) {
             ActionBeacon action = adapter.getItemById(id);
-            if(action!= null) {
+            if (action != null) {
                 action.setIsEnabled(enable);
                 adapter.addItem(action);
             }

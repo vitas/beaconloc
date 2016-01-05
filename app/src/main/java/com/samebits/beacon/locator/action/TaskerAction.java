@@ -21,9 +21,9 @@ package com.samebits.beacon.locator.action;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 
+import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -40,7 +40,7 @@ public class TaskerAction extends NoneAction {
     }
 
     @Override
-    public void execute(Context context) {
+    public String execute(Context context) {
 
         switch (TaskerIntent.testStatus(context)) {
             case OK:
@@ -59,21 +59,26 @@ public class TaskerAction extends NoneAction {
                 break;
             case NotEnabled:
                 Log.w(Constants.TAG, "Tasker is not enabled");
-                break;
+                return context.getString(R.string.tasker_disabled);
             case AccessBlocked:
                 Log.w(Constants.TAG, "Taskers access is blocked");
-                break;
+                return context.getString(R.string.tasker_external_access_denided);
             case NotInstalled:
                 Log.w(Constants.TAG, "Tasker is not installed");
-                break;
+                return context.getString(R.string.tasker_not_installed);
             default:
                 break;
         }
-        super.execute(context);
+       return super.execute(context);
+    }
+
+    @Override
+    public boolean isParamRequired() {
+        return true;
     }
 
     @Override
     public String toString() {
-        return "TaskerAction, param(s): "+param;
+        return "TaskerAction, param(s): " + param;
     }
 }

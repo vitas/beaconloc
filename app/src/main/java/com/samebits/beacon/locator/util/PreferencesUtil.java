@@ -22,8 +22,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.samebits.beacon.locator.BeaconLocatorApp;
-
 
 /**
  * Created by vitas on 21/10/15.

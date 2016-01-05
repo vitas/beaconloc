@@ -2,20 +2,25 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="key_event">
 
-    <CheckBoxPreference
-        android:title="@string/pref_be_event_enter_region"
-        android:key="be_event_enter_region"
-        android:summary="@string/pref_be_summary_event_enter_region"
-        android:checked="true"/>
+    <PreferenceCategory
+        android:title="@string/pref_be_event_category">
 
-    <CheckBoxPreference
-        android:title="@string/pref_be_event_leave_region"
-        android:key="be_event_leaves_region"
-        android:summary="@string/pref_be_summary_event_leave_region" />
+        <CheckBoxPreference
+            android:title="@string/pref_be_event_enter_region"
+            android:key="be_event_enter_region"
+            android:summary="@string/pref_be_summary_event_enter_region"
+            android:checked="true"/>
 
-    <CheckBoxPreference
-        android:title="@string/pref_be_event_near"
-        android:key="be_event_near_you"
-        android:summary="@string/pref_be_summary_event_near" />
+        <CheckBoxPreference
+            android:title="@string/pref_be_event_leave_region"
+            android:key="be_event_leaves_region"
+            android:summary="@string/pref_be_summary_event_leave_region" />
+
+        <CheckBoxPreference
+            android:title="@string/pref_be_event_near"
+            android:key="be_event_near_you"
+            android:summary="@string/pref_be_summary_event_near" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

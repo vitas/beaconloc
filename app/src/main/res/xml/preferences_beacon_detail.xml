@@ -2,13 +2,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="key_details">
 
-    <SwitchPreferenceCompat
-        android:title="@string/pref_bd_switch_active"
-        android:key="bd_switch_active"
-        android:summary="@string/pref_bd_summary_switch_active"/>
-    <EditTextPreference
-        android:title="@string/pref_bd_name"
-        android:key="bd_name_info"/>
+    <PreferenceCategory
+        android:title="@string/pref_bd_name_category">
+        <SwitchPreferenceCompat
+            android:title="@string/pref_bd_switch_active"
+            android:key="bd_switch_active"
+            android:summary="@string/pref_bd_summary_switch_active"/>
+        <EditTextPreference
+            android:title="@string/pref_bd_name"
+            android:key="bd_name_info"/>
+
+    </PreferenceCategory>
+
     <Preference
         android:title="@string/pref_bd_bluetooth_address"
         android:key="bd_bluetooth_address_info"/>
@@ -21,4 +26,5 @@
     <Preference
         android:title="@string/pref_bd_minor"
         android:key="bd_minor_info"/>
+
 </PreferenceScreen>

@@ -22,7 +22,7 @@ package com.samebits.beacon.locator.model;
 /**
  * Created by vitas on 23/12/15.
  */
-public interface IManagedBeacon  {
+public interface IManagedBeacon {
     String getId();
 
     int getType();

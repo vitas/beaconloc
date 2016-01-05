@@ -18,12 +18,10 @@
 
 package com.samebits.beacon.locator.ui.adapter;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.databinding.ItemActionBeaconBinding;
@@ -83,8 +81,8 @@ public class ActionBeaconAdapter extends RecyclerView.Adapter<ActionBeaconAdapte
     }
 
     public void removeItemById(int id) {
-        for(ActionBeacon action: mItemsList) {
-            if (action.getId()==id) {
+        for (ActionBeacon action : mItemsList) {
+            if (action.getId() == id) {
                 mItemsList.remove(action);
                 notifyDataSetChanged();
                 break;
@@ -93,8 +91,8 @@ public class ActionBeaconAdapter extends RecyclerView.Adapter<ActionBeaconAdapte
     }
 
     public ActionBeacon getItemById(int id) {
-        for(ActionBeacon action: mItemsList) {
-            if (action.getId()==id) {
+        for (ActionBeacon action : mItemsList) {
+            if (action.getId() == id) {
                 return action;
             }
         }

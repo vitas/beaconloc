@@ -36,12 +36,8 @@ public class SilentOnAction extends NoneAction {
     }
 
     @Override
-    public void execute(Context context) {
+    public String execute(Context context) {
         final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//        audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE
-//                | AudioManager.FLAG_SHOW_UI | AudioManager.FLAG_ALLOW_RINGER_MODES);
-//        audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-
         if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
             mRingerMode = AudioManager.RINGER_MODE_NORMAL;
@@ -51,11 +47,11 @@ public class SilentOnAction extends NoneAction {
         }
         PreferencesUtil.setSilentModeProfile(context, mRingerMode);
         audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        super.execute(context);
+        return super.execute(context);
     }
 
     @Override
     public String toString() {
-        return "SilentOnAction, param: "+param;
+        return "SilentOnAction, param: " + param;
     }
 }

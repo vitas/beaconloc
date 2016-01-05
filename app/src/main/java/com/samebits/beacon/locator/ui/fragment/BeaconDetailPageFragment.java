@@ -26,10 +26,7 @@ import android.support.v7.preference.SwitchPreferenceCompat;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.ActionRegion;
 
-import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.Region;
-
-import java.util.List;
 
 
 /**

@@ -30,6 +30,17 @@ import java.util.List;
  */
 public class TrackedBeacon implements IManagedBeacon, ITriggerable, Parcelable {
 
+    public static final Creator<TrackedBeacon> CREATOR = new Creator<TrackedBeacon>() {
+        @Override
+        public TrackedBeacon createFromParcel(Parcel in) {
+            return new TrackedBeacon(in);
+        }
+
+        @Override
+        public TrackedBeacon[] newArray(int size) {
+            return new TrackedBeacon[size];
+        }
+    };
     private String id;
     private String uuid = "";
     private long lastSeenTime;
@@ -79,18 +90,6 @@ public class TrackedBeacon implements IManagedBeacon, ITriggerable, Parcelable {
         this.actions = new ArrayList<>();
         in.readList(actions, getClass().getClassLoader());
     }
-
-    public static final Creator<TrackedBeacon> CREATOR = new Creator<TrackedBeacon>() {
-        @Override
-        public TrackedBeacon createFromParcel(Parcel in) {
-            return new TrackedBeacon(in);
-        }
-
-        @Override
-        public TrackedBeacon[] newArray(int size) {
-            return new TrackedBeacon[size];
-        }
-    };
 
     @Override
     public BeaconType getBeaconType() {

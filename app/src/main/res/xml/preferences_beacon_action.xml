@@ -2,27 +2,28 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="key_actions">
 
+    <PreferenceCategory android:title="@string/pref_ba_action_category">
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/pref_ba_action_range_array"
+            android:entryValues="@array/pref_ba_action_range_values"
+            android:key="ba_action_list"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_ba_action_selection" />
 
-    <ListPreference
-        android:defaultValue="0"
-        android:entries="@array/pref_ba_action_range_array"
-        android:entryValues="@array/pref_ba_action_range_values"
-        android:key="ba_action_list"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_ba_action_selection" />
+        <EditTextPreference
+            android:dependency="ba_action_list"
+            android:key="ba_action_param1"
+            android:title="@string/pref_ba_action_param1" />
 
-    <EditTextPreference
-        android:dependency="ba_action_list"
-        android:title="@string/pref_ba_action_param1"
-        android:key="ba_action_param1" />
+    </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_ba_action_test_category">
+    <PreferenceCategory android:title="@string/pref_ba_action_test_category">
         <Preference
-            android:dependency="ba_action_param1"
-            android:title="@string/pref_ba_action_test_button"
-            android:key="ba_action_test"/>
+            android:dependency="ba_action_list"
+            android:key="ba_action_test"
+            android:title="@string/pref_ba_action_test_button" />
     </PreferenceCategory>
 
 

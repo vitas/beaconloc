@@ -25,6 +25,17 @@ import android.os.Parcelable;
  * Created by vitas on 31/12/15.
  */
 public class NotificationAction implements Parcelable {
+    public static final Creator<NotificationAction> CREATOR = new Creator<NotificationAction>() {
+        @Override
+        public NotificationAction createFromParcel(Parcel in) {
+            return new NotificationAction(in);
+        }
+
+        @Override
+        public NotificationAction[] newArray(int size) {
+            return new NotificationAction[size];
+        }
+    };
     private boolean isEnabled;
     private String message = "";
     private String ringtone = "";
@@ -39,18 +50,6 @@ public class NotificationAction implements Parcelable {
         ringtone = in.readString();
         isVibrate = in.readByte() != 0;
     }
-
-    public static final Creator<NotificationAction> CREATOR = new Creator<NotificationAction>() {
-        @Override
-        public NotificationAction createFromParcel(Parcel in) {
-            return new NotificationAction(in);
-        }
-
-        @Override
-        public NotificationAction[] newArray(int size) {
-            return new NotificationAction[size];
-        }
-    };
 
     public boolean isEnabled() {
         return isEnabled;

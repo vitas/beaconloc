@@ -24,5 +24,6 @@ import android.content.Context;
  * Created by vitas on 03/01/16.
  */
 public interface IAction {
-    void execute(Context context);
+    boolean isParamRequired();
+    String execute(Context context);
 }

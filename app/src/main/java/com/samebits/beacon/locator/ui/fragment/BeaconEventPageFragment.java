@@ -19,14 +19,11 @@
 package com.samebits.beacon.locator.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v7.preference.Preference;
 import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.Preference;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.ActionBeacon;
-import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 20/12/15.
@@ -57,13 +54,13 @@ public class BeaconEventPageFragment extends PageBeaconFragment {
         }
 
         setData();
-        
+
         return super.onPreferenceTreeClick(preference);
     }
 
     @Override
     protected void setData() {
-        switch(mActionBeacon.getEventType()) {
+        switch (mActionBeacon.getEventType()) {
             case EVENT_ENTERS_REGION:
                 ((CheckBoxPreference) findPreference("be_event_enter_region")).setChecked(true);
                 ((CheckBoxPreference) findPreference("be_event_leaves_region")).setChecked(false);

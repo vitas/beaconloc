@@ -61,7 +61,7 @@
         <item>@string/mv_action_type_start_app</item>
         <item>@string/mv_action_type_set_silent_on</item>
         <item>@string/mv_action_type_set_silent_off</item>
-        <item>@string/mv_action_type_set_alarm</item>
+        <item>@string/mv_action_type_get_location</item>
         <item>@string/mv_action_type_tasker</item>
     </string-array>
 

@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.widget.Toast;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
@@ -38,6 +39,7 @@ import com.samebits.beacon.locator.util.Constants;
 public class BeaconActionPageFragment extends PageBeaconFragment {
 
     private ActionExecutor mActionExecutor;
+
     public static BeaconActionPageFragment newInstance(int page) {
         BeaconActionPageFragment detailFragment = new BeaconActionPageFragment();
         return detailFragment;
@@ -84,8 +86,10 @@ public class BeaconActionPageFragment extends PageBeaconFragment {
             public boolean onPreferenceClick(Preference arg0) {
                 IAction action = mActionExecutor.actionBuilder(mActionBeacon.getActionType(),
                         mActionBeacon.getActionParam(), mActionBeacon.getNotification());
-                mActionExecutor.storeAndExecute(action);
-                return true;
+                String resMessage = mActionExecutor.storeAndExecute(action);
+                if (resMessage != null ) {
+                    Toast.makeText(getActivity(), resMessage, Toast.LENGTH_LONG).show();
+                }                return true;
             }
         });
 
@@ -103,7 +107,7 @@ public class BeaconActionPageFragment extends PageBeaconFragment {
             action_list.setSummary(index >= 0
                     ? action_list.getEntries()[index]
                     : null);
-            mActionBeacon.setActionType(ActionBeacon.ActionType.fromInt(index >= 0?index:0));
+            mActionBeacon.setActionType(ActionBeacon.ActionType.fromInt(index >= 0 ? index : 0));
         } else {
             action_list.setSummary(action_list.getEntries()[0]);
             mActionBeacon.setActionType(ActionBeacon.ActionType.fromInt(0));
@@ -136,7 +140,7 @@ public class BeaconActionPageFragment extends PageBeaconFragment {
                 final String id = data.getStringExtra("id");
                 final String taskName = data.getDataString();
 
-               // mDataManager.updateBeaconAction(id, taskName);
+                // mDataManager.updateBeaconAction(id, taskName);
                 //updateAction(BeaconContract.ACTION_TASKER);
             }
         }

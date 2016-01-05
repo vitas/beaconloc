@@ -5,10 +5,5 @@
         android:icon="@drawable/ic_radar_black_24dp"
         android:title="@string/pref_header_scanner" />
 
-    <header
-        android:fragment="com.samebits.beacon.locator.ui.activity.SettingsActivity$ActionPreferenceFragment"
-        android:icon="@drawable/ic_playlist_play_black_24dp"
-        android:title="@string/pref_header_actions" />
-
 
 </preference-headers>

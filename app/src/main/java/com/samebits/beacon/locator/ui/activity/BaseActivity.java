@@ -29,8 +29,6 @@ import android.view.MenuItem;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
-import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.PreferencesUtil;
 
@@ -125,7 +123,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         glCount++;
-        if(glCount == 1) {
+        if (glCount == 1) {
             BeaconLocatorApp.from(this).enableBackgroundScan(false);
         }
     }
@@ -134,7 +132,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         glCount--;
-        if (glCount<=0) {
+        if (glCount <= 0) {
             BeaconLocatorApp.from(this).enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
         }
     }
