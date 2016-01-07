@@ -40,7 +40,7 @@ public final class BeaconUtil {
         if (paramDouble <= 0.5D) {
             return IManagedBeacon.ProximityType.IMMEDIATE;
         }
-        if ((paramDouble > 0.5D) && (paramDouble <= 2.0D)) {
+        if ((paramDouble > 0.5D) && (paramDouble <= 3.0D)) {
             return IManagedBeacon.ProximityType.NEAR;
         }
         return IManagedBeacon.ProximityType.FAR;

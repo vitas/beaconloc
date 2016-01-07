@@ -161,7 +161,7 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
 
     @Override
     public void unbindService(ServiceConnection serviceConnection) {
-        Log.d(Constants.TAG, "unbound from beacon service");
+        Log.d(Constants.TAG, "scan fragment unbound from beacon service");
         getActivity().unbindService(serviceConnection);
         isReadyForScan = false;
         isScanning = false;
@@ -169,7 +169,7 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
 
     @Override
     public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
-        Log.d(Constants.TAG, "bound to beacon service");
+        Log.d(Constants.TAG, "scan fragment bound to beacon service");
         return getActivity().bindService(intent, serviceConnection, i);
     }
 }

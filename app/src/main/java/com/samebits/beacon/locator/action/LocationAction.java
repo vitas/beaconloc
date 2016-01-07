@@ -21,19 +21,14 @@ package com.samebits.beacon.locator.action;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 
-import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.NotificationAction;
+import com.samebits.beacon.locator.util.Constants;
 
 /**
  * Created by vitas on 03/01/16.
  */
 public class LocationAction extends NoneAction {
-
-    static final long MAX_AGE = 10000; // 10 seconds
 
     public LocationAction(String param, NotificationAction notification) {
         super(param, notification);
@@ -41,34 +36,14 @@ public class LocationAction extends NoneAction {
 
     @Override
     public String execute(Context context) {
-        Location bestLocation = null;
-        final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        for (final String provider : locationManager.getAllProviders()) {
-
-            final Location location = locationManager.getLastKnownLocation(provider);
-            final long now = System.currentTimeMillis();
-            if (location != null
-                    && (bestLocation == null || location.getTime() > bestLocation.getTime())
-                    && location.getTime() > now - MAX_AGE) {
-                bestLocation = location;
-            }
-        }
-
-        if (bestLocation != null) {
-            final String position = bestLocation.getLatitude() + "," + bestLocation.getLongitude();
-            final Uri uri = Uri.parse("geo:" + position + "?z=17&q=" + position);
-            final Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
-            mapIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(mapIntent);
-        } else {
-            return context.getString(R.string.action_location_no_location);
-        }
+        Intent newIntent = new Intent(Constants.GET_CURRENT_LOCATION);
+        context.sendBroadcast(newIntent);
         return super.execute(context);
     }
 
     @Override
     public boolean isParamRequired() {
-        return true;
+        return false;
     }
 
     @Override

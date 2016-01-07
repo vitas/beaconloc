@@ -60,6 +60,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_view_on_github">GitHub</string>
     <string name="action_donate">Donate</string>
+    <string name="action_help">Help</string>
 
 
     <!-- Popup menu long click -->
@@ -73,7 +74,7 @@
     <string name="title_action_group_beacon_manage">Beacons</string>
     <string name="action_scan_around">Scan</string>
     <string name="action_scan_managed">Radar</string>
-    <string name="action_tracked_list">Actions</string>
+    <string name="action_tracked_list">Manage</string>
 
     <!-- detected beacon properties -->
     <string name="mv_text_rssi">RSSI</string>
@@ -197,6 +198,7 @@
     <string name="action_urlaction_error">Cannot open url, url is invalid or malformed</string>
     <string name="action_start_application_error">Can not start application, not exists</string>
     <string name="action_action_param_is_required">You have to provide a parameter for the action</string>
+    <string name="notification_display_last_position">your location on map</string>
 
 
 </resources>

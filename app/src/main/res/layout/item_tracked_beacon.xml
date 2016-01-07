@@ -37,7 +37,6 @@
                     android:id="@+id/container_uuid"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/container_parent"
                     android:orientation="horizontal">
 
                     <TextView

@@ -21,6 +21,7 @@ package com.samebits.beacon.locator;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.samebits.beacon.locator.model.ActionRegion;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.RegionName;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.PreferencesUtil;
@@ -61,6 +63,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
     ApplicationComponent applicationComponent;
     List<Region> mRegions;
+    List<TrackedBeacon> mBeacons = new ArrayList<>();
     private BackgroundPowerSaver mBackgroundPowerSaver;
     private BeaconManager mBeaconManager;
     private DataManager mDataManager;
@@ -113,6 +116,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
         mBackgroundPowerSaver = new BackgroundPowerSaver(this);
+        mBeaconManager.setRangeNotifier(this);
 
         try {
             mBeaconManager.updateScanPeriods();
@@ -127,6 +131,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         }
         if (enable) {
             loadRegions();
+            //loadTrackedBeacons();
         } else {
             if (mRegionBootstrap != null) {
                 mRegionBootstrap.disable();
@@ -134,13 +139,18 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         }
     }
 
-    private void loadRegions() {
+    /**
+     * consider to use as a cache of beacons
+     */
+    private void loadTrackedBeacons() {
+        mBeacons = mDataManager.getAllBeacons();
+    }
 
+    private void loadRegions() {
         mRegions = getAllEnabledRegions();
         if (mRegions.size() > 0) {
             mRegionBootstrap = new RegionBootstrap(this, mRegions);
         }
-        //mBeaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId", null, null, null));
     }
 
     public List<Region> getAllEnabledRegions() {
@@ -160,51 +170,75 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
     @Override
     public void didEnterRegion(Region region) {
-        Log.d(Constants.TAG, "Region Enter " + region);
-
         RegionName regName = RegionName.parseString(region.getUniqueId());
-        if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_ENTERS_REGION) {
-            Intent intent = new Intent();
-            intent.setAction(Constants.NOTIFY_BEACON_ENTERS_REGION);
-            intent.putExtra("REGION", region);
-            getApplicationContext().sendOrderedBroadcast(intent, null);
+
+        if (regName.isApplicationRegion()) {
+            if (regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
+                try {
+                    mBeaconManager.startRangingBeaconsInRegion(region);
+                } catch (RemoteException e) {
+                    Log.e(Constants.TAG, "Error start ranging region: " + regName, e);
+                }
+            }
+            if (regName.getEventType() == ActionBeacon.EventType.EVENT_ENTERS_REGION) {
+                Intent intent = new Intent();
+                intent.setAction(Constants.NOTIFY_BEACON_ENTERS_REGION);
+                intent.putExtra("REGION", region);
+                getApplicationContext().sendOrderedBroadcast(intent, null);
+            }
         }
     }
 
     @Override
     public void didExitRegion(Region region) {
-        Log.d(Constants.TAG, "Region Exit " + region);
 
         RegionName regName = RegionName.parseString(region.getUniqueId());
-        if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_LEAVES_REGION) {
-            Intent intent = new Intent();
-            intent.setAction(Constants.NOTIFY_BEACON_LEAVES_REGION);
-            intent.putExtra("REGION", region);
-            getApplicationContext().sendOrderedBroadcast(intent, null);
+
+        if (regName.isApplicationRegion()) {
+            if (regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
+                try {
+                    mBeaconManager.stopRangingBeaconsInRegion(region);
+                    // set "far" proximity
+                    mDataManager.updateBeaconDistance(regName.getBeaconId(), 99);
+                } catch (RemoteException e) {
+                    Log.e(Constants.TAG, "Error stop ranging region: " + regName, e);
+                }
+            }
+            if (regName.getEventType() == ActionBeacon.EventType.EVENT_LEAVES_REGION) {
+                Intent intent = new Intent();
+                intent.setAction(Constants.NOTIFY_BEACON_LEAVES_REGION);
+                intent.putExtra("REGION", region);
+                getApplicationContext().sendOrderedBroadcast(intent, null);
+            }
         }
     }
 
     @Override
     public void didDetermineStateForRegion(int i, Region region) {
         Log.d(Constants.TAG, "Region State  " + i + " region " + region);
-
     }
 
     @Override
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         if (beacons != null && beacons.size() > 0 && region != null) {
             RegionName regName = RegionName.parseString(region.getUniqueId());
-            if (regName.isApplicationRegion() && regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
-                Iterator<Beacon> iterator = beacons.iterator();
-                while (iterator.hasNext()) {
-                    DetectedBeacon dBeacon = new DetectedBeacon(iterator.next());
-                    dBeacon.setTimeLastSeen(System.currentTimeMillis());
-                    if (BeaconUtil.isInProximity(IManagedBeacon.ProximityType.NEAR, dBeacon.getDistance())) {
-                        Intent intent = new Intent();
-                        intent.setAction(Constants.NOTIFY_BEACON_NEAR_YOU_REGION);
-                        intent.putExtra("REGION", region);
-                        intent.putExtra("BEACON", dBeacon);
-                        getApplicationContext().sendOrderedBroadcast(intent, null);
+            if (regName.isApplicationRegion()) {
+                if (regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
+                    Iterator<Beacon> iterator = beacons.iterator();
+                    while (iterator.hasNext()) {
+                        Beacon beacon = iterator.next();
+                        TrackedBeacon tracked = mDataManager.getBeacon(regName.getBeaconId());
+                        mDataManager.updateBeaconDistance(regName.getBeaconId(), beacon.getDistance());
+                        if (tracked != null && BeaconUtil.isInProximity(IManagedBeacon.ProximityType.FAR, tracked.getDistance())) {
+                            if (BeaconUtil.isInProximity(IManagedBeacon.ProximityType.NEAR, beacon.getDistance())
+                                    || BeaconUtil.isInProximity(IManagedBeacon.ProximityType.IMMEDIATE, beacon.getDistance())) {
+
+                                Intent intent = new Intent();
+                                intent.setAction(Constants.NOTIFY_BEACON_NEAR_YOU_REGION);
+                                intent.putExtra("REGION", region);
+                                getApplicationContext().sendOrderedBroadcast(intent, null);
+                            }
+                        }
                     }
                 }
             }
@@ -220,10 +254,10 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     @Override
     public void onTerminate() {
         super.onTerminate();
-        // release whatever is needed
-        mBeaconManager.unbind(this);
+        if (mBeaconManager.isBound(this)) {
+            mBeaconManager.unbind(this);
+        }
         mBeaconManager = null;
     }
-
 
 }

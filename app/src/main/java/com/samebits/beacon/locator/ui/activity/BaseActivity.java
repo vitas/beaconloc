@@ -63,6 +63,9 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.action_view_on_github:
                 launchGitHubPage();
                 return true;
+            case R.id.action_help:
+                launchHelpPage();
+                return true;
             case R.id.action_donate:
                 launchDonatePage();
                 return true;
@@ -75,6 +78,12 @@ public class BaseActivity extends AppCompatActivity {
     private void launchGitHubPage() {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://github.com/vitas/beaconloc"));
+        startActivity(browserIntent);
+    }
+
+    private void launchHelpPage() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("https://github.com/vitas/beaconloc/wiki/Help"));
         startActivity(browserIntent);
     }
 

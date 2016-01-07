@@ -42,7 +42,6 @@ public class BeaconAlertReceiver extends BroadcastReceiver {
                     notificationAction.getRingtone(), notificationAction.isVibrate());
 
         }
-        //createNotification(context, "Beacon Event", "What to do", "Beacons are ready!");
     }
 
     private void createNotification(Context context, String title, String msgText, String msgAlert, String ringtone, boolean isVibrate) {

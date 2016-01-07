@@ -38,14 +38,19 @@
             />
         <receiver android:name=".receiver.BeaconRegionReceiver">
             <intent-filter>
-                <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_ENTERS_REGION" />
-                <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_LEAVES_REGION" />
-                <action android:name="com.samebits.beacon.locator.NOTIFY_BEACON_NEAR_YOU_REGION" />
+                <action android:name="${applicationId}.action.NOTIFY_BEACON_ENTERS_REGION" />
+                <action android:name="${applicationId}.action.NOTIFY_BEACON_LEAVES_REGION" />
+                <action android:name="${applicationId}.action.NOTIFY_BEACON_NEAR_YOU_REGION" />
             </intent-filter>
         </receiver>
         <receiver android:name=".receiver.BeaconAlertReceiver">
             <intent-filter>
-                <action android:name="com.samebits.beacon.locator.ALARM_NOTIFICATION_SHOW" />
+                <action android:name="${applicationId}.action.ALARM_NOTIFICATION_SHOW" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.LocationReceiver">
+            <intent-filter>
+                <action android:name="${applicationId}.action.GET_CURRENT_LOCATION"/>
             </intent-filter>
         </receiver>
     </application>

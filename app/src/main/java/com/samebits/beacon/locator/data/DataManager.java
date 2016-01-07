@@ -106,4 +106,11 @@ public class DataManager {
         return mStoreService.getEnabledBeaconActionsByEvent(eventType.getValue(), beaconId);
     }
 
+    public TrackedBeacon getBeacon(String id) {
+        return mStoreService.getBeacon(id);
+    }
+
+    public boolean updateBeaconDistance(final String id, double distance) {
+        return mStoreService.updateBeaconDistance(id, distance);
+    }
 }

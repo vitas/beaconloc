@@ -44,12 +44,12 @@ public final class Constants {
 
     public static final String REGION_NAME_PREFIX = "com.samebits.beacon.locator";
     //actions
-    public static final String NOTIFY_BEACON_ENTERS_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_ENTERS_REGION";
-    public static final String NOTIFY_BEACON_LEAVES_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_LEAVES_REGION";
-    public static final String NOTIFY_BEACON_NEAR_YOU_REGION = "com.samebits.beacon.locator.NOTIFY_BEACON_NEAR_YOU_REGION";
+    public static final String NOTIFY_BEACON_ENTERS_REGION = "com.samebits.beacon.locator.action.NOTIFY_BEACON_ENTERS_REGION";
+    public static final String NOTIFY_BEACON_LEAVES_REGION = "com.samebits.beacon.locator.action.NOTIFY_BEACON_LEAVES_REGION";
+    public static final String NOTIFY_BEACON_NEAR_YOU_REGION = "com.samebits.beacon.locator.action.NOTIFY_BEACON_NEAR_YOU_REGION";
 
-    public static final String ALARM_NOTIFICATION_SHOW = "com.samebits.beacon.locator.ALARM_NOTIFICATION_SHOW";
-
+    public static final String ALARM_NOTIFICATION_SHOW = "com.samebits.beacon.locator.action.ALARM_NOTIFICATION_SHOW";
+    public static final String GET_CURRENT_LOCATION = "com.samebits.beacon.locator.action.GET_CURRENT_LOCATION";
 
     private Constants() {
     }
