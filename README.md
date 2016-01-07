@@ -30,6 +30,15 @@ For example, you may set a silent mode entering your bedroom...and set normal so
 More features are coming soon in next release. 
 Please, do hesitate to contact us if you have some ideas about new features or want to contribute.
 
+##Screenshots
+![screen1](https://cloud.githubusercontent.com/assets/415304/12170836/d8b1c9f2-b544-11e5-9e05-98a850a6a998.png)
+![screen2](https://cloud.githubusercontent.com/assets/415304/12170835/d8b10616-b544-11e5-8abc-95dad8295b6e.png)
+![screen3](https://cloud.githubusercontent.com/assets/415304/12170832/d8ae2e78-b544-11e5-9376-c8759d08480e.png)
+![screen4](https://cloud.githubusercontent.com/assets/415304/12170837/d8b27262-b544-11e5-9ae7-ce7e91c6abe9.png)
+![screen5](https://cloud.githubusercontent.com/assets/415304/12170834/d8afe682-b544-11e5-97d4-681f9a045a86.png)
+![screen6](https://cloud.githubusercontent.com/assets/415304/12170833/d8af3836-b544-11e5-8112-8eda824b22ba.png)
+![screen_radar](https://cloud.githubusercontent.com/assets/415304/12170838/d8c3fb22-b544-11e5-8ecd-f56ed1f51097.png)
+
 ## Limitations
 Android 4.3 with Bluetooth 4.0 LE or newer is required.
 
