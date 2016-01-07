@@ -30,6 +30,9 @@ For example, you may set a silent mode entering your bedroom...and set normal so
 More features are coming soon in next release. 
 Please, do hesitate to contact us if you have some ideas about new features or want to contribute.
 
+##Download 
+[Google Play Store link](https://play.google.com/store/apps/details?id=com.samebits.beacon.locator)
+
 ##Screenshots
 <img src="https://cloud.githubusercontent.com/assets/415304/12170836/d8b1c9f2-b544-11e5-9e05-98a850a6a998.png" width="256">
 <img src="https://cloud.githubusercontent.com/assets/415304/12170835/d8b10616-b544-11e5-8abc-95dad8295b6e.png" width="256">
