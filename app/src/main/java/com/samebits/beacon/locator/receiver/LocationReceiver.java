@@ -45,12 +45,14 @@ public class LocationReceiver extends BroadcastReceiver {
         Location bestLocation = null;
         final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         for (final String provider : locationManager.getAllProviders()) {
-            final Location location = locationManager.getLastKnownLocation(provider);
-            final long now = System.currentTimeMillis();
-            if (location != null
-                    && (bestLocation == null || location.getTime() > bestLocation.getTime())
-                    && location.getTime() > now - MAX_AGE_TIME) {
-                bestLocation = location;
+            if (provider != null) {
+                final Location location = locationManager.getLastKnownLocation(provider);
+                final long now = System.currentTimeMillis();
+                if (location != null
+                        && (bestLocation == null || location.getTime() > bestLocation.getTime())
+                        && location.getTime() > now - MAX_AGE_TIME) {
+                    bestLocation = location;
+                }
             }
         }
 

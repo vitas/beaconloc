@@ -19,6 +19,7 @@
 package com.samebits.beacon.locator.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -99,7 +100,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQ_GLOBAL_SETTING) {
+        if (resultCode == Activity.RESULT_OK && requestCode == Constants.REQ_GLOBAL_SETTING) {
             //TODO settings
         }
         super.onActivityResult(requestCode, resultCode, data);

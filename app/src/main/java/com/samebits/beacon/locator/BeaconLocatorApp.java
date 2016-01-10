@@ -59,10 +59,10 @@ import java.util.List;
 /**
  * Created by vitas on 18/10/15.
  */
-public class BeaconLocatorApp extends Application implements BootstrapNotifier, RangeNotifier, BeaconConsumer {
+public class BeaconLocatorApp extends Application implements BootstrapNotifier, RangeNotifier {
 
     ApplicationComponent applicationComponent;
-    List<Region> mRegions;
+    List<Region> mRegions = new ArrayList<>();
     List<TrackedBeacon> mBeacons = new ArrayList<>();
     private BackgroundPowerSaver mBackgroundPowerSaver;
     private BeaconManager mBeaconManager;
@@ -89,7 +89,8 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager = BeaconLocatorApp.from(this).getComponent().beaconManager();
         mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
 
-        mBeaconManager.bind(this);
+        initBeaconManager();
+        enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
 
     }
 
@@ -126,16 +127,19 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     }
 
     public void enableBackgroundScan(boolean enable) {
-        if (!mBeaconManager.isBound(this)) {
-            return;
-        }
         if (enable) {
-            loadRegions();
+            Log.d(Constants.TAG, "Enable Background Scan");
+            enableRegions();
             //loadTrackedBeacons();
         } else {
-            if (mRegionBootstrap != null) {
-                mRegionBootstrap.disable();
-            }
+            Log.d(Constants.TAG, "Disable Background Scan");
+            disableRegions();
+        }
+    }
+
+    private void disableRegions() {
+        if (mRegionBootstrap != null) {
+            mRegionBootstrap.disable();
         }
     }
 
@@ -146,10 +150,12 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeacons = mDataManager.getAllBeacons();
     }
 
-    private void loadRegions() {
+    private void enableRegions() {
         mRegions = getAllEnabledRegions();
         if (mRegions.size() > 0) {
             mRegionBootstrap = new RegionBootstrap(this, mRegions);
+        } else {
+            Log.d(Constants.TAG, "Ignore Background scan, no regions");
         }
     }
 
@@ -160,12 +166,6 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
             regions.add(ActionRegion.parseRegion(action));
         }
         return regions;
-    }
-
-    @Override
-    public void onBeaconServiceConnect() {
-        initBeaconManager();
-        enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
     }
 
     @Override
@@ -251,13 +251,5 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         enableBackgroundScan(false);
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        if (mBeaconManager.isBound(this)) {
-            mBeaconManager.unbind(this);
-        }
-        mBeaconManager = null;
-    }
 
 }
