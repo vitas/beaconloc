@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Beacon Locator</string>
+    <string name="app_name" translatable="false">Beacon Locator</string>
+    <string name="nav_drawer_open">open drawer</string>
+    <string name="nav_drawer_close">close drawer</string>
 
     <!-- Dialogs -->
     <string name="dialog_action_ok">OK</string>
@@ -17,10 +19,6 @@
     <string name="dialog_error_ble_not_supported">Bluetooth LE not available</string>
     <string name="error_message_bluetooth_le_not_supported">Sorry, this device does not support Bluetooth LE.</string>
 
-    <string name="proximity_immediate">Immediate</string>
-    <string name="proximity_near">Near</string>
-    <string name="proximity_far">Far</string>
-
     <!-- Strings related to Settings -->
 
     <!-- Scan settings -->
@@ -31,7 +29,7 @@
     <string name="pref_default_region_name">Default</string>
     <string name="pref_title_manual_scan_timeout">Manual scan interval</string>
     <string name="pref_title_scan_sorting">Sorting mode</string>
-    <string name="pref_title_scan_layout_category">Scan Layouts</string>
+    <string name="pref_title_scan_layout_category" translatable="false">Scan Layouts</string>
     <string name="pref_scan_parser_layout_eddystone_uid">Eddystone UID</string>
     <string name="pref_scan_parser_layout_eddystone_url">Eddystone URL</string>
     <string name="pref_scan_parser_layout_eddystone_tlm">Eddystone TLM</string>
@@ -44,6 +42,7 @@
     <string name="pref_ringtone_silent">Silent</string>
     <string name="pref_title_vibrate">Vibrate</string>
 
+    <!-- drawer navigation -->
     <string name="pref_header_scanner">Scan</string>
     <string name="pref_header_actions">Action</string>
 
@@ -51,10 +50,6 @@
     <string name="title_activity_main_navigation">Beacon Locator</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_beacon">Beacon Action</string>
-
-    <string name="nav_drawer_open">open drawer</string>
-    <string name="nav_drawer_close">close drawer</string>
-
 
     <!-- settings menu actions -->
     <string name="action_settings">Settings</string>
@@ -77,24 +72,24 @@
     <string name="action_tracked_list">Manage</string>
 
     <!-- detected beacon properties -->
-    <string name="mv_text_rssi">RSSI</string>
+    <string name="mv_text_rssi" translatable="false">RSSI</string>
     <string name="mv_text_rssi_unit">dBm</string>
-    <string name="mv_text_txpower">TX</string>
+    <string name="mv_text_txpower" translatable="false">TX</string>
     <string name="mv_text_distance_unit">m</string>
-    <string name="mv_text_uuid">UUID</string>
-    <string name="mv_text_major">Major</string>
-    <string name="mv_text_minor">Minor</string>
+    <string name="mv_text_uuid" translatable="false">UUID</string>
+    <string name="mv_text_major" translatable="false">Major</string>
+    <string name="mv_text_minor" translatable="false">Minor</string>
     <string name="mv_text_distance">Distance</string>
     <string name="mv_text_vendor">Vendor</string>
     <string name="mv_text_name">Bluetooth Name</string>
-    <string name="mv_text_url">URL</string>
-    <string name="mv_text_instance">Instance</string>
-    <string name="mv_text_namespace">Namespace</string>
+    <string name="mv_text_url" translatable="false">URL</string>
+    <string name="mv_text_instance" translatable="false">Instance</string>
+    <string name="mv_text_namespace" translatable="false">Namespace</string>
 
     <!-- Radar fragment -->
     <string name="title_fragment_radar_beacons">Beacon Radar</string>
-    <string name="scanning">Scanning...</string>
-    <string name="scanner_found_beacons_size">%1$d found</string>
+    <string name="text_scanning">Scanning...</string>
+    <string name="text_scanner_found_beacons_size">%1$d found</string>
 
     <!-- Scan fragment -->
     <string name="title_fragment_detected_beacons">Beacon Scanner</string>
@@ -113,21 +108,20 @@
     <!-- Beacon details info dialog tab -->
 
     <string name="pref_bd_name_category">Name and Enable watched beacon</string>
-
     <string name="pref_bd_switch_active">Enable it</string>
     <string name="pref_bd_summary_switch_active">Enables action for the beacon</string>
     <string name="pref_bd_name">Region Name</string>
     <string name="pref_bd_default_name">Default action name</string>
 
-    <string name="pref_bd_uuid">UUID</string>
+    <string name="pref_bd_uuid" translatable="false">UUID</string>
     <string name="pref_bd_type">Type</string>
-    <string name="pref_bd_rssi">RSSI</string>
+    <string name="pref_bd_rssi" translatable="false">RSSI</string>
     <string name="pref_bd_txpower">Tx Power</string>
     <string name="pref_bd_bluetooth_name">Bluetooth Name</string>
     <string name="pref_bd_bluetooth_address">Bluetooth Address</string>
     <string name="pref_bd_distance">Distance</string>
-    <string name="pref_bd_major">Major</string>
-    <string name="pref_bd_minor">Minor</string>
+    <string name="pref_bd_major" translatable="false">Major</string>
+    <string name="pref_bd_minor" translatable="false">Minor</string>
 
     <!-- Beacon events dialog tab -->
     <string name="pref_be_event_category">Select type of event</string>
@@ -161,11 +155,9 @@
     <string name="action_add_action">ACTION</string>
     <string name="mv_action_text_name">Name</string>
     <string name="mv_action_text_event">Event</string>
-
     <string name="mv_event_type_leaves_region">Leaves region</string>
     <string name="mv_event_type_enters_region">Enters region</string>
     <string name="mv_event_type_near_you">Near you</string>
-
     <string name="mv_action_status_enable">Enabled</string>
     <string name="mv_action_status_disabled">Disabled</string>
 
@@ -192,13 +184,21 @@
     <string name="tasker_disabled">Tasker is disabled.</string>
     <string name="tasker_external_access_denided">External access to Tasker is disabled. See Preferences -> MISC -> Allow External Access in the Tasker.</string>
 
+    <!-- actions -->
     <string name="action_alarm_text_title">Beacon Event"</string>
-
     <string name="action_location_no_location">Current GPS Location is unknown</string>
     <string name="action_urlaction_error">Cannot open url, url is invalid or malformed</string>
     <string name="action_start_application_error">Can not start application, not exists</string>
     <string name="action_action_param_is_required">You have to provide a parameter for the action</string>
     <string name="notification_display_last_position">your location on map</string>
 
+    <!-- enums -->
+    <string name="proximity_immediate">Immediate</string>
+    <string name="proximity_near">Near</string>
+    <string name="proximity_far">Far</string>
+
+    <string name="sort_type_nearest_first">Nearest first</string>
+    <string name="sort_type_furthest_first">Furthest first</string>
+    <string name="sort_type_uuid_major_minor">UUID, Major and Minor</string>
 
 </resources>

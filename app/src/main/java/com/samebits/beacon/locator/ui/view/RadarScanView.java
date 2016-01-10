@@ -354,7 +354,7 @@ public class RadarScanView extends View implements SensorEventListener {
     }
 
     private void updateBeaconsInfo(final Collection<Beacon> beacons) {
-        mInfoView.setText(String.format(getResources().getString(R.string.scanner_found_beacons_size), beacons.size()));
+        mInfoView.setText(String.format(getResources().getString(R.string.text_scanner_found_beacons_size), beacons.size()));
     }
 
     /**
@@ -380,7 +380,7 @@ public class RadarScanView extends View implements SensorEventListener {
      * Turn on the sweep animation starting with the next draw
      */
     public void startSweep() {
-        mInfoView.setText(R.string.scanning);
+        mInfoView.setText(R.string.text_scanning);
         mSweepTime = SystemClock.uptimeMillis();
         mSweepBefore = true;
     }
