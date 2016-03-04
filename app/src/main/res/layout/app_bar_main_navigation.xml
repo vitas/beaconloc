@@ -6,7 +6,8 @@
     android:fitsSystemWindows="true"
     tools:context="com.samebits.beacon.locator.ui.activity.MainNavigationActivity">
 
-    <include android:id="@+id/appbar" layout="@layout/app_bar"/>
+
+    <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
 
     <include layout="@layout/content_main_navigation" />
 
