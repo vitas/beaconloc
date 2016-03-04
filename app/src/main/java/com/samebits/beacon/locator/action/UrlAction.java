@@ -25,8 +25,16 @@ import android.net.Uri;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.NotificationAction;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
+
 /**
- * Created by vitas on 03/01/16.
+ * Created by vitas on 04/03/16.
  */
 public class UrlAction extends NoneAction {
 
@@ -38,13 +46,47 @@ public class UrlAction extends NoneAction {
     public String execute(Context context) {
         try {
             Uri uri = Uri.parse(param);
-            Intent newIntent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(newIntent);
+
+            if (param.startsWith("http://")) {
+                new CallUrl<>(param).start();
+            }
+
+            if (param.startsWith("https://")) {
+                new CallUrl<HttpsURLConnection>(param).start();
+            }
         } catch (Exception e) {
             return context.getString(R.string.action_urlaction_error);
         }
         return super.execute(context);
+    }
+
+    private class CallUrl<T extends HttpURLConnection> extends Thread {
+
+        final String url;
+
+        public CallUrl(String url) {
+            this.url = url;
+        }
+
+        @Override
+        public void run() {
+            try {
+                T urlConnection = (T) new URL(url).openConnection();
+                try {
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    readStream(in);
+                } finally {
+                    urlConnection.disconnect();
+                }
+            } catch (IOException e) {
+                // nothing to do.
+            }
+        }
+    }
+
+    private void readStream(InputStream in) throws IOException  {
+        // nothing to do.
+        in.close();
     }
 
     @Override
