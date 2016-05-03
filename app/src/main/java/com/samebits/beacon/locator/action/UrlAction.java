@@ -19,7 +19,6 @@
 package com.samebits.beacon.locator.action;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 
 import com.samebits.beacon.locator.R;
@@ -45,7 +44,7 @@ public class UrlAction extends NoneAction {
     @Override
     public String execute(Context context) {
         try {
-            Uri uri = Uri.parse(param);
+            Uri.parse(param);
 
             if (param.startsWith("http://")) {
                 new CallUrl<>(param).start();

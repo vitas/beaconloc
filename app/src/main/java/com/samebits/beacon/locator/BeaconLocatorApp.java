@@ -122,7 +122,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         try {
             mBeaconManager.updateScanPeriods();
         } catch (RemoteException e) {
-            Log.e(Constants.TAG, "update error", e);
+            Log.e(Constants.TAG, "update scan periods error", e);
         }
     }
 

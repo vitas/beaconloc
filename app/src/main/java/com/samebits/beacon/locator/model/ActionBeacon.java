@@ -189,7 +189,6 @@ public class ActionBeacon implements Parcelable {
                     return type;
                 }
             }
-
             return ACTION_URL;
         }
 
