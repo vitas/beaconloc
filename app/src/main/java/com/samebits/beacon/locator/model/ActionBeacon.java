@@ -175,7 +175,8 @@ public class ActionBeacon implements Parcelable {
         ACTION_SET_SILENT_ON(4),
         ACTION_SET_SILENT_OFF(5),
         ACTION_GET_LOCATION(6),
-        ACTION_TASKER(7);
+        ACTION_TASKER(7),
+        ACTION_WEB(8);
 
         private final int value;
 
@@ -189,7 +190,7 @@ public class ActionBeacon implements Parcelable {
                     return type;
                 }
             }
-            return ACTION_URL;
+            return ACTION_WEB;
         }
 
         public int getValue() {

@@ -170,6 +170,7 @@
     <string name="mv_action_type_get_location">Get Location</string>
     <string name="mv_action_type_broadcast_intent">Broadcast intent</string>
     <string name="mv_action_type_open_url">Open Url</string>
+    <string name="mv_action_type_open_web">Open WebUrl</string>
 
     <!-- tasker -->
     <string name="action_tasker_default">Select task</string>

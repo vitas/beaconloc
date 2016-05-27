@@ -53,6 +53,8 @@ public class ActionBeaconViewModel extends BaseObservable {
 
     public String getActionNames() {
         switch (mActionBeacon.getActionType()) {
+            case ACTION_WEB:
+                return mFragment.getString(R.string.mv_action_type_open_web);
             case ACTION_URL:
                 return mFragment.getString(R.string.mv_action_type_open_url);
             case ACTION_INTENT_ACTION:

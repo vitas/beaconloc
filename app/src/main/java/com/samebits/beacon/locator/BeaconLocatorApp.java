@@ -120,7 +120,9 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager.setRangeNotifier(this);
 
         try {
-            mBeaconManager.updateScanPeriods();
+            if (mBeaconManager.isAnyConsumerBound()) {
+                mBeaconManager.updateScanPeriods();
+            }
         } catch (RemoteException e) {
             Log.e(Constants.TAG, "update scan periods error", e);
         }

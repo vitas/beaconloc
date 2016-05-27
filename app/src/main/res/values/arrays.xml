@@ -64,6 +64,8 @@
         <item>@string/mv_action_type_set_silent_off</item>
         <item>@string/mv_action_type_get_location</item>
         <item>@string/mv_action_type_tasker</item>
+        <item>@string/mv_action_type_open_web</item>
+
     </string-array>
 
     <string-array name="pref_ba_action_range_values">
@@ -75,6 +77,7 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>8</item>
     </string-array>
 
 </resources>

@@ -45,8 +45,9 @@ public class ActionExecutor {
         switch (type) {
             case ACTION_NONE:
                 return new NoneAction(param, notification);
+            case ACTION_WEB:
+                return new WebAction(param, notification);
             case ACTION_URL:
-                //return new WebAction(param, notification);
                 return new UrlAction(param, notification);
             case ACTION_INTENT_ACTION:
                 return new IntentAction(param, notification);
