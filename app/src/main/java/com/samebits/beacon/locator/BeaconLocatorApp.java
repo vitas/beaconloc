@@ -22,6 +22,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -185,7 +186,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
             if (regName.getEventType() == ActionBeacon.EventType.EVENT_ENTERS_REGION) {
                 Intent intent = new Intent();
                 intent.setAction(Constants.NOTIFY_BEACON_ENTERS_REGION);
-                intent.putExtra("REGION", region);
+                intent.putExtra("REGION", (Parcelable)region);
                 getApplicationContext().sendOrderedBroadcast(intent, null);
             }
         }
@@ -209,7 +210,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
             if (regName.getEventType() == ActionBeacon.EventType.EVENT_LEAVES_REGION) {
                 Intent intent = new Intent();
                 intent.setAction(Constants.NOTIFY_BEACON_LEAVES_REGION);
-                intent.putExtra("REGION", region);
+                intent.putExtra("REGION", (Parcelable) region);
                 getApplicationContext().sendOrderedBroadcast(intent, null);
             }
         }
@@ -237,7 +238,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
                                 Intent intent = new Intent();
                                 intent.setAction(Constants.NOTIFY_BEACON_NEAR_YOU_REGION);
-                                intent.putExtra("REGION", region);
+                                intent.putExtra("REGION", (Parcelable)region);
                                 getApplicationContext().sendOrderedBroadcast(intent, null);
                             }
                         }

@@ -44,11 +44,13 @@ import java.util.Collection;
  */
 public abstract class ScanFragment extends BaseFragment implements BeaconConsumer, RangeNotifier {
 
+    final static String STATE_SCANNING = "STATE_SCANNING";
+
     protected Region mRegion;
     protected boolean isReadyForScan;
     protected boolean isScanning;
     protected BeaconManager mBeaconManager;
-
+    protected boolean needContinueScan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,10 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
         mBeaconManager.bind(this);
         mBeaconManager.setRangeNotifier(this);
         setNeedFab(true);
+
+        if (savedInstanceState != null) {
+            needContinueScan = savedInstanceState.getBoolean(STATE_SCANNING);
+        }
     }
 
     @Override
@@ -67,6 +73,7 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
             mBeaconManager.unbind(this);
         }
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -104,7 +111,7 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
 
     public void startScan() {
         try {
-            if (isCanScan()) {
+            if (isCanScan() & mBeaconManager.isBound(this)) {
                 mBeaconManager.startRangingBeaconsInRegion(mRegion);
                 isScanning = true;
                 if (getActivity() instanceof MainNavigationActivity) {
@@ -118,7 +125,9 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
 
     public void stopScan() {
         try {
-            mBeaconManager.stopRangingBeaconsInRegion(mRegion);
+            if (mBeaconManager.isBound(this)) {
+                mBeaconManager.stopRangingBeaconsInRegion(mRegion);
+            }
             isScanning = false;
             if (getActivity() instanceof MainNavigationActivity) {
                 ((MainNavigationActivity) getActivity()).swappingFloatingScanIcon(isScanning);
@@ -143,6 +152,10 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
         isReadyForScan = true;
         isScanning = false;
         onCanScan();
+
+        if (needContinueScan) {
+            scanStartStopAction();
+        }
     }
 
     @Override
@@ -164,7 +177,9 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
     @Override
     public void unbindService(ServiceConnection serviceConnection) {
         Log.d(Constants.TAG, "scan fragment unbound from beacon service");
-        getActivity().unbindService(serviceConnection);
+        if (mBeaconManager.isBound(this)) {
+            getActivity().unbindService(serviceConnection);
+        }
         isReadyForScan = false;
         isScanning = false;
     }
@@ -173,5 +188,11 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
     public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
         Log.d(Constants.TAG, "scan fragment bound to beacon service");
         return getActivity().bindService(intent, serviceConnection, i);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SCANNING, isScanning);
     }
 }

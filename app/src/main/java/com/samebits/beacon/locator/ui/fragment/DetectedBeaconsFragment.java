@@ -181,6 +181,9 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
             //update list, even nothing, we want update last seen time on detected beacons
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
+                    if(getActivity() == null)
+                        return;
+
                     mBeaconsAdapter.notifyDataSetChanged();
                     Log.d(Constants.TAG, "called on region " + region.toString());
                 }
@@ -193,6 +196,9 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
+                    if(getActivity() == null)
+                        return;
+
                     mBeaconsAdapter.insertBeacons(beacons);
                     mBeaconsAdapter.sort(PreferencesUtil.getScanBeaconSort(getApplicationContext()));
                     mTimer.cancel();
