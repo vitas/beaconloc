@@ -21,7 +21,6 @@ package com.samebits.beacon.locator;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
@@ -33,7 +32,6 @@ import com.samebits.beacon.locator.injection.component.DaggerApplicationComponen
 import com.samebits.beacon.locator.injection.module.ApplicationModule;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.ActionRegion;
-import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.RegionName;
 import com.samebits.beacon.locator.model.TrackedBeacon;
@@ -42,7 +40,6 @@ import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.PreferencesUtil;
 
 import org.altbeacon.beacon.Beacon;
-import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.RangeNotifier;
@@ -113,12 +110,12 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
         mBeaconManager.setBackgroundBetweenScanPeriod(PreferencesUtil.getBackgroundScanInterval(this));
 
-        mBeaconManager.setBackgroundScanPeriod(2000L);          // default is 10000L
+        mBeaconManager.setBackgroundScanPeriod(8000L);          // default is 10000L
         mBeaconManager.setForegroundBetweenScanPeriod(0L);      // default is 0L
         mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
         mBackgroundPowerSaver = new BackgroundPowerSaver(this);
-        mBeaconManager.setRangeNotifier(this);
+        mBeaconManager.addRangeNotifier(this);
 
         try {
             if (mBeaconManager.isAnyConsumerBound()) {
