@@ -110,9 +110,27 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
         mBeaconManager.setBackgroundBetweenScanPeriod(PreferencesUtil.getBackgroundScanInterval(this));
 
-        mBeaconManager.setBackgroundScanPeriod(8000L);          // default is 10000L
+        mBeaconManager.setBackgroundScanPeriod(10000L);          // default is 10000L
         mBeaconManager.setForegroundBetweenScanPeriod(0L);      // default is 0L
         mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
+
+        //mBeaconManager.setMaxTrackingAge(10000);
+        mBeaconManager.setRegionExitPeriod(12000L);
+
+        /*
+        RangedBeacon.setMaxTrackingAge() only controls the period of time ranged beacons will continue to be
+        returned after the scanning service stops detecting them.
+        It has no affect on when monitored regions trigger exits. It is set to 5 seconds by default.
+
+        Monitored regions are exited whenever a scan period finishes and the BeaconManager.setRegionExitPeriod()
+        has passed since the last detection.
+        By default, this is 10 seconds, but you can customize it.
+
+        Using the defaults, the library will stop sending ranging updates five seconds after a beacon was last seen,
+         and then send a region exit 10 seconds after it was last seen.
+        You are welcome to change these two settings to meet your needs, but the BeaconManager.setRegionExitPeriod()
+        should generally be the same or longer than the RangedBeacon.setMaxTrackingAge().
+         */
 
         mBackgroundPowerSaver = new BackgroundPowerSaver(this);
         mBeaconManager.addRangeNotifier(this);
