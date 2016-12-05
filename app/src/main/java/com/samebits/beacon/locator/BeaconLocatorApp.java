@@ -115,7 +115,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
         //mBeaconManager.setMaxTrackingAge(10000);
-        mBeaconManager.setRegionExitPeriod(12000L);
+        //mBeaconManager.setRegionExitPeriod(12000L);
 
         /*
         RangedBeacon.setMaxTrackingAge() only controls the period of time ranged beacons will continue to be

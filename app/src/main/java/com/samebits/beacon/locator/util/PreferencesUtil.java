@@ -61,7 +61,7 @@ public final class PreferencesUtil {
     }
 
     public static int getBackgroundScanInterval(Context context) {
-        return Integer.parseInt(getSharedPreferences(context).getString("scan_background_timeout_list", "60000"));
+        return Integer.parseInt(getSharedPreferences(context).getString("scan_background_timeout_list", "120000"));
     }
 
     public static boolean isEddystoneLayoutUID(Context context) {

@@ -9,8 +9,8 @@ android {
         applicationId 'com.samebits.beacon.locator'
         minSdkVersion 18
         targetSdkVersion 22
-        versionCode 109
-        versionName '1.0.9'
+        versionCode 110
+        versionName '1.1.0'
         testApplicationId 'com.samebits.beacon.locator.test'
     }
     buildTypes {
@@ -50,7 +50,6 @@ dependencies {
     final SUPPORT_LIBRARY_VERSION = '23.3.0'
     final DAGGER_VERSION = '2.0.1'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
