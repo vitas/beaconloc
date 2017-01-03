@@ -1,261 +1,226 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version='1.0' encoding='utf-8'?>
+  <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel" />
-    </data>
+  <data>
 
-    <FrameLayout
-        android:id="@+id/content_view"
-        android:layout_width="match_parent"
+    <variable name="viewModel"
+      type="com.samebits.beacon.locator.viewModel.DetectedBeaconViewModel"/>
+  </data>
+
+  <FrameLayout android:id="@+id/content_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:longClickable="true"
+    android:onClick="@{viewModel.onClickBeacon}"
+    android:background="@color/bg_light_grey">
+
+    <LinearLayout android:id="@+id/container_view"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <LinearLayout android:id="@+id/beacon_item_view_header"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:longClickable="true"
-        android:onClick="@{viewModel.onClickBeacon}"
-        android:background="@color/bg_light_grey">
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/container_view"
-            android:layout_width="fill_parent"
+        <TextView android:id="@+id/beacon_item_uuid_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginRight="4dp"
+          android:text="@{viewModel.nameUuid}"
+          android:textSize="@dimen/text_extra_small_body"/>
+
+        <TextView android:id="@+id/beacon_item_uuid_value"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@{viewModel.uuid}"
+          android:textSize="@dimen/text_small_body"/>
+        <!--Removed ObsoleteLayoutParam: layout_centerVertical-->
+      </LinearLayout>
+
+      <LinearLayout android:id="@+id/beacon_item_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingBottom="6dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="1dp">
+
+        <LinearLayout android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.8"
+          android:orientation="vertical">
+
+          <LinearLayout android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/beacon_item_view_header"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal">
+            <TextView android:id="@+id/beacon_item_rssi_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/mv_text_rssi"
+              android:textSize="@dimen/text_extra_small_body"/>
 
-                <TextView
-                    android:id="@+id/beacon_item_uuid_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:text="@{viewModel.nameUuid}"
-                    android:textSize="@dimen/text_extra_small_body" />
+            <TextView android:id="@+id/beacon_item_proximity"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="12dp"
+              android:text="@{viewModel.proximity}"
+              android:textColor="@{viewModel.proximityColor}"
+              android:textSize="@dimen/text_extra_small_body"/>
+          </LinearLayout>
 
-                <TextView
-                    android:id="@+id/beacon_item_uuid_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.uuid}"
-                    android:textSize="@dimen/text_small_body" />
-            </LinearLayout>
+          <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/beacon_item_view"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="1dp">
+            <TextView android:id="@+id/beacon_item_rssi_value"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="6dp"
+              android:text="@{viewModel.rssi}"
+              android:textColor="@{viewModel.proximityColor}"
+              android:textSize="@dimen/text_headline_large"/>
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:orientation="vertical">
+            <TextView android:id="@+id/beacon_item_rssi_unit"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/mv_text_rssi_unit"
+              android:textSize="@dimen/text_body"/>
+          </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/beacon_item_rssi_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/mv_text_rssi"
-                            android:textSize="@dimen/text_extra_small_body" />
-
-                        <TextView
-                            android:id="@+id/beacon_item_proximity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:text="@{viewModel.proximity}"
-                            android:textColor="@{viewModel.proximityColor}"
-                            android:textSize="@dimen/text_extra_small_body" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/beacon_item_rssi_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="6dp"
-                            android:text="@{viewModel.rssi}"
-                            android:textColor="@{viewModel.proximityColor}"
-                            android:textSize="@dimen/text_headline_large" />
-
-                        <TextView
-                            android:id="@+id/beacon_item_rssi_unit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/mv_text_rssi_unit"
-                            android:textSize="@dimen/text_body" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/beacon_item_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@{viewModel.beaconType}"
-                        android:textSize="@dimen/text_small_body" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/beacon_item_tx_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mv_text_txpower"
-                        android:textSize="@dimen/text_extra_small_body" />
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/beacon_item_tx_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="3dp"
-                            android:text="@{viewModel.txPower}"
-                            android:textSize="@dimen/text_extra_small_body" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/mv_text_rssi_unit"
-                            android:textSize="@dimen/text_small_body" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/beacon_item_distance_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mv_text_distance"
-                        android:textSize="@dimen/text_extra_small_body" />
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/beacon_item_distance_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="3dp"
-                            android:text="@{viewModel.distance}"
-                            android:textSize="@dimen/text_extra_small_body" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/mv_text_distance_unit"
-                            android:textSize="@dimen/text_small_body" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/beacon_item_id_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mv_text_name"
-                        android:textSize="@dimen/text_small_body" />
-
-                    <TextView
-                        android:id="@+id/beacon_item_id1_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{viewModel.name}"
-                        android:textSize="@dimen/text_small_body" />
-
-                    <LinearLayout
-                        android:id="@+id/beacon_major_minor_container"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.0"
-                            android:orientation="vertical"
-                            android:visibility="@{viewModel.visibilityMajor}">
-
-                            <TextView
-                                android:id="@+id/beacon_item_major_label"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{viewModel.nameMajor}"
-                                android:textSize="@dimen/text_extra_small_body" />
-
-                            <TextView
-                                android:id="@+id/beacon_item_id2_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:text="@{viewModel.major}"
-                                android:textSize="@dimen/text_small_body" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/beacon_minor_container"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.0"
-                            android:orientation="vertical"
-                            android:visibility="@{viewModel.visibilityMinor}">
-
-                            <TextView
-                                android:id="@+id/beacon_item_minor_label"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{viewModel.nameMinor}"
-                                android:textSize="@dimen/text_extra_small_body" />
-
-                            <TextView
-                                android:id="@+id/beacon_item_id3_value"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:text="@{viewModel.minor}"
-                                android:textSize="@dimen/text_small_body" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+          <TextView android:id="@+id/beacon_item_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@{viewModel.beaconType}"
+            android:textSize="@dimen/text_small_body"/>
         </LinearLayout>
 
-    </FrameLayout>
+        <LinearLayout android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="1.0"
+          android:orientation="vertical">
 
+          <TextView android:id="@+id/beacon_item_tx_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mv_text_txpower"
+            android:textSize="@dimen/text_extra_small_body"/>
+
+          <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/beacon_item_tx_value"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="3dp"
+              android:text="@{viewModel.txPower}"
+              android:textSize="@dimen/text_extra_small_body"/>
+
+            <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/mv_text_rssi_unit"
+              android:textSize="@dimen/text_small_body"/>
+          </LinearLayout>
+
+          <TextView android:id="@+id/beacon_item_distance_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mv_text_distance"
+            android:textSize="@dimen/text_extra_small_body"/>
+
+          <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/beacon_item_distance_value"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="3dp"
+              android:text="@{viewModel.distance}"
+              android:textSize="@dimen/text_extra_small_body"/>
+
+            <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/mv_text_distance_unit"
+              android:textSize="@dimen/text_small_body"/>
+          </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.8"
+          android:orientation="vertical">
+
+          <TextView android:id="@+id/beacon_item_id_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mv_text_name"
+            android:textSize="@dimen/text_small_body"/>
+
+          <TextView android:id="@+id/beacon_item_id1_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.name}"
+            android:textSize="@dimen/text_small_body"/>
+
+          <LinearLayout android:id="@+id/beacon_major_minor_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <LinearLayout android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1.0"
+              android:orientation="vertical"
+              android:visibility="@{viewModel.visibilityMajor}">
+
+              <TextView android:id="@+id/beacon_item_major_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.nameMajor}"
+                android:textSize="@dimen/text_extra_small_body"/>
+
+              <TextView android:id="@+id/beacon_item_id2_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="@{viewModel.major}"
+                android:textSize="@dimen/text_small_body"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/beacon_minor_container"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_weight="1.0"
+              android:orientation="vertical"
+              android:visibility="@{viewModel.visibilityMinor}">
+
+              <TextView android:id="@+id/beacon_item_minor_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.nameMinor}"
+                android:textSize="@dimen/text_extra_small_body"/>
+
+              <TextView android:id="@+id/beacon_item_id3_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:text="@{viewModel.minor}"
+                android:textSize="@dimen/text_small_body"/>
+            </LinearLayout>
+          </LinearLayout>
+        </LinearLayout>
+      </LinearLayout>
+      <!--Removed ObsoleteLayoutParam: layout_weight-->
+    </LinearLayout>
+  </FrameLayout>
 </layout>
