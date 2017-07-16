@@ -1,10 +1,14 @@
 Beacon Locator
-=======================
+==============
 
 An Android application to interact with beacons.  
 Implemented in nice material design using Mvvv pattern + data binding and could be used as a reference application for
-Altbeacon android library 
-[github of altbeacon library](http://altbeacon.github.io/android-beacon-library/).
+Altbeacon android library [github of altbeacon library](http://altbeacon.github.io/android-beacon-library/).
+
+<a href="https://f-droid.org/packages/com.samebits.beacon.locator" target="_blank">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"/></a>
+<a href="https://play.google.com/store/apps/details?id=com.samebits.beacon.locator" target="_blank">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="100"/></a>
 
 ## What does this application can do?
 
@@ -29,9 +33,6 @@ For example, you may set a silent mode entering your bedroom...and set normal so
 
 More features are coming soon in next release. 
 Please, do hesitate to contact us if you have some ideas about new features or want to contribute.
-
-##Download 
-[Google Play Store link](https://play.google.com/store/apps/details?id=com.samebits.beacon.locator)
 
 ##Screenshots
 <img src="https://cloud.githubusercontent.com/assets/415304/12170836/d8b1c9f2-b544-11e5-9e05-98a850a6a998.png" width="256">
