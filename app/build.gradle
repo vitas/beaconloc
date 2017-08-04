@@ -1,15 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.android.databinding'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId 'com.samebits.beacon.locator'
         minSdkVersion 18
         targetSdkVersion 22
-        versionCode 114
-        versionName '1.1.4'
+        versionCode 115
+        versionName '1.1.5'
         testApplicationId 'com.samebits.beacon.locator.test'
     }
     buildTypes {
@@ -42,6 +41,10 @@ android {
         }
     }
     productFlavors {
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
