@@ -7,8 +7,8 @@ android {
         applicationId 'com.samebits.beacon.locator'
         minSdkVersion 18
         targetSdkVersion 22
-        versionCode 115
-        versionName '1.1.5'
+        versionCode 116
+        versionName '1.1.6'
         testApplicationId 'com.samebits.beacon.locator.test'
     }
     buildTypes {
