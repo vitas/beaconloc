@@ -147,7 +147,9 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
 
     private void emptyListSetup() {
         if (mBeaconsAdapter.getItemCount() == 0) {
-            mEmpty.setVisibility(View.VISIBLE);
+            if (mEmpty != null) {
+                mEmpty.setVisibility(View.VISIBLE);
+            }
             mEmptyView.text.setText(getString(R.string.text_please_start_scan));
         } else {
             mEmpty.setVisibility(View.GONE);
