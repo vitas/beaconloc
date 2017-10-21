@@ -1,15 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.android.databinding'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId 'com.samebits.beacon.locator'
         minSdkVersion 18
         targetSdkVersion 22
-        versionCode 114
-        versionName '1.1.4'
+        versionCode 115
+        versionName '1.1.5'
         testApplicationId 'com.samebits.beacon.locator.test'
     }
     buildTypes {
@@ -43,12 +42,16 @@ android {
     }
     productFlavors {
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     final SUPPORT_LIBRARY_VERSION = '25.3.1'
     final DAGGER_VERSION = '2.11'
-    final ALTBEACON_VERSION = '2.11'
+    final ALTBEACON_VERSION = '2.12.3'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"

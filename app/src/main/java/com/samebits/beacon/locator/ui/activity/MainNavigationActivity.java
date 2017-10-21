@@ -40,7 +40,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -116,8 +115,12 @@ public class MainNavigationActivity extends BaseActivity
 
         readExtras();
 
-        if (null == savedInstanceState || mBeacon != null) {
-            launchTrackedListView();
+        if (null == savedInstanceState) {
+            if (mBeacon != null) {
+                launchTrackedListView();
+            } else {
+                launchScanBeaconView();
+            }
         }
 
     }
@@ -315,7 +318,7 @@ public class MainNavigationActivity extends BaseActivity
     }
 
     public void hideFab() {
-        fab.setVisibility(View.GONE);
+        fab.hide();
     }
 
     public void swappingFabAway() {
