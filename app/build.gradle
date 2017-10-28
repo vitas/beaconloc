@@ -66,5 +66,6 @@ dependencies {
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.8.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'
 }

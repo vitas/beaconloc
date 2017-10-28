@@ -27,8 +27,9 @@ import com.samebits.beacon.locator.BuildConfig;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -37,7 +38,7 @@ import butterknife.ButterKnife;
 public class BaseFragment extends Fragment {
 
     protected boolean mNeedFab;
-
+    protected Unbinder unbinder;
     protected boolean isDebug() {
         return BuildConfig.DEBUG;
     }
@@ -76,7 +77,7 @@ public class BaseFragment extends Fragment {
 
     public class EmptyView {
 
-        @Bind(R.id.empty_text)
+        @BindView(R.id.empty_text)
         TextView text;
 
         public EmptyView(View view) {

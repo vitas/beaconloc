@@ -50,7 +50,7 @@ import org.altbeacon.beacon.Beacon;
 
 import java.util.Collection;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -62,14 +62,14 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
     //40 sec timeout for scanning
     static final int SCAN_TIMEOUT = 40000;
     protected CountDownTimer mTimer;
-    @Bind(R.id.recycler_detected_beacons)
+    @BindView(R.id.recycler_detected_beacons)
     ContextMenuRecyclerView mListBeacons;
-    @Bind(R.id.progress_indicator)
+    @BindView(R.id.progress_indicator)
     ProgressBar mProgressBar;
-    @Bind(R.id.empty_scan_view)
+    @BindView(R.id.empty_scan_view)
     ViewStub mEmpty;
     EmptyView mEmptyView;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
     private DetectedBeaconAdapter mBeaconsAdapter;
 
@@ -88,7 +88,7 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_scan_beacons, container, false);
-        ButterKnife.bind(this, fragmentView);
+        unbinder = ButterKnife.bind(this, fragmentView);
 
         setupToolbar();
         setupRecyclerView();
@@ -101,7 +101,7 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
     public void onDestroyView() {
         super.onDestroyView();
         mTimer.cancel();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     private void setupToolbar() {
@@ -146,7 +146,7 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
     }
 
     private void emptyListSetup() {
-        if (mBeaconsAdapter.getItemCount() == 0) {
+        if (mBeaconsAdapter != null && mBeaconsAdapter.getItemCount() == 0) {
             if (mEmpty != null) {
                 mEmpty.setVisibility(View.VISIBLE);
             }

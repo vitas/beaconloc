@@ -36,19 +36,19 @@ import org.altbeacon.beacon.Beacon;
 
 import java.util.Collection;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class ScanRadarFragment extends ScanFragment {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.radar)
+    @BindView(R.id.radar)
     RadarScanView mRadar;
 
-    @Bind(R.id.distance)
+    @BindView(R.id.distance)
     TextView mDistView;
 
     SensorManager mSensorManager;
@@ -71,7 +71,7 @@ public class ScanRadarFragment extends ScanFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_scan_radar, container, false);
-        ButterKnife.bind(this, fragmentView);
+        unbinder = ButterKnife.bind(this, fragmentView);
 
         setupToolbar();
 
@@ -125,7 +125,7 @@ public class ScanRadarFragment extends ScanFragment {
 
     @Override
     public void onDestroyView() {
-        ButterKnife.unbind(this);
+        unbinder.unbind();
         super.onDestroyView();
     }
 

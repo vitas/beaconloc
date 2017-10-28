@@ -55,29 +55,31 @@ import com.samebits.beacon.locator.util.DialogBuilder;
 
 import org.altbeacon.beacon.BeaconManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class MainNavigationActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView navigationView;
 
     BeaconManager mBeaconManager;
     TrackedBeacon mBeacon;
+    private Unbinder unbinder;
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, MainNavigationActivity.class);
@@ -102,7 +104,7 @@ public class MainNavigationActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_navigation);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         setupToolbar();
 
@@ -123,6 +125,12 @@ public class MainNavigationActivity extends BaseActivity
             }
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 
     protected void readExtras() {
