@@ -32,7 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -46,6 +46,7 @@ import android.view.animation.AnimationUtils;
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.ui.fragment.BeaconFragment;
 import com.samebits.beacon.locator.ui.fragment.DetectedBeaconsFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanRadarFragment;
@@ -55,29 +56,33 @@ import com.samebits.beacon.locator.util.DialogBuilder;
 
 import org.altbeacon.beacon.BeaconManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class MainNavigationActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BeaconFragment.OnTrackedBeaconSelectedListener {
 
     public static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView navigationView;
 
     BeaconManager mBeaconManager;
-    TrackedBeacon mBeacon;
+
+
+    TrackedBeacon mSelectedBeacon;
+    private Unbinder unbinder;
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, MainNavigationActivity.class);
@@ -102,7 +107,7 @@ public class MainNavigationActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_navigation);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         setupToolbar();
 
@@ -116,7 +121,7 @@ public class MainNavigationActivity extends BaseActivity
         readExtras();
 
         if (null == savedInstanceState) {
-            if (mBeacon != null) {
+            if (mSelectedBeacon != null) {
                 launchTrackedListView();
             } else {
                 launchScanBeaconView();
@@ -125,10 +130,16 @@ public class MainNavigationActivity extends BaseActivity
 
     }
 
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
+
     protected void readExtras() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
-            mBeacon = intent.getExtras().getParcelable(Constants.ARG_BEACON);
+            mSelectedBeacon = intent.getExtras().getParcelable(Constants.ARG_BEACON);
         }
     }
 
@@ -145,7 +156,7 @@ public class MainNavigationActivity extends BaseActivity
                 this, drawer, toolbar,
                 R.string.nav_drawer_open,
                 R.string.nav_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
     }
@@ -274,47 +285,55 @@ public class MainNavigationActivity extends BaseActivity
     }
 
 
-    private void addScanBeaconFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager != null) {
-            if (checkFragmentInstance(R.id.content_frame, DetectedBeaconsFragment.class) == null) {
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.content_frame, DetectedBeaconsFragment.newInstance(), Constants.TAG_FRAGMENT_SCAN_LIST)
-                        .commit();
-            }
+    private void createOrResumeFragment(String fragmentTag) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        boolean fragmentPopped = false;
+
+        Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
+
+        if (fragmentManager.getBackStackEntryCount() > 0){
+            fragmentPopped = fragmentManager.popBackStackImmediate(fragmentTag, 0);
         }
+
+        if(!fragmentPopped && fragment == null){
+            //Create an new instance if it is null and add it to stack
+            switch(fragmentTag) {
+                case Constants.TAG_FRAGMENT_SCAN_LIST:
+                    fragment = DetectedBeaconsFragment.newInstance();
+                    break;
+                case Constants.TAG_FRAGMENT_SCAN_RADAR:
+                    fragment = ScanRadarFragment.newInstance();
+                    break;
+                case Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST:
+                    fragment = TrackedBeaconsFragment.newInstance();
+                    if (mSelectedBeacon != null) {
+                        Bundle bundles = new Bundle();
+                        bundles.putParcelable(Constants.ARG_BEACON, mSelectedBeacon);
+                        fragment.setArguments(bundles);
+                    }
+                    break;
+            }
+            ft.addToBackStack(fragmentTag);
+        }
+        ft.replace(R.id.content_frame, fragment, fragmentTag);
+
+        ft.commit();
+
+        fragmentManager.executePendingTransactions();
+
+    }
+
+    private void addScanBeaconFragment() {
+        createOrResumeFragment(Constants.TAG_FRAGMENT_SCAN_LIST);
     }
 
     private void addRadarScanFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager != null) {
-            if (checkFragmentInstance(R.id.content_frame, ScanRadarFragment.class) == null) {
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.content_frame, ScanRadarFragment.newInstance(), Constants.TAG_FRAGMENT_SCAN_RADAR)
-                        .commit();
-            }
-        }
+        createOrResumeFragment(Constants.TAG_FRAGMENT_SCAN_RADAR);
     }
 
     private void addTrackedListFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager != null) {
-            Fragment frg = checkFragmentInstance(R.id.content_frame, TrackedBeaconsFragment.class);
-            if (frg == null) {
-                TrackedBeaconsFragment tFrg = TrackedBeaconsFragment.newInstance();
-                if (mBeacon != null) {
-                    Bundle bundles = new Bundle();
-                    bundles.putParcelable(Constants.ARG_BEACON, mBeacon);
-                    tFrg.setArguments(bundles);
-                }
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.content_frame, tFrg, Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST)
-                        .commit();
-            }
-        }
+        createOrResumeFragment(Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST);
     }
 
     public void hideFab() {
@@ -365,6 +384,7 @@ public class MainNavigationActivity extends BaseActivity
         });
     }
 
+
     private void launchScanBeaconView() {
         addScanBeaconFragment();
     }
@@ -377,4 +397,9 @@ public class MainNavigationActivity extends BaseActivity
         addTrackedListFragment();
     }
 
+    @Override
+    public void onBeaconSelected(TrackedBeacon beacon) {
+        mSelectedBeacon = beacon;
+        launchTrackedListView();
+    }
 }

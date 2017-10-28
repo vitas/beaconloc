@@ -42,7 +42,7 @@ import java.util.Collection;
 /**
  * Created by vitas on 8/11/15.
  */
-public abstract class ScanFragment extends BaseFragment implements BeaconConsumer, RangeNotifier {
+public abstract class ScanFragment extends BeaconFragment implements BeaconConsumer, RangeNotifier {
 
     final static String STATE_SCANNING = "STATE_SCANNING";
 
@@ -55,15 +55,17 @@ public abstract class ScanFragment extends BaseFragment implements BeaconConsume
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mBeaconManager = BeaconLocatorApp.from(getActivity()).getComponent().beaconManager();
         mRegion = new Region(PreferencesUtil.getDefaultRegionName(getApplicationContext()), null, null, null);
         mBeaconManager.bind(this);
-        mBeaconManager.setRangeNotifier(this);
+        mBeaconManager.addRangeNotifier(this);
         setNeedFab(true);
 
         if (savedInstanceState != null) {
             needContinueScan = savedInstanceState.getBoolean(STATE_SCANNING);
         }
+
     }
 
     @Override

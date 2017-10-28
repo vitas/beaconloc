@@ -21,7 +21,7 @@ package com.samebits.beacon.locator.ui.adapter;
 import android.support.v7.widget.RecyclerView;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.BeaconFragment;
 import com.samebits.beacon.locator.util.BeaconUtil;
 
 import java.util.LinkedHashMap;
@@ -35,7 +35,7 @@ import java.util.Map;
 public abstract class BeaconAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     protected Map<String, IManagedBeacon> mBeacons = new LinkedHashMap();
-    protected BaseFragment mFragment;
+    protected BeaconFragment mFragment;
     protected OnBeaconLongClickListener onBeaconLongClickListener;
 
 

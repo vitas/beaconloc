@@ -18,6 +18,7 @@
 
 package com.samebits.beacon.locator.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -25,21 +26,28 @@ import android.widget.TextView;
 
 import com.samebits.beacon.locator.BuildConfig;
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.model.TrackedBeacon;
 import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
  * Created by vitas on 8/12/15.
  */
-public class BaseFragment extends Fragment {
+public class BeaconFragment extends Fragment {
 
     protected boolean mNeedFab;
-
+    protected Unbinder unbinder;
     protected boolean isDebug() {
         return BuildConfig.DEBUG;
+    }
+    private OnTrackedBeaconSelectedListener mBeaconSelectedListener;
+
+    public interface OnTrackedBeaconSelectedListener {
+        void onBeaconSelected(TrackedBeacon beacon);
     }
 
     @Override
@@ -47,6 +55,18 @@ public class BaseFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (getActivity() instanceof MainNavigationActivity) {
             ((MainNavigationActivity) getActivity()).swappingFloatingIcon();
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mBeaconSelectedListener = (OnTrackedBeaconSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnTrackedBeaconSelectedListener");
         }
     }
 
@@ -76,11 +96,18 @@ public class BaseFragment extends Fragment {
 
     public class EmptyView {
 
-        @Bind(R.id.empty_text)
+        @BindView(R.id.empty_text)
         TextView text;
 
         public EmptyView(View view) {
             ButterKnife.bind(this, view);
         }
     }
+
+    public void selectBeacon(TrackedBeacon trackedBeacon) {
+        if (mBeaconSelectedListener != null) {
+            mBeaconSelectedListener.onBeaconSelected(trackedBeacon);
+        }
+    }
+
 }

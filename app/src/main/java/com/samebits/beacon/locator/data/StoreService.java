@@ -55,4 +55,6 @@ public interface StoreService {
     boolean updateBeaconActionEnable(final int id, boolean enable);
 
     List<ActionBeacon> getEnabledBeaconActionsByEvent(final int eventType, final String beaconId);
+
+    boolean isBeaconExists(String id);
 }

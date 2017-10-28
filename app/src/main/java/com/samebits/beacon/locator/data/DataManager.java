@@ -113,4 +113,8 @@ public class DataManager {
     public boolean updateBeaconDistance(final String id, double distance) {
         return mStoreService.updateBeaconDistance(id, distance);
     }
+
+    public boolean isBeaconExists(String id) {
+        return mStoreService.isBeaconExists(id);
+    }
 }

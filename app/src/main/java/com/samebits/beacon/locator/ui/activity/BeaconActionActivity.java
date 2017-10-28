@@ -32,17 +32,17 @@ import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.ui.adapter.DetailFragmentPagerAdapter;
 import com.samebits.beacon.locator.util.Constants;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class BeaconActionActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager viewPager;
-    @Bind(R.id.sliding_tabs)
+    @BindView(R.id.sliding_tabs)
     TabLayout slidingTabs;
 
     private ActionBeacon mActionBeacon;

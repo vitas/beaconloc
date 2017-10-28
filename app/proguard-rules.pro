@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class **$$ViewBinder { *; }
+-keep class **$ViewHolder { *; }
+-keep class butterknife.**$Finder { *; }

@@ -27,7 +27,7 @@ import android.view.View;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.DetectedBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.BeaconFragment;
 import com.samebits.beacon.locator.util.BeaconUtil;
 
 /**
@@ -36,9 +36,9 @@ import com.samebits.beacon.locator.util.BeaconUtil;
 public class BeaconViewModel extends BaseObservable {
 
     protected IManagedBeacon mManagedBeacon;
-    protected BaseFragment mFragment;
+    protected BeaconFragment mFragment;
 
-    public BeaconViewModel(@NonNull BaseFragment fragment, @NonNull IManagedBeacon managedBeacon) {
+    public BeaconViewModel(@NonNull BeaconFragment fragment, @NonNull IManagedBeacon managedBeacon) {
         this.mManagedBeacon = managedBeacon;
         this.mFragment = fragment;
     }
@@ -145,12 +145,12 @@ public class BeaconViewModel extends BaseObservable {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchBeaconDetailsActivity();
+                clickBeacon();
             }
         };
     }
 
-    protected void launchBeaconDetailsActivity() {
+    protected void clickBeacon() {
         // do abstract?
     }
 }

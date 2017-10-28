@@ -18,28 +18,22 @@
 
 package com.samebits.beacon.locator.viewModel;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
-import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
-import com.samebits.beacon.locator.ui.fragment.BaseFragment;
-import com.samebits.beacon.locator.util.Constants;
+import com.samebits.beacon.locator.ui.fragment.BeaconFragment;
 
 /**
  * Created by vitas on 19/10/15.
  */
 public class DetectedBeaconViewModel extends BeaconViewModel {
 
-    public DetectedBeaconViewModel(@NonNull BaseFragment fragment, @NonNull IManagedBeacon managedBeacon) {
+    public DetectedBeaconViewModel(@NonNull BeaconFragment fragment, @NonNull IManagedBeacon managedBeacon) {
         super(fragment, managedBeacon);
     }
 
-    protected void launchBeaconDetailsActivity() {
-        //find better way to change fragment from scan to tracked
-        Intent intent = MainNavigationActivity.getStartIntent(mFragment.getActivity());
-        intent.putExtra(Constants.ARG_BEACON, new TrackedBeacon(mManagedBeacon));
-        mFragment.startActivity(intent);
+    protected void clickBeacon() {
+        mFragment.selectBeacon(new TrackedBeacon(mManagedBeacon));
     }
 }
