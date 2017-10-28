@@ -32,7 +32,7 @@ import com.samebits.beacon.locator.databinding.ItemTrackedBeaconBinding;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
-import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.BeaconFragment;
 import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 import com.samebits.beacon.locator.ui.view.WrapLinearLayoutManager;
 import com.samebits.beacon.locator.util.Constants;
@@ -48,7 +48,7 @@ public class TrackedBeaconAdapter extends BeaconAdapter<TrackedBeaconAdapter.Bin
 
     private Map<String, ActionBeaconAdapter> mActionAdapters = new HashMap<>();
 
-    public TrackedBeaconAdapter(BaseFragment fragment) {
+    public TrackedBeaconAdapter(BeaconFragment fragment) {
         mFragment = fragment;
     }
 

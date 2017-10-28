@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.samebits.beacon.locator.model.IManagedBeacon;
-import com.samebits.beacon.locator.ui.fragment.BaseFragment;
+import com.samebits.beacon.locator.ui.fragment.BeaconFragment;
 import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 
 /**
@@ -30,7 +30,7 @@ import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
  */
 public class TrackedBeaconViewModel extends BeaconViewModel {
 
-    public TrackedBeaconViewModel(@NonNull BaseFragment fragment, @NonNull IManagedBeacon managedBeacon) {
+    public TrackedBeaconViewModel(@NonNull BeaconFragment fragment, @NonNull IManagedBeacon managedBeacon) {
         super(fragment, managedBeacon);
     }
 

@@ -18,7 +18,6 @@
 
 package com.samebits.beacon.locator.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
@@ -38,7 +37,6 @@ import android.widget.ProgressBar;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
-import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
 import com.samebits.beacon.locator.ui.adapter.BeaconAdapter;
 import com.samebits.beacon.locator.ui.adapter.DetectedBeaconAdapter;
 import com.samebits.beacon.locator.ui.view.ContextMenuRecyclerView;
@@ -83,6 +81,7 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
         super.onCreate(savedInstanceState);
         mBeaconsAdapter = new DetectedBeaconAdapter(this);
         mBeaconsAdapter.setOnBeaconLongClickListener(this);
+        setRetainInstance(true);
     }
 
     @Override
@@ -233,10 +232,7 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
 
         switch (item.getItemId()) {
             case R.id.action_manage_add:
-                //find better way to change fragment from scan to tracked
-                Intent intent = MainNavigationActivity.getStartIntent(getActivity());
-                intent.putExtra(Constants.ARG_BEACON, new TrackedBeacon((IManagedBeacon) mBeaconsAdapter.getItem(info.position)));
-                startActivity(intent);
+                selectBeacon(new TrackedBeacon((IManagedBeacon) mBeaconsAdapter.getItem(info.position)));
                 return true;
             case R.id.action_filter_add:
                 //TODO

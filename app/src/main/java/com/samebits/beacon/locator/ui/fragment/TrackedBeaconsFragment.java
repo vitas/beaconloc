@@ -55,7 +55,7 @@ import butterknife.ButterKnife;
 /**
  * Created by vitas on 9/11/15.
  */
-public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BeaconAdapter.OnBeaconLongClickListener {
+public class TrackedBeaconsFragment extends BeaconFragment implements SwipeRefreshLayout.OnRefreshListener, BeaconAdapter.OnBeaconLongClickListener {
 
     @BindView(R.id.recycler_beacons)
     ContextMenuRecyclerView mListBeacons;
@@ -74,14 +74,13 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         return beaconsFragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mDataManager = BeaconLocatorApp.from(getActivity()).getComponent().dataManager();
         mBeaconsAdapter = new TrackedBeaconAdapter(this);
         mBeaconsAdapter.setOnBeaconLongClickListener(this);
-        setRetainInstance(true);
     }
 
     @Override
@@ -92,7 +91,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         setupToolbar();
         setupRecyclerView();
 
-        //setupSwipe();
         loadBeacons();
 
         return fragmentView;
@@ -104,6 +102,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         super.onDestroyView();
         unbinder.unbind();
     }
+
 
     private void setupToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
@@ -148,9 +147,9 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
     private void loadBeacons() {
         showLoadingViews();
 
-        mBeaconsAdapter.insertBeacons(mDataManager.getAllBeacons());
-
         getExtras();
+
+        mBeaconsAdapter.insertBeacons(mDataManager.getAllBeacons());
 
         emptyListUpdate();
         hideLoadingViews();
@@ -162,17 +161,15 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
             TrackedBeacon beacon = getArguments().getParcelable(Constants.ARG_BEACON);
             if (beacon != null) {
                 if (!mBeaconsAdapter.isItemExists(beacon.getId())) {
-                    if (mDataManager.createBeacon(beacon)) {
-                        mBeaconsAdapter.insertBeacon(beacon);
-                    } else {
-                        //TODO
+                    if (!mDataManager.isBeaconExists(beacon.getId())) {
+                        if (!mDataManager.createBeacon(beacon)) {
+                            //TODO error
+                        }
                     }
                 } else {
                     //TODO make selection of updated
-                    if (mDataManager.updateBeacon(beacon)) {
-                        mBeaconsAdapter.insertBeacon(beacon);
-                    } else {
-                        //TODO
+                    if (!mDataManager.updateBeacon(beacon)) {
+                       //TODO error
                     }
                 }
             }
@@ -261,6 +258,7 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo
             menuInfo) {
@@ -270,8 +268,10 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
         inflater.inflate(R.menu.menu_tracked_list, menu);
     }
 
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
         ContextMenuRecyclerView.RecyclerContextMenuInfo info = (ContextMenuRecyclerView
                 .RecyclerContextMenuInfo) item
                 .getMenuInfo();
@@ -286,7 +286,6 @@ public class TrackedBeaconsFragment extends BaseFragment implements SwipeRefresh
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     class UndoSwipableCallback extends ItemTouchHelper.SimpleCallback {

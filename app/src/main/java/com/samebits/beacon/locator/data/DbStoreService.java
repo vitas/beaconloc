@@ -198,6 +198,26 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
     }
 
     @Override
+    public boolean isBeaconExists(String id) {
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT EXISTS (SELECT * FROM " + ScanColumns.TABLE_NAME
+                + " WHERE " +ScanColumns.COLUMN_ID +"=? LIMIT 1)" , new String[]{id});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                if (cursor.getInt(0) == 1) {
+                    cursor.close();
+                    return true;
+                } else {
+                    cursor.close();
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public TrackedBeacon getBeacon(String id) {
         TrackedBeacon beacon = new TrackedBeacon();
         SQLiteDatabase db = getReadableDatabase();
@@ -470,6 +490,7 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
         db.close();
         return actions;
     }
+
 
     @Override
     public boolean deleteBeacon(String id, boolean cascade) {
