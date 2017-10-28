@@ -104,6 +104,7 @@ public class TrackedBeaconsFragment extends BeaconFragment implements SwipeRefre
     }
 
 
+
     private void setupToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -267,7 +268,6 @@ public class TrackedBeaconsFragment extends BeaconFragment implements SwipeRefre
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_tracked_list, menu);
     }
-
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
