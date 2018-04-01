@@ -42,7 +42,7 @@ public class ActionRegion {
         for (int i = 0; i < 3; i++) {
             identifiers.add(Identifier.parse(idents[i]));
         }
-        return new Region(RegionName.buildRegionNameId(actionBeacon), identifiers, idents[3]);
+        return new Region(RegionName.buildRegionNameId(actionBeacon), identifiers);
     }
 
 }

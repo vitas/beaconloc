@@ -40,6 +40,7 @@ import android.widget.ProgressBar;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
 import com.samebits.beacon.locator.data.DataManager;
 import com.samebits.beacon.locator.model.ActionBeacon;
 import com.samebits.beacon.locator.model.TrackedBeacon;
@@ -91,10 +92,18 @@ public class TrackedBeaconsFragment extends BeaconFragment implements SwipeRefre
         setupToolbar();
         setupRecyclerView();
 
-        loadBeacons();
-
         return fragmentView;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() instanceof MainNavigationActivity) {
+            ((MainNavigationActivity) getActivity()).hideFab();
+        }
+        loadBeacons();
+    }
+
 
 
     @Override

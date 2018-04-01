@@ -29,6 +29,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -40,8 +41,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
@@ -337,26 +340,48 @@ public class MainNavigationActivity extends BaseActivity
     }
 
     public void hideFab() {
-        fab.hide();
-    }
-
-    public void swappingFabAway() {
         fab.clearAnimation();
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.pop_down);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.hide_fab);
         fab.startAnimation(animation);
+
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        FloatingActionButton.Behavior behavior =
+                (FloatingActionButton.Behavior) params.getBehavior();
+
+        if (behavior != null) {
+            behavior.setAutoHideEnabled(false);
+        }
+
+        fab.hide();
     }
 
     public void swappingFabUp() {
         fab.clearAnimation();
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         fab.startAnimation(animation);
+        fab.show();
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        FloatingActionButton.Behavior behavior =
+                (FloatingActionButton.Behavior) params.getBehavior();
+
+        if (behavior != null) {
+            behavior.setAutoHideEnabled(true);
+        }
     }
+
 
     public void swappingFloatingScanIcon(boolean isScanning) {
         if (isScanning) {
-            setFabIcon(R.drawable.ic_portable_wifi_off_white_24dp);
+            Animation mAnimation = new AlphaAnimation(1, 0);
+            mAnimation.setDuration(200);
+            mAnimation.setInterpolator(new LinearInterpolator());
+            mAnimation.setRepeatCount(Animation.INFINITE);
+            mAnimation.setRepeatMode(Animation.REVERSE);
+            fab.startAnimation(mAnimation);
         } else {
-            setFabIcon(R.drawable.ic_track_changes_white_24dp);
+            fab.clearAnimation();
         }
     }
 
@@ -366,24 +391,12 @@ public class MainNavigationActivity extends BaseActivity
         switch (tag) {
             case Constants.TAG_FRAGMENT_SCAN_LIST:
             case Constants.TAG_FRAGMENT_SCAN_RADAR:
-                setFabIcon(R.drawable.ic_track_changes_white_24dp);
+                swappingFabUp();
                 break;
             default:
-                setFabIcon(R.drawable.ic_add_white_24dp);
                 hideFab();
         }
     }
-
-    private void setFabIcon(final int resId) {
-        fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
-            @Override
-            public void onHidden(FloatingActionButton fab) {
-                fab.setImageResource(resId);
-                fab.show();
-            }
-        });
-    }
-
 
     private void launchScanBeaconView() {
         addScanBeaconFragment();
