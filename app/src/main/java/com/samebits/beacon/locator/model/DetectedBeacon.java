@@ -77,7 +77,7 @@ public class DetectedBeacon extends Beacon implements IManagedBeacon {
 
     @Override
     public boolean equalTo(IManagedBeacon target) {
-        return getId().equals(target);
+        return getId().equals(target.getId());
     }
 
     @Override
@@ -136,7 +136,7 @@ public class DetectedBeacon extends Beacon implements IManagedBeacon {
 
     @Override
     public String getId() {
-        return getUUID() + ";" + getMajor() + ";" + getMinor() + ";" + getBluetoothAddress();
+        return getUUID() + ";" + getMajor() + ";" + getMinor() + ";FF:FF:FF:FF:FF:FF"; // ";" + getBluetoothAddress();
     }
 
     @Override
