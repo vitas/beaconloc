@@ -115,7 +115,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
         //mBeaconManager.setMaxTrackingAge(10000);
-        //mBeaconManager.setRegionExitPeriod(12000L);
+        //mBeaconManager.setRegionExitPeriod(18000L);
 
         /*
         RangedBeacon.setMaxTrackingAge() only controls the period of time ranged beacons will continue to be
@@ -191,6 +191,9 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         RegionName regName = RegionName.parseString(region.getUniqueId());
 
         if (regName.isApplicationRegion()) {
+
+            Log.d(Constants.TAG, "didEnterRegion " + region);
+
             if (regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
                 try {
                     mBeaconManager.startRangingBeaconsInRegion(region);
@@ -213,6 +216,8 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         RegionName regName = RegionName.parseString(region.getUniqueId());
 
         if (regName.isApplicationRegion()) {
+            Log.d(Constants.TAG, "didExitRegion " + region);
+
             if (regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
                 try {
                     mBeaconManager.stopRangingBeaconsInRegion(region);
@@ -239,8 +244,11 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     @Override
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         if (beacons != null && beacons.size() > 0 && region != null) {
+
             RegionName regName = RegionName.parseString(region.getUniqueId());
             if (regName.isApplicationRegion()) {
+                Log.d(Constants.TAG, "didRangeBeaconsInRegion " + beacons + "|" + region.getUniqueId());
+
                 if (regName.getEventType() == ActionBeacon.EventType.EVENT_NEAR_YOU) {
                     Iterator<Beacon> iterator = beacons.iterator();
                     while (iterator.hasNext()) {

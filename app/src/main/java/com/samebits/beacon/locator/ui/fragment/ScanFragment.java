@@ -60,7 +60,6 @@ public abstract class ScanFragment extends BeaconFragment implements BeaconConsu
         mRegion = new Region(PreferencesUtil.getDefaultRegionName(getApplicationContext()), null, null, null);
         mBeaconManager.bind(this);
         mBeaconManager.addRangeNotifier(this);
-        setNeedFab(true);
 
         if (savedInstanceState != null) {
             needContinueScan = savedInstanceState.getBoolean(STATE_SCANNING);
@@ -82,6 +81,14 @@ public abstract class ScanFragment extends BeaconFragment implements BeaconConsu
         super.onActivityCreated(savedInstanceState);
         if (getActivity() instanceof MainNavigationActivity) {
             ((MainNavigationActivity) getActivity()).swappingFloatingScanIcon(isScanning);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() instanceof MainNavigationActivity) {
+            ((MainNavigationActivity) getActivity()).swappingFabUp();
         }
     }
 

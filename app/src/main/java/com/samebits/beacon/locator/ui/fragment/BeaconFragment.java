@@ -39,7 +39,6 @@ import butterknife.Unbinder;
  */
 public class BeaconFragment extends Fragment {
 
-    protected boolean mNeedFab;
     protected Unbinder unbinder;
     protected boolean isDebug() {
         return BuildConfig.DEBUG;
@@ -70,29 +69,6 @@ public class BeaconFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() instanceof MainNavigationActivity) {
-            if (mNeedFab) {
-                ((MainNavigationActivity) getActivity()).swappingFabUp();
-            } else {
-                ((MainNavigationActivity) getActivity()).hideFab();
-            }
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (getActivity() instanceof MainNavigationActivity && mNeedFab) {
-            ((MainNavigationActivity) getActivity()).swappingFabAway();
-        }
-    }
-
-    public void setNeedFab(boolean mNeedFab) {
-        this.mNeedFab = mNeedFab;
-    }
 
     public class EmptyView {
 
