@@ -49,7 +49,7 @@ android {
 }
 
 dependencies {
-    final SUPPORT_LIBRARY_VERSION = '27.1.0'
+    final SUPPORT_LIBRARY_VERSION = '27.1.1'
     final DAGGER_VERSION = '2.11'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
