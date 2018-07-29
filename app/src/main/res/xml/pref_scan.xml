@@ -7,6 +7,12 @@
         android:summary="@string/pref_description_background_scan"
         android:title="@string/pref_title_background_scan" />
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="scan_foreground_switch"
+        android:summary="@string/pref_description_foreground_scan"
+        android:title="@string/pref_title_foreground_scan" />
+
     <ListPreference
         android:defaultValue="30000"
         android:entries="@array/pref_background_scan_timeout_titles"
@@ -63,7 +69,7 @@
         <CheckBoxPreference
             android:title="@string/pref_scan_parser_layout_eddystone_tlm"
             android:key="scan_parser_layout_eddystone_tlm"
-            android:enabled="false"
+            android:defaultValue="false"
             android:checked="false"/>
 
     </PreferenceCategory>
