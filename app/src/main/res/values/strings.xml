@@ -34,6 +34,9 @@
     <string name="pref_description_background_scan">Enables to run scanning in background and
         trigger actions.
     </string>
+    <string name="pref_title_foreground_scan">Enable foreground scan (Android 8+)</string>
+    <string name="pref_description_foreground_scan">Foreground service to be able run scan more often than every 15 min (only Android 8+).
+    </string>
     <string name="pref_title_background_scan_timeout">Background scan interval (only Android 4.X)
     </string>
     <string name="pref_title_region_name">Region name</string>

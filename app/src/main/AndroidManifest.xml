@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.samebits.beacon.locator">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -53,6 +54,9 @@
                 <action android:name="${applicationId}.action.GET_CURRENT_LOCATION"/>
             </intent-filter>
         </receiver>
+        <service android:name="org.altbeacon.beacon.service.BeaconService" tools:node="replace">
+            <meta-data android:name="longScanForcingEnabled" android:value="true"/>
+        </service>
     </application>
 
 
