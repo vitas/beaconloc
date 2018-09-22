@@ -200,6 +200,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("scan_default_region_text"));
             bindPreferenceSummaryToValue(findPreference("scan_manual_timeout_list"));
             bindPreferenceSummaryToValue(findPreference("scan_sorting_order_list"));
+            Preference  fgScanPref = findPreference("scan_foreground_switch");
+            fgScanPref.setEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O);
 
         }
 

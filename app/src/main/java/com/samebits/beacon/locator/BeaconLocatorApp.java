@@ -19,10 +19,13 @@
 package com.samebits.beacon.locator;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.os.RemoteException;
+import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -35,6 +38,7 @@ import com.samebits.beacon.locator.model.ActionRegion;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.RegionName;
 import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
 import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.PreferencesUtil;
@@ -88,6 +92,24 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
 
         initBeaconManager();
+
+        // the ability to continually scan for long periods of time in the background on Andorid 8+
+        // in exchange for showing an icon at the top of the screen and a always-on notification to
+        // communicate to users that your app is using resources in the background.
+
+        if (PreferencesUtil.isForegroundScan(this)) {
+            Notification.Builder builder = new Notification.Builder(this);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setContentTitle(getText(R.string.text_scanning));
+            Intent intent = new Intent(this, MainNavigationActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            builder.setContentIntent(pendingIntent);
+            mBeaconManager.enableForegroundServiceScanning(builder.build(), 456);
+        } else {
+            mBeaconManager.disableForegroundServiceScanning();
+        }
         enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
 
     }
@@ -101,6 +123,9 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         if (PreferencesUtil.isEddystoneLayoutURL(this)) {
             mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.EDDYSTONE_URL_LAYOUT));
         }
+        if (PreferencesUtil.isEddystoneLayoutTLM(this)) {
+            mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.EDDYSTONE_TLM_LAYOUT));
+        }
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.ALTBEACON_LAYOUT));
 
         //konkakt?
@@ -110,12 +135,22 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
         mBeaconManager.setBackgroundBetweenScanPeriod(PreferencesUtil.getBackgroundScanInterval(this));
 
-        mBeaconManager.setBackgroundScanPeriod(10000L);          // default is 10000L
-        mBeaconManager.setForegroundBetweenScanPeriod(0L);      // default is 0L
-        mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
-        //mBeaconManager.setMaxTrackingAge(10000);
-        //mBeaconManager.setRegionExitPeriod(18000L);
+        if (PreferencesUtil.isForegroundScan(this)) {
+
+            mBeaconManager.setEnableScheduledScanJobs(false);
+            mBeaconManager.setBackgroundBetweenScanPeriod(0L);
+            mBeaconManager.setBackgroundScanPeriod(1100L);
+
+        } else {
+            mBeaconManager.setEnableScheduledScanJobs(true);
+            mBeaconManager.setBackgroundScanPeriod(10000L);          // default is 10000L
+            mBeaconManager.setForegroundBetweenScanPeriod(0L);      // default is 0L
+            mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
+
+            //mBeaconManager.setMaxTrackingAge(10000);
+            //mBeaconManager.setRegionExitPeriod(18000L);
+        }
 
         /*
         RangedBeacon.setMaxTrackingAge() only controls the period of time ranged beacons will continue to be
