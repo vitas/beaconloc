@@ -18,16 +18,21 @@
 
 package com.samebits.beacon.locator.receiver;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.samebits.beacon.locator.R;
+import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.NotificationBuilder;
 
 
@@ -39,13 +44,19 @@ public class LocationReceiver extends BroadcastReceiver {
     private int retryCount = 0;
 
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
+    public void onReceive(Context context, Intent intent) {
         retryCount = intent.getIntExtra("RETRY_COUNT", 0);
         Location bestLocation = null;
         final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         for (final String provider : locationManager.getAllProviders()) {
             if (provider != null) {
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    Log.w(Constants.TAG, "No permissions to use GPS ");
+
+                    return;
+                }
                 final Location location = locationManager.getLastKnownLocation(provider);
                 final long now = System.currentTimeMillis();
                 if (location != null
@@ -64,7 +75,7 @@ public class LocationReceiver extends BroadcastReceiver {
             PendingIntent notificationIntent = PendingIntent.getActivity(context, 0, mapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationBuilder notificationBuilder = new NotificationBuilder(context);
-            notificationBuilder.createNotification(R.mipmap.ic_launcher, context.getString(R.string.action_alarm_text_title), notificationIntent);
+            notificationBuilder.createNotification(R.mipmap.ic_launcher, context.getString(R.string.action_alarm_text_title), true, notificationIntent);
             notificationBuilder.setMessage(context.getString(R.string.notification_display_last_position));
             notificationBuilder.show(1);
 
@@ -77,9 +88,15 @@ public class LocationReceiver extends BroadcastReceiver {
                 retryCount++;
                 intent.putExtra("RETRY_COUNT", retryCount);
                 final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    Log.w(Constants.TAG, "No permissions to use GPS ");
+
+                    return;
+                }
                 locationManager.requestSingleUpdate(criteria, pendingIntent);
             }
         }
     }
-
 }

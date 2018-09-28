@@ -19,6 +19,7 @@
 package com.samebits.beacon.locator.util;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -52,9 +53,34 @@ public class NotificationBuilder {
     /**
      * Creation of notification on operations completed
      */
-    public NotificationBuilder createNotification(int smallIcon, String title, PendingIntent notifyIntent) {
-        mBuilder = new NotificationCompat.Builder(mContext).setSmallIcon(smallIcon).setContentTitle(title)
-                .setAutoCancel(true).setColor(ContextCompat.getColor(mContext, R.color.hn_orange));
+    public NotificationBuilder createNotification(int smallIcon, String title, boolean isVibrate, PendingIntent notifyIntent) {
+
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "blocator_channel_01";
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                    title, NotificationManager.IMPORTANCE_HIGH);
+
+            // Configure the notification channel.
+            notificationChannel.setDescription("Channel description");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            if (isVibrate) {
+                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                notificationChannel.enableVibration(true);
+            }
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        mBuilder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID);
+
+        mBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setSmallIcon(smallIcon)
+                .setContentTitle(title)
+                .setColor(ContextCompat.getColor(mContext, R.color.hn_orange));
+
         if (notifyIntent != null) {
             mBuilder.setContentIntent(notifyIntent);
         }
