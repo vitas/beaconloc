@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "28.0.1"
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId 'com.samebits.beacon.locator'
         minSdkVersion 18
-        targetSdkVersion 26
-        versionCode 120
-        versionName '1.2.0'
+        targetSdkVersion 27
+        versionCode 121
+        versionName '1.2.1'
         testApplicationId 'com.samebits.beacon.locator.test'
     }
     buildTypes {
