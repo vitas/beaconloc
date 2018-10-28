@@ -70,7 +70,7 @@ public abstract class ScanFragment extends BeaconFragment implements BeaconConsu
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mBeaconManager.isBound(this)) {
+        if (mBeaconManager != null && mBeaconManager.isBound(this)) {
             mBeaconManager.unbind(this);
         }
     }
