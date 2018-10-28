@@ -35,8 +35,7 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".ui.activity.BeaconActionActivity"
-            android:label="@string/title_activity_beacon"
-            />
+            android:label="@string/title_activity_beacon" />
         <receiver android:name=".receiver.BeaconRegionReceiver">
             <intent-filter>
                 <action android:name="${applicationId}.action.NOTIFY_BEACON_ENTERS_REGION" />
