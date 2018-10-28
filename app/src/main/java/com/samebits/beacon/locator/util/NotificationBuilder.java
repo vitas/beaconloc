@@ -66,6 +66,8 @@ public class NotificationBuilder {
             notificationChannel.setDescription("Channel description");
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
             if (isVibrate) {
                 notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
                 notificationChannel.enableVibration(true);

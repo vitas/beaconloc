@@ -21,6 +21,7 @@ package com.samebits.beacon.locator.action;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.samebits.beacon.locator.model.NotificationAction;
 import com.samebits.beacon.locator.util.Constants;
@@ -37,7 +38,8 @@ public class LocationAction extends NoneAction {
     @Override
     public String execute(Context context) {
         Intent newIntent = new Intent(Constants.GET_CURRENT_LOCATION);
-        context.sendBroadcast(newIntent);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
+
         return super.execute(context);
     }
 
