@@ -75,5 +75,4 @@ public class BeaconRegionReceiver extends BroadcastReceiver {
             }
         }
     }
-
 }

@@ -20,6 +20,7 @@ package com.samebits.beacon.locator.action;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.NotificationAction;
@@ -33,6 +34,7 @@ public class NoneAction extends Action {
     protected final String param;
     protected final NotificationAction notification;
 
+
     public NoneAction(String param, NotificationAction notification) {
         this.param = param;
         this.notification = notification;
@@ -44,6 +46,7 @@ public class NoneAction extends Action {
         if (isParamRequired() && isParamEmpty()) {
             return context.getString(R.string.action_action_param_is_required);
         }
+
         //empty
         sendAlarm(context);
         return null;
@@ -58,7 +61,7 @@ public class NoneAction extends Action {
         if (isNotificationRequired()) {
             Intent newIntent = new Intent(Constants.ALARM_NOTIFICATION_SHOW);
             newIntent.putExtra("NOTIFICATION", notification);
-            context.sendBroadcast(newIntent);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
         }
     }
 

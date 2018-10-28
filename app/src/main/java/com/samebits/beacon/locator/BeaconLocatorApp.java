@@ -27,6 +27,7 @@ import android.os.Parcelable;
 import android.os.RemoteException;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.samebits.beacon.locator.data.DataManager;
@@ -70,6 +71,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     private BeaconManager mBeaconManager;
     private DataManager mDataManager;
     private RegionBootstrap mRegionBootstrap;
+    private LocalBroadcastManager mBroadcaster;
 
     public static BeaconLocatorApp from(@NonNull Context context) {
         return (BeaconLocatorApp) context.getApplicationContext();
@@ -90,6 +92,8 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
         mBeaconManager = BeaconLocatorApp.from(this).getComponent().beaconManager();
         mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
+
+        mBroadcaster = LocalBroadcastManager.getInstance(this);
 
         initBeaconManager();
 
@@ -240,7 +244,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
                 Intent intent = new Intent();
                 intent.setAction(Constants.NOTIFY_BEACON_ENTERS_REGION);
                 intent.putExtra("REGION", (Parcelable)region);
-                getApplicationContext().sendOrderedBroadcast(intent, null);
+                mBroadcaster.sendBroadcast(intent);
             }
         }
     }
@@ -266,8 +270,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
                 Intent intent = new Intent();
                 intent.setAction(Constants.NOTIFY_BEACON_LEAVES_REGION);
                 intent.putExtra("REGION", (Parcelable) region);
-                getApplicationContext().sendOrderedBroadcast(intent, null);
-            }
+                mBroadcaster.sendBroadcast(intent);            }
         }
     }
 
@@ -297,8 +300,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
                                 Intent intent = new Intent();
                                 intent.setAction(Constants.NOTIFY_BEACON_NEAR_YOU_REGION);
                                 intent.putExtra("REGION", (Parcelable)region);
-                                getApplicationContext().sendOrderedBroadcast(intent, null);
-                            }
+                                mBroadcaster.sendBroadcast(intent);                            }
                         }
                     }
                 }
