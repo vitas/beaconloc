@@ -34,7 +34,6 @@ public final class PreferencesUtil {
 
     public static SharedPreferences getSharedPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
-        //return BeaconLocatorApp.from(mContext).getSharedPreferences("beaconloc_pref_name", Context.MODE_PRIVATE);
     }
 
     public static String getDefaultRegionName(Context context) {
@@ -63,7 +62,7 @@ public final class PreferencesUtil {
 
     public static boolean isForegroundScan(Context context) {
         if  (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return getSharedPreferences(context).getBoolean("scan_foreground_switch", false);
+            return getSharedPreferences(context).getBoolean("scan_foreground_switch", true);
         }
         return false;
     }

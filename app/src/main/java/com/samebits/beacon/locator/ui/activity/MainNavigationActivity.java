@@ -25,7 +25,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -51,9 +49,6 @@ import android.view.animation.LinearInterpolator;
 import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.model.TrackedBeacon;
-import com.samebits.beacon.locator.receiver.BeaconAlertReceiver;
-import com.samebits.beacon.locator.receiver.BeaconRegionReceiver;
-import com.samebits.beacon.locator.receiver.LocationReceiver;
 import com.samebits.beacon.locator.ui.fragment.BeaconFragment;
 import com.samebits.beacon.locator.ui.fragment.DetectedBeaconsFragment;
 import com.samebits.beacon.locator.ui.fragment.ScanFragment;
@@ -61,6 +56,7 @@ import com.samebits.beacon.locator.ui.fragment.ScanRadarFragment;
 import com.samebits.beacon.locator.ui.fragment.TrackedBeaconsFragment;
 import com.samebits.beacon.locator.util.Constants;
 import com.samebits.beacon.locator.util.DialogBuilder;
+import com.samebits.beacon.locator.util.WhiteListUtils;
 
 import org.altbeacon.beacon.BeaconManager;
 
@@ -88,9 +84,6 @@ public class MainNavigationActivity extends BaseActivity
 
     BeaconManager mBeaconManager;
 
-    BeaconRegionReceiver mRegionReceiver;
-    BeaconAlertReceiver mAlertReceiver;
-    LocationReceiver mLocationReceiver;
 
     TrackedBeacon mSelectedBeacon;
     private Unbinder unbinder;
@@ -129,9 +122,9 @@ public class MainNavigationActivity extends BaseActivity
         checkPermissions();
         verifyBluetooth();
 
-        readExtras();
+        WhiteListUtils.startAutoStartActivity(this);
 
-        registerReceivers();
+        readExtras();
 
         if (null == savedInstanceState) {
             if (mSelectedBeacon != null) {
@@ -143,35 +136,11 @@ public class MainNavigationActivity extends BaseActivity
 
     }
 
-    void registerReceivers() {
-
-        mRegionReceiver = new BeaconRegionReceiver();
-        mLocationReceiver = new LocationReceiver();
-        mAlertReceiver = new BeaconAlertReceiver();
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mRegionReceiver, new IntentFilter( Constants.NOTIFY_BEACON_ENTERS_REGION));
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mRegionReceiver, new IntentFilter( Constants.NOTIFY_BEACON_LEAVES_REGION));
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mRegionReceiver, new IntentFilter( Constants.NOTIFY_BEACON_NEAR_YOU_REGION));
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mLocationReceiver, new IntentFilter( Constants.GET_CURRENT_LOCATION));
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                mAlertReceiver, new IntentFilter( Constants.ALARM_NOTIFICATION_SHOW));
-    }
-
-    void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver( mRegionReceiver );
-        LocalBroadcastManager.getInstance(this).unregisterReceiver( mLocationReceiver );
-        LocalBroadcastManager.getInstance(this).unregisterReceiver( mAlertReceiver );
-    }
-
     @Override
     protected void onDestroy() {
-        unregisterReceivers();
-        unbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         super.onDestroy();
     }
 

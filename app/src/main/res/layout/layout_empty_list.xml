@@ -3,24 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light_grey"
+    android:padding="6dp"
     android:orientation="vertical">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="25dp"
-        android:layout_gravity="top"
-        android:layout_weight="1"
-        android:tint="@color/light_grey"
-        android:src="@drawable/g9777"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/empty_text"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="4"
-        android:text="@string/text_empty_list"
-        android:textSize="@dimen/text_large_body" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="25dp"
+            android:layout_gravity="top"
+            android:layout_centerInParent="true"
+            android:tint="@color/light_grey"
+            android:src="@drawable/g9777"/>
+
+        <TextView
+            android:id="@+id/empty_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:gravity="center|bottom"
+            android:padding="16dp"
+            android:text="@string/text_empty_list"
+            android:textSize="@dimen/text_large_body" />
+
+    </RelativeLayout>
 
 </LinearLayout>

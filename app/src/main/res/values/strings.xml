@@ -37,8 +37,7 @@
     <string name="pref_title_foreground_scan">Enable foreground scan (Android 8+)</string>
     <string name="pref_description_foreground_scan">Foreground service to be able run scan more often than every 15 min (only Android 8+).
     </string>
-    <string name="pref_title_background_scan_timeout">Background scan interval (only Android 4.X)
-    </string>
+    <string name="pref_title_background_scan_timeout">Background scan interval</string>
     <string name="pref_title_region_name">Region name</string>
     <string name="pref_default_region_name">Default</string>
     <string name="pref_title_manual_scan_timeout">Manual scan interval</string>
@@ -224,5 +223,9 @@
     <string name="sort_type_nearest_first">Nearest first</string>
     <string name="sort_type_furthest_first">Furthest first</string>
     <string name="sort_type_uuid_major_minor">UUID, Major and Minor</string>
+    <string name="text_scan_foreground_service">beacon location background service</string>
+    <string name="message_need_autostartt_settings">Please give a permission for unrestricted power management usage and enable autostart to be able scan in the background</string>
+    <string name="dialog_checkbox_do_not_ask_again">Do not ask again</string>
+    <string name="message_need_autostartt_title">Need Permissions</string>
 
 </resources>
