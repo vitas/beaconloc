@@ -75,7 +75,7 @@ public class LocationReceiver extends BroadcastReceiver {
             PendingIntent notificationIntent = PendingIntent.getActivity(context, 0, mapIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationBuilder notificationBuilder = new NotificationBuilder(context);
-            notificationBuilder.createNotification(R.mipmap.ic_launcher, context.getString(R.string.action_alarm_text_title), true, notificationIntent);
+            notificationBuilder.createNotification(context.getString(R.string.action_alarm_text_title), null,true, notificationIntent);
             notificationBuilder.setMessage(context.getString(R.string.notification_display_last_position));
             notificationBuilder.show(1);
 

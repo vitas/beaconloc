@@ -49,18 +49,11 @@ public class BeaconAlertReceiver extends BroadcastReceiver {
         PendingIntent notificationIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainNavigationActivity.class), 0);
 
         NotificationBuilder notificationBuilder = new NotificationBuilder(context);
-        notificationBuilder.createNotification(R.mipmap.ic_launcher, title, isVibrate, notificationIntent);
+        notificationBuilder.createNotification(title, ringtone, isVibrate, notificationIntent);
 
         notificationBuilder.setMessage(msgText);
         notificationBuilder.setTicker(msgAlert);
 
-        if (isVibrate) {
-            notificationBuilder.setVibration();
-        }
-
-        if (ringtone != null && ringtone.length() > 0) {
-            notificationBuilder.setRingtone(ringtone);
-        }
 
         notificationBuilder.show(1);
 

@@ -11,23 +11,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.samebits.beacon.locator.ui.view.RadarScanView
             android:id="@+id/radar"
-            android:layout_width="340dip"
-            android:layout_height="340dip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:padding="6dp"
             android:layout_marginTop="6dip" />
 
         <TextView
             android:id="@+id/distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="6dip"
             android:textSize="@dimen/text_body"
-            android:typeface="monospace" />
+            android:padding="16dp"
+            android:gravity="center|bottom"
+            android:textAlignment="center"
+            />
 
     </RelativeLayout>
 

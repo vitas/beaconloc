@@ -18,6 +18,8 @@
 
 package com.samebits.beacon.locator.util;
 
+import android.os.Build;
+
 /**
  * Created by vitas on 25/10/15.
  */
@@ -50,6 +52,7 @@ public final class Constants {
 
     public static final String ALARM_NOTIFICATION_SHOW = "com.samebits.beacon.locator.action.ALARM_NOTIFICATION_SHOW";
     public static final String GET_CURRENT_LOCATION = "com.samebits.beacon.locator.action.GET_CURRENT_LOCATION";
+    public static final int FOREGROUND_NOTIFICATION_ID = 11125;
 
     private Constants() {
     }
