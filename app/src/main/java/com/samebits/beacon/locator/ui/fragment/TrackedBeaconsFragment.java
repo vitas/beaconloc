@@ -108,8 +108,8 @@ public class TrackedBeaconsFragment extends BeaconFragment implements SwipeRefre
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         unbinder.unbind();
+        super.onDestroyView();
     }
 
 

@@ -23,9 +23,9 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Parcelable;
 import android.os.RemoteException;
-import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -39,9 +39,14 @@ import com.samebits.beacon.locator.model.ActionRegion;
 import com.samebits.beacon.locator.model.IManagedBeacon;
 import com.samebits.beacon.locator.model.RegionName;
 import com.samebits.beacon.locator.model.TrackedBeacon;
+import com.samebits.beacon.locator.receiver.BeaconAlertReceiver;
+import com.samebits.beacon.locator.receiver.BeaconRegionReceiver;
+import com.samebits.beacon.locator.receiver.LocationReceiver;
 import com.samebits.beacon.locator.ui.activity.MainNavigationActivity;
+import com.samebits.beacon.locator.util.BackgroundSwitchWatcher;
 import com.samebits.beacon.locator.util.BeaconUtil;
 import com.samebits.beacon.locator.util.Constants;
+import com.samebits.beacon.locator.util.NotificationBuilder;
 import com.samebits.beacon.locator.util.PreferencesUtil;
 
 import org.altbeacon.beacon.Beacon;
@@ -67,11 +72,13 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
     ApplicationComponent applicationComponent;
     List<Region> mRegions = new ArrayList<>();
     List<TrackedBeacon> mBeacons = new ArrayList<>();
-    private BackgroundPowerSaver mBackgroundPowerSaver;
+    BackgroundSwitchWatcher mBackgroundSwitchWatcher;
     private BeaconManager mBeaconManager;
     private DataManager mDataManager;
     private RegionBootstrap mRegionBootstrap;
-    private LocalBroadcastManager mBroadcaster;
+    BeaconRegionReceiver mRegionReceiver;
+    BeaconAlertReceiver mAlertReceiver;
+    LocationReceiver mLocationReceiver;
 
     public static BeaconLocatorApp from(@NonNull Context context) {
         return (BeaconLocatorApp) context.getApplicationContext();
@@ -79,6 +86,31 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
 
     public ApplicationComponent getComponent() {
         return applicationComponent;
+    }
+
+    void registerReceivers() {
+
+        mRegionReceiver = new BeaconRegionReceiver();
+        mLocationReceiver = new LocationReceiver();
+        mAlertReceiver = new BeaconAlertReceiver();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mRegionReceiver, new IntentFilter( Constants.NOTIFY_BEACON_ENTERS_REGION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mRegionReceiver, new IntentFilter( Constants.NOTIFY_BEACON_LEAVES_REGION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mRegionReceiver, new IntentFilter( Constants.NOTIFY_BEACON_NEAR_YOU_REGION));
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mLocationReceiver, new IntentFilter( Constants.GET_CURRENT_LOCATION));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mAlertReceiver, new IntentFilter( Constants.ALARM_NOTIFICATION_SHOW));
+    }
+
+    void unregisterReceivers() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver( mRegionReceiver );
+        LocalBroadcastManager.getInstance(this).unregisterReceiver( mLocationReceiver );
+        LocalBroadcastManager.getInstance(this).unregisterReceiver( mAlertReceiver );
     }
 
 
@@ -93,33 +125,19 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         mBeaconManager = BeaconLocatorApp.from(this).getComponent().beaconManager();
         mDataManager = BeaconLocatorApp.from(this).getComponent().dataManager();
 
-        mBroadcaster = LocalBroadcastManager.getInstance(this);
+        registerReceivers();
 
         initBeaconManager();
 
-        // the ability to continually scan for long periods of time in the background on Andorid 8+
-        // in exchange for showing an icon at the top of the screen and a always-on notification to
-        // communicate to users that your app is using resources in the background.
+    }
 
-        if (PreferencesUtil.isForegroundScan(this)) {
-            Notification.Builder builder = new Notification.Builder(this);
-            builder.setSmallIcon(R.mipmap.ic_launcher);
-            builder.setContentTitle(getText(R.string.text_scanning));
-            Intent intent = new Intent(this, MainNavigationActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(
-                    this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
-            );
-            builder.setContentIntent(pendingIntent);
-            mBeaconManager.enableForegroundServiceScanning(builder.build(), 456);
-        } else {
-            mBeaconManager.disableForegroundServiceScanning();
-        }
-        enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
-
+    @Override
+    public void onTerminate() {
+        unregisterReceivers();
+        super.onTerminate();
     }
 
     private void initBeaconManager() {
-        mBeaconManager.setBackgroundMode(PreferencesUtil.isBackgroundScan(this));
 
         if (PreferencesUtil.isEddystoneLayoutUID(this)) {
             mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.EDDYSTONE_UID_LAYOUT));
@@ -132,88 +150,124 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
         }
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(BeaconParser.ALTBEACON_LAYOUT));
 
+
         //konkakt?
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
-        mBeaconManager.setBackgroundBetweenScanPeriod(PreferencesUtil.getBackgroundScanInterval(this));
+        mBeaconManager.setAndroidLScanningDisabled(true);
+        mBeaconManager.setBackgroundScanPeriod(15000L);
+        mBeaconManager.setForegroundBetweenScanPeriod(0L);      // default is 0L
+        mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
+        mBackgroundSwitchWatcher = new BackgroundSwitchWatcher(this);
 
-        if (PreferencesUtil.isForegroundScan(this)) {
+        if (PreferencesUtil.isForegroundScan(this) && PreferencesUtil.isBackgroundScan(this)) {
 
-            mBeaconManager.setEnableScheduledScanJobs(false);
-            mBeaconManager.setBackgroundBetweenScanPeriod(0L);
-            mBeaconManager.setBackgroundScanPeriod(1100L);
+            startScanAsForegroundService();
 
         } else {
-            mBeaconManager.setEnableScheduledScanJobs(true);
-            mBeaconManager.setBackgroundScanPeriod(10000L);          // default is 10000L
-            mBeaconManager.setForegroundBetweenScanPeriod(0L);      // default is 0L
-            mBeaconManager.setForegroundScanPeriod(1100L);          // Default is 1100L
 
-            //mBeaconManager.setMaxTrackingAge(10000);
-            //mBeaconManager.setRegionExitPeriod(18000L);
+            stopScanAsForegroundService();
         }
 
-        /*
-        RangedBeacon.setMaxTrackingAge() only controls the period of time ranged beacons will continue to be
-        returned after the scanning service stops detecting them.
-        It has no affect on when monitored regions trigger exits. It is set to 5 seconds by default.
+        enableBackgroundScan(true);
 
-        Monitored regions are exited whenever a scan period finishes and the BeaconManager.setRegionExitPeriod()
-        has passed since the last detection.
-        By default, this is 10 seconds, but you can customize it.
+    }
 
-        Using the defaults, the library will stop sending ranging updates five seconds after a beacon was last seen,
-         and then send a region exit 10 seconds after it was last seen.
-        You are welcome to change these two settings to meet your needs, but the BeaconManager.setRegionExitPeriod()
-        should generally be the same or longer than the RangedBeacon.setMaxTrackingAge().
-         */
+    private void setScanSettings() {
 
-        mBackgroundPowerSaver = new BackgroundPowerSaver(this);
-        mBeaconManager.addRangeNotifier(this);
+        if (mBeaconManager == null) return;
+
+        mBeaconManager.setBackgroundBetweenScanPeriod(PreferencesUtil.getBackgroundScanInterval(this));
 
         try {
             if (mBeaconManager.isAnyConsumerBound()) {
                 mBeaconManager.updateScanPeriods();
             }
         } catch (RemoteException e) {
-            Log.e(Constants.TAG, "update scan periods error", e);
+            Log.e(Constants.TAG, "Update scan periods error", e);
         }
     }
 
+
+    /**
+     * Here we switch between scan types when app in the foreground or background
+     * @param enable yes or no
+     */
     public void enableBackgroundScan(boolean enable) {
-        if (enable) {
-            Log.d(Constants.TAG, "Enable Background Scan");
-            enableRegions();
-            //loadTrackedBeacons();
+
+        if (mBeaconManager == null) return;
+
+        setScanSettings();
+
+        boolean backgroundScanEnabled = PreferencesUtil.isBackgroundScan(this);
+        if (enable && backgroundScanEnabled) {
+            Log.d(Constants.TAG, "Enable background scan");
+            if (enableRegions()) {
+                mBeaconManager.setBackgroundMode(true);
+            } else {
+                Log.i(Constants.TAG, "Background scan is disabled, no cattailer to watch");
+            }
         } else {
-            Log.d(Constants.TAG, "Disable Background Scan");
+            Log.d(Constants.TAG, "Disable background scan");
             disableRegions();
+            mBeaconManager.setBackgroundMode(false);
         }
     }
 
     private void disableRegions() {
-        if (mRegionBootstrap != null) {
-            mRegionBootstrap.disable();
+        if (mRegionBootstrap != null && mRegions != null) {
+            try {
+                mRegionBootstrap.disable();
+            } catch (Exception e) {
+                Log.e(Constants.TAG, "Disable Regisons", e);
+            }
         }
     }
 
-    /**
-     * consider to use as a cache of beacons
-     */
-    private void loadTrackedBeacons() {
-        mBeacons = mDataManager.getAllBeacons();
-    }
-
-    private void enableRegions() {
+    private boolean enableRegions() {
         mRegions = getAllEnabledRegions();
         if (mRegions.size() > 0) {
             mRegionBootstrap = new RegionBootstrap(this, mRegions);
+            return true;
         } else {
             Log.d(Constants.TAG, "Ignore Background scan, no regions");
         }
+        return false;
+    }
+
+    public void startScanAsForegroundService() {
+
+        Log.d(Constants.TAG, "Init: Enable as foreground service scan");
+
+        if (mBeaconManager == null || mBeaconManager.isAnyConsumerBound()) {
+            Log.w(Constants.TAG, "Cannot start scan in foreground mode, beacon manager is bound");
+            return;
+        }
+
+        NotificationBuilder notificationBuilder = new NotificationBuilder(this);
+
+        PendingIntent notificationIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, MainNavigationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notificationBuilder.createNotificationService(getString(R.string.text_scan_foreground_service), notificationIntent);
+
+        mBeaconManager.enableForegroundServiceScanning(notificationBuilder.getBuilder().build(), Constants.FOREGROUND_NOTIFICATION_ID);
+
+    }
+
+    public void stopScanAsForegroundService() {
+
+        Log.d(Constants.TAG, "Init: Disable as foreground service scan");
+
+        if (mBeaconManager == null || mBeaconManager.isAnyConsumerBound()) {
+            Log.w(Constants.TAG, "Cannot stop scan in foreground mode, beacon manager is bound");
+            return;
+        }
+
+        mBeaconManager.disableForegroundServiceScanning();
     }
 
     public List<Region> getAllEnabledRegions() {
@@ -244,7 +298,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
                 Intent intent = new Intent();
                 intent.setAction(Constants.NOTIFY_BEACON_ENTERS_REGION);
                 intent.putExtra("REGION", (Parcelable)region);
-                mBroadcaster.sendBroadcast(intent);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
             }
         }
     }
@@ -270,7 +324,7 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
                 Intent intent = new Intent();
                 intent.setAction(Constants.NOTIFY_BEACON_LEAVES_REGION);
                 intent.putExtra("REGION", (Parcelable) region);
-                mBroadcaster.sendBroadcast(intent);            }
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);            }
         }
     }
 
@@ -300,7 +354,8 @@ public class BeaconLocatorApp extends Application implements BootstrapNotifier, 
                                 Intent intent = new Intent();
                                 intent.setAction(Constants.NOTIFY_BEACON_NEAR_YOU_REGION);
                                 intent.putExtra("REGION", (Parcelable)region);
-                                mBroadcaster.sendBroadcast(intent);                            }
+                                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                            }
                         }
                     }
                 }

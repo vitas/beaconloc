@@ -27,10 +27,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.samebits.beacon.locator.R;
@@ -43,7 +48,11 @@ public class NotificationBuilder {
 
     private Context mContext;
     private Builder mBuilder;
-    private NotificationManager mNotificationManager;
+    private long[] mVibrate_pattern = new long[]{500, 500};
+    private NotificationManagerCompat mNotificationManager;
+    NotificationChannel mNotificationChannel;
+    public static String NOTIFICATION_CHANNEL_ID = "beacon_locator_channel_01";
+    String NOTIFICATION_CHANNEL_SERVICE_ID = "beacon_locator_channel_service";
 
 
     public NotificationBuilder(Context mContext) {
@@ -53,50 +62,99 @@ public class NotificationBuilder {
     /**
      * Creation of notification on operations completed
      */
-    public NotificationBuilder createNotification(int smallIcon, String title, boolean isVibrate, PendingIntent notifyIntent) {
+    public NotificationBuilder createNotification(String title, String ringtone, boolean vibrate, PendingIntent notifyIntent) {
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        String NOTIFICATION_CHANNEL_ID = "blocator_channel_01";
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+
+            mNotificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
                     title, NotificationManager.IMPORTANCE_HIGH);
 
             // Configure the notification channel.
-            notificationChannel.setDescription("Channel description");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            mNotificationChannel.setDescription("beacon location notification channel");
+            mNotificationChannel.enableLights(true);
 
-            if (isVibrate) {
-                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-                notificationChannel.enableVibration(true);
+            if (vibrate) {
+                mNotificationChannel.setVibrationPattern(mVibrate_pattern);
+                mNotificationChannel.enableVibration(true);
+            } else {
+                mNotificationChannel.enableVibration(false);
             }
-            notificationManager.createNotificationChannel(notificationChannel);
+
+            mNotificationChannel.setLightColor(Color.YELLOW);
+            mNotificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            mNotificationChannel.setSound(null, null);
+
+           /* if (ringtone != null) {
+                AudioAttributes att = new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build();
+                mNotificationChannel.setSound(Uri.parse(ringtone), att);
+            } else {
+                mNotificationChannel.setSound(null, null);
+            }
+            */
+            notificationManager.createNotificationChannel(mNotificationChannel);
         }
 
         mBuilder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID);
 
         mBuilder.setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(smallIcon)
+                .setDefaults(vibrate?(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE):Notification.DEFAULT_LIGHTS)
+                .setSmallIcon(getNotificationSmallIcon())
+                .setContentTitle(title)
+                .setColor(ContextCompat.getColor(mContext, R.color.hn_orange));
+
+        setRingtone(ringtone);
+
+        if (notifyIntent != null) {
+            mBuilder.setContentIntent(notifyIntent);
+        }
+
+        setLargeIcon(getNotificationLargeIcon());
+
+        return this;
+
+    }
+
+    public NotificationBuilder createNotificationService(String title, PendingIntent notifyIntent) {
+
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mNotificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_SERVICE_ID,
+                    mContext.getString(R.string.text_scan_foreground_service), NotificationManager.IMPORTANCE_DEFAULT);
+
+            // Configure the notification channel.
+            mNotificationChannel.setDescription(mContext.getString(R.string.pref_title_background_scan));
+            mNotificationChannel.enableLights(false);
+            mNotificationChannel.enableVibration(false);
+            mNotificationChannel.setSound(null, null);
+            mNotificationChannel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+
+            notificationManager.createNotificationChannel(mNotificationChannel);
+        }
+
+        mBuilder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_SERVICE_ID);
+
+        mBuilder.setAutoCancel(true)
+                .setDefaults(0)
+                .setSmallIcon(getNotificationSmallIcon())
                 .setContentTitle(title)
                 .setColor(ContextCompat.getColor(mContext, R.color.hn_orange));
 
         if (notifyIntent != null) {
             mBuilder.setContentIntent(notifyIntent);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // setLargeIcon(R.drawable.logo_notification_lollipop);
-            //FIXME
-            setLargeIcon(R.mipmap.ic_launcher);
-        } else {
-            setLargeIcon(R.mipmap.ic_launcher);
-        }
+
+        setLargeIcon(getNotificationLargeIcon());
 
         return this;
-    }
 
+    }
 
     public Builder getBuilder() {
         return mBuilder;
@@ -108,21 +166,37 @@ public class NotificationBuilder {
         return this;
     }
 
-
     public NotificationBuilder setLargeIcon(int largeIconResource) {
         Bitmap largeIconBitmap = BitmapFactory.decodeResource(mContext.getResources(), largeIconResource);
         return setLargeIcon(largeIconBitmap);
     }
 
-
     public NotificationBuilder setRingtone(String ringtone) {
         // Ringtone options
-        if (ringtone != null) {
-            mBuilder.setSound(Uri.parse(ringtone));
+        if (ringtone != null && ringtone.length() > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                AudioAttributes att = new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build();
+                //mNotificationChannel.setSound(Uri.parse(ringtone), att);
+
+                // if not a silent sound, play
+                if (!ringtone.equals(mContext.getString(R.string.pref_bn_none_notification_action_ringtone))) {
+                    Ringtone r = RingtoneManager.getRingtone(mContext.getApplicationContext(), Uri.parse(ringtone));
+                    try {
+                        r.play();
+                    } catch (Exception e) {
+
+                    }
+                }
+            } else {
+                mBuilder.setSound(Uri.parse(ringtone), AudioManager.STREAM_NOTIFICATION);
+            }
         }
+
         return this;
     }
-
 
     public NotificationBuilder setVibration() {
         return setVibration(null);
@@ -130,25 +204,27 @@ public class NotificationBuilder {
 
 
     public NotificationBuilder setVibration(long[] pattern) {
-        if (pattern == null || pattern.length == 0) {
-            pattern = new long[]{500, 500};
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            if (pattern == null || pattern.length == 0) {
+                mBuilder.setVibrate(mVibrate_pattern);
+            } else {
+                mBuilder.setVibrate(pattern);
+            }
         }
-        mBuilder.setVibrate(pattern);
+
         return this;
     }
-
 
     public NotificationBuilder setLedActive() {
         mBuilder.setLights(Color.BLUE, 1000, 1000);
         return this;
     }
 
-
     public NotificationBuilder setIcon(int icon) {
         mBuilder.setSmallIcon(icon);
         return this;
     }
-
 
     public NotificationBuilder setMessage(String message) {
         mBuilder.setContentText(message);
@@ -165,33 +241,41 @@ public class NotificationBuilder {
         return this;
     }
 
-
     public NotificationBuilder setOngoing() {
         mBuilder.setOngoing(true);
         return this;
     }
-
 
     public NotificationBuilder show() {
         show(0);
         return this;
     }
 
-
     public NotificationBuilder show(long id) {
-        if (mNotificationManager == null) {
-            mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        }
+        mNotificationManager = NotificationManagerCompat.from(mContext);
+
         Notification mNotification = mBuilder.build();
         if (mNotification.contentIntent == null) {
             // Creates a dummy PendingIntent
             mBuilder.setContentIntent(PendingIntent.getActivity(mContext, 0, new Intent(),
                     PendingIntent.FLAG_UPDATE_CURRENT));
         }
-        // Builds an anonymous Notification object from the builder, and passes it to the NotificationManager
+
         mNotificationManager.notify((int) id, mBuilder.build());
         return this;
     }
 
+    public static int getNotificationSmallIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher;
+
+    }
+
+    public static int getNotificationLargeIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        //TODO
+        return useWhiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher;
+
+    }
 
 }

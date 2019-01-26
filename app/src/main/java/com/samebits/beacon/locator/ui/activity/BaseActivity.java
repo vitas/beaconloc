@@ -28,10 +28,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.samebits.beacon.locator.BeaconLocatorApp;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.util.Constants;
-import com.samebits.beacon.locator.util.PreferencesUtil;
 
 
 /**
@@ -39,7 +37,6 @@ import com.samebits.beacon.locator.util.PreferencesUtil;
  */
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
-    public static int glCount = 0;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,7 +104,6 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-
     protected Fragment checkFragmentInstance(int id, Object instanceClass) {
 
         Fragment fragment = getFragmentInstance(id);
@@ -129,21 +125,4 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        glCount++;
-        if (glCount == 1) {
-            BeaconLocatorApp.from(this).enableBackgroundScan(false);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        glCount--;
-        if (glCount <= 0) {
-            BeaconLocatorApp.from(this).enableBackgroundScan(PreferencesUtil.isBackgroundScan(this));
-        }
-    }
 }

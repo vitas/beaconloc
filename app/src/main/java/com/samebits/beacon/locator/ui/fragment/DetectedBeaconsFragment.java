@@ -98,9 +98,11 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         mTimer.cancel();
-        unbinder.unbind();
+        super.onDestroyView();
     }
 
     private void setupToolbar() {
@@ -154,6 +156,7 @@ public class DetectedBeaconsFragment extends ScanFragment implements BeaconAdapt
             }
         }
     }
+
 
     @Override
     public void startScan() {

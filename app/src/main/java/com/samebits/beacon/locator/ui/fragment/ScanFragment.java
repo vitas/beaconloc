@@ -69,10 +69,10 @@ public abstract class ScanFragment extends BeaconFragment implements BeaconConsu
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-        if (mBeaconManager != null && mBeaconManager.isBound(this)) {
+        if (mBeaconManager.isBound(this)) {
             mBeaconManager.unbind(this);
         }
+        super.onDestroyView();
     }
 
 
@@ -98,17 +98,6 @@ public abstract class ScanFragment extends BeaconFragment implements BeaconConsu
         stopScan();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mBeaconManager.isBound(this)) mBeaconManager.setBackgroundMode(false);
-    }
-
-    @Override
-    public void onPause() {
-        //if (mBeaconManager.isBound(this)) mBeaconManager.setBackgroundMode(PreferencesUtil.isBackgroundScan(getActivity()));
-        super.onPause();
-    }
 
     public void scanStartStopAction() {
         if (isScanning) {
