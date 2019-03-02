@@ -9,6 +9,8 @@
     <string name="dialog_action_cancel">Cancel</string>
     <string name="dialog_action_exit">Exit</string>
     <string name="dialog_error_title">Error</string>
+    <string name="dialog_title_select_ringtone">Select ringtone</string>
+
 
     <string name="dialog_error_functionality_limited">Functionality limited</string>
     <string name="error_message_location_access_not_granted">\"Since location access has not been

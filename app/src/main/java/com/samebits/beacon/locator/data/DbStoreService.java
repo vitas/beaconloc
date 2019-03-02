@@ -293,7 +293,11 @@ public class DbStoreService extends SQLiteOpenHelper implements StoreService {
                 beacon.setBluetoothName(cursor.getString(2));
                 beacon.setBluetoothAddress(cursor.getString(3));
                 beacon.setUUID(cursor.getString(4));
-                beacon.setDistance(Double.parseDouble(cursor.getString(5)));
+                try {
+                    beacon.setDistance(Double.parseDouble(cursor.getString(5)));
+                } catch (Exception e) {
+                    beacon.setDistance(0.0f);
+                }
                 beacon.setRssi(cursor.getInt(6));
                 beacon.setTxPower(cursor.getInt(7));
                 beacon.setType(cursor.getInt(8));

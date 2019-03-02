@@ -56,7 +56,7 @@ dependencies {
     final SUPPORT_LIBRARY_VERSION = '28.0.0'
     final DAGGER_VERSION = '2.11'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api 'org.altbeacon:android-beacon-library:2.15.4'
+    api 'org.altbeacon:android-beacon-library:2.16.1'
     implementation "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION"
     implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
@@ -70,5 +70,6 @@ dependencies {
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
     implementation 'com.jakewharton:butterknife:9.0.0-rc3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc3'
+    implementation 'com.kevalpatel2106:ringtonepicker:1.3'
 
 }

@@ -23,11 +23,14 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.SwitchPreferenceCompat;
+import android.util.Log;
 
+import com.kevalpatel.ringtonepicker.RingtonePickerDialog;
+import com.kevalpatel.ringtonepicker.RingtonePickerListener;
 import com.samebits.beacon.locator.R;
 import com.samebits.beacon.locator.util.Constants;
 
@@ -122,47 +125,57 @@ public class BeaconNotificationPageFragment extends PageBeaconFragment {
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         if (preference.getKey().equals("bn_notification_action_ringtone")) {
-            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
 
-            String existingValue = getRingtoneValue();
-            if (existingValue != null) {
-                if (existingValue.length() == 0 || existingValue.equalsIgnoreCase(mNoneRintoneValue)) {
-                    // Select "Silent"
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-                } else {
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(existingValue));
-                }
-            } else {
-                // No ringtone has been selected, set to the default
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-            }
+            RingtonePickerDialog.Builder ringtonePickerBuilder = new RingtonePickerDialog
+                    .Builder(getActivity(), getActivity().getSupportFragmentManager())
 
-            startActivityForResult(intent, Constants.REQ_CODE_ALERT_RINGTONE);
+                    //Set title of the dialog.
+                    //If set null, no title will be displayed.
+                    .setTitle(getString(R.string.dialog_title_select_ringtone))
+
+                    //Allow user to select default ringtone set in phone settings.
+                    .displayDefaultRingtone(true)
+
+                    //Allow user to select silent (i.e. No ringtone.).
+                    .displaySilentRingtone(true)
+
+                    //set the text to display of the positive (ok) button.
+                    //If not set OK will be the default text.
+                    .setPositiveButtonText("SET RINGTONE")
+
+                    //set text to display as negative button.
+                    //If set null, negative button will not be displayed.
+                    .setCancelButtonText("CANCEL")
+
+                    //Set flag true if you want to play the sample of the clicked tone.
+                    .setPlaySampleWhileSelection(true)
+
+                    //Set the callback listener.
+                    .setListener(new RingtonePickerListener() {
+                        @Override
+                        public void OnRingtoneSelected(@NonNull String ringtoneName, Uri ringtoneUri) {
+                            Log.d(Constants.TAG, String.format("Selected Ringtone Name : %s\nUri : %s", ringtoneName, ringtoneUri));
+
+                            if (ringtoneUri != null) {
+                                setRingtonValue(ringtoneUri.toString());
+                                mActionBeacon.getNotification().setRingtone(ringtoneUri.toString());
+
+                            } else {
+                                // "Silent" was selected
+                                setRingtonValue(null);
+                                mActionBeacon.getNotification().setRingtone(mNoneRintoneValue);
+                            }
+                        }
+                    });
+
+            ringtonePickerBuilder.addRingtoneType(RingtonePickerDialog.Builder.TYPE_NOTIFICATION);
+
+            //Display the dialog.
+            ringtonePickerBuilder.show();
+
             return true;
         } else {
             return super.onPreferenceTreeClick(preference);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQ_CODE_ALERT_RINGTONE && data != null) {
-            Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-            if (ringtone != null) {
-                setRingtonValue(ringtone.toString());
-                mActionBeacon.getNotification().setRingtone(ringtone.toString());
-
-            } else {
-                // "Silent" was selected
-                setRingtonValue(null);
-                mActionBeacon.getNotification().setRingtone(mNoneRintoneValue);
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

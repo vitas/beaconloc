@@ -96,14 +96,15 @@ public class MainNavigationActivity extends BaseActivity
     void navAction() {
 
         Fragment currentFragment = getFragmentInstance(R.id.content_frame);
-        String tag = currentFragment.getTag();
-        switch (tag) {
-            case Constants.TAG_FRAGMENT_SCAN_LIST:
-            case Constants.TAG_FRAGMENT_SCAN_RADAR:
-                ((ScanFragment) currentFragment).scanStartStopAction();
-                break;
-            case Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST:
-                break;
+        if (currentFragment != null) {
+            String tag = currentFragment.getTag();
+            switch (tag) {
+                case Constants.TAG_FRAGMENT_SCAN_LIST:
+                case Constants.TAG_FRAGMENT_SCAN_RADAR:
+                    ((ScanFragment) currentFragment).scanStartStopAction();
+                    break;
+                case Constants.TAG_FRAGMENT_TRACKED_BEACON_LIST:
+            }
         }
     }
 
